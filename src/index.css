@@ -3,3 +3,25 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.No-Break{
+  display: inline-block;
+  white-space:nowrap;
+}
+
+  .segment{
+    text-align: center;
+  }
+
+@media only screen and (max-width: 650px) {
+  .No-Break{
+    display: inline;
+    white-space:unset;
+  }
+  .icon{
+    font-size: 2.5em !important;
+  }
+  .ui.small.images .image, .ui.small.images img, .ui.small.images svg, .ui.small.image{
+    width: 120px;
+  }
+}
