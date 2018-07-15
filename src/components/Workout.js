@@ -10,7 +10,7 @@ class Workout extends React.Component {
             <h3 class="ui top centered attached header">
             Biceps - 5 Sets
             </h3>
-           <div className='ui attached segment'>
+           <div className='ui secondary segment attached'>
                 <div className='ui list horizontal'>
                     <div className='item'>
                         <WorkoutImages/>
