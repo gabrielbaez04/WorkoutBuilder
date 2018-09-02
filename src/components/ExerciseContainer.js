@@ -1,6 +1,6 @@
 import React from 'react';
 import ExerciseDetails from './ExerciseDetails';
-
+import ButtonsContainer from './ButtonsContainer';
 class ExerciseContainer extends React.Component {
     render() {
         return (
@@ -9,11 +9,11 @@ class ExerciseContainer extends React.Component {
                 <i className="circular plus icon"></i>
                 Add/Edit Exercise
                 </h2>
-                <div className='ui segment compact workoutsContainer'>
+                <div className='ui segment workoutsContainer'>
                     <div className='ui list'>
                         <div className='item'>
                             <div className="ui search">
-                                <div className="ui icon input">
+                                <div className="ui icon input searchIcon">
                                     <input className="prompt" type="text" placeholder="Search Exercise..."/>
                                     <i className="search icon"></i>
                                 </div>
@@ -29,6 +29,9 @@ class ExerciseContainer extends React.Component {
                         </div>
                     </div>
                 </div>
+                <ButtonsContainer
+                save='1'
+                cancel='1'/>
             </div>
         );
     }
