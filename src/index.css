@@ -55,4 +55,10 @@ body {
   .previewContainer{
     text-align: center !important;
   }
+  .search{
+    width: 1em !important;
+  }
+  .searchIcon{
+    font-size: 1.5em !important;
+  }
 }

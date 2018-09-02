@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import ExerciseList from '../src/components/ExerciseList';
-import DashboardContainer from '../src/components/DashboardContainer';
+import ExerciseContainer from '../src/components/ExerciseContainer';
 
-ReactDOM.render(<DashboardContainer/>, document.getElementById('root'));
+ReactDOM.render(<ExerciseContainer/>, document.getElementById('root'));
 registerServiceWorker();
