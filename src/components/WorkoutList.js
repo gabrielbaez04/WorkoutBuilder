@@ -1,25 +1,25 @@
 import React from 'react';
-import Workout from './Workout';
+import PreviewContainer from './PreviewContainer';
 
 class WorkoutList extends React.Component {
     render() {
         return (
             <div>
-                <h2 class="ui center aligned icon header">
-                <i class="circular hand rock outline icon"></i>
+                <h2 className="ui center aligned icon header">
+                <i className="circular hand rock icon"></i>
                 Workout List
                 </h2>
-                <div className='ui segment compact workoutscontainer'>
+                <div className='ui segment compact workoutsContainer'>
                 
-                        <Workout/>
+                        <PreviewContainer/>
                     
-                        <Workout/>
+                        <PreviewContainer/>
                         
-                        <Workout/>
+                        <PreviewContainer/>
 
-                        <Workout/>
+                        <PreviewContainer/>
 
-                        <Workout/>
+                        <PreviewContainer/>
                 </div>
             </div>
         );
