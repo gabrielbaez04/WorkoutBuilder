@@ -3,16 +3,23 @@ import React from 'react';
 class ButtonsContainer extends React.Component {
     render() {
         return (
-            <div className='ui list horizontal No-Break'>
-                <div className='item'>
-                    <i class="pencil orange alternate icon huge link circular"></i>
-                </div>
-                <div className='item'>
-                    <i class="trash red alternate icon huge link circular"></i>
-                </div>
-                <div className='item'>
-                    <i class="play green alternate icon huge link circular"></i>
-                </div>
+            <div className='ui list horizontal No-Break centralize'>
+                {this.props.edit == '1' && <div className='item'>
+                    <i className="pencil orange alternate icon huge link circular inverted"></i>
+                </div>}
+                {this.props.delete == '1' && <div className='item'>
+                    <i className="trash red alternate icon huge link circular inverted"></i>
+                </div>}
+                {this.props.run == '1' && <div className='item'>
+                    <i className="play green alternate icon huge link circular inverted"></i>
+                </div>}
+                {this.props.cancel == '1' && <div className='item'>
+                    <i className="cancel red alternate icon huge link circular inverted"></i>
+                </div>}
+                {this.props.save == '1' && <div className='item'>
+                    <i className="save green alternate icon huge link circular inverted"></i>
+                </div>}
+                
             </div>
         );
     }

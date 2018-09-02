@@ -8,18 +8,33 @@ body {
   display: inline-block;
   white-space:nowrap;
 }
+.preview{
+  width: 100% !important;
+}
+.previewContainer{
+  text-align: right !important;
+}
+.rightFloated{
+  text-align: right !important;
+}
+.centralize{
+  justify-content: center !important;
+  display: flex !important;
+}
+.workoutButtons{
+  padding-bottom: 0 !important;
+}
+.workoutsContainer{
+  margin:0 auto !important;
+  border:none !important;
+  box-shadow: 0px 0px 0px 0px !important;
+  max-width: 80%;
+}
 
-  .segment{
-    text-align: center;
-  }
-
-  .workoutscontainer{
-    margin:0 auto !important;
-    border:none !important;
-    box-shadow: 0px 0px 0px 0px !important;
-  }
-  
-@media only screen and (max-width: 650px) {
+.ui.items > .item > .image:not(.ui) {
+  width: auto !important;
+}
+@media only screen and (max-width: 768px) {
   .No-Break{
     display: inline;
     white-space:unset;
@@ -27,7 +42,17 @@ body {
   .icon{
     font-size: 2.5em !important;
   }
+  .customSmallButton{
+    font-size: 1em !important;
+  }
   .ui.small.images .image, .ui.small.images img, .ui.small.images svg, .ui.small.image{
     width: 120px;
+  }
+  .ui.items:not(.unstackable) > .item > .image, .ui.items:not(.unstackable) > .item > .image > img
+  {
+    max-height: 100% !important;
+  }
+  .previewContainer{
+    text-align: center !important;
   }
 }
