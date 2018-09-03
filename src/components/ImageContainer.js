@@ -5,8 +5,8 @@ class ImageContainer extends React.Component {
         return (
             <div className='item No-Break'>
                 <div className="ui tiny images">
-                    {this.props.images && this.props.images.map(element => {
-                        return <img className="ui image" src={element}/>
+                    {this.props.images && this.props.images.map((element, index) => {
+                        return <img className="ui image" src={element} key={index}/>
                     })}
                     
                 </div>
