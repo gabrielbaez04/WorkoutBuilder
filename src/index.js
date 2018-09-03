@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import ExerciseList from '../src/components/ExerciseList';
-import ExerciseContainer from '../src/components/ExerciseContainer';
+import WorkoutList from '../src/components/WorkoutList';
 
-ReactDOM.render(<ExerciseContainer/>, document.getElementById('root'));
+ReactDOM.render(<WorkoutList/>, document.getElementById('root'));
 registerServiceWorker();

@@ -10,8 +10,7 @@ class ExerciseDetails extends React.Component {
                     <div className="ui items">
                         <div className="item">
                             <div className="image">
-                                <ImageContainer images={['https://wger.de/media/exercise-images/81/Biceps-curl-2.png.200x200_q85.png',
-                                    'https://wger.de/media/exercise-images/129/Standing-biceps-curl-2.png']}/>
+                                <ImageContainer images={this.props.images}/>
                             </div>
                             <div className="content">
                                 <span className='header'>{this.props.name}</span>
