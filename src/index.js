@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './utils/helper'
 import registerServiceWorker from './registerServiceWorker';
-import WorkoutList from '../src/components/WorkoutList';
+import Workout from '../src/components/Workout';
 
-ReactDOM.render(<WorkoutList/>, document.getElementById('root'));
+ReactDOM.render(<Workout/>, document.getElementById('root'));
 registerServiceWorker();
