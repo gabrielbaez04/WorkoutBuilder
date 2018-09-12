@@ -1,19 +1,12 @@
-window.helpers = (function () {
-    const $ = window.$;
-    function initializeCube(){
+const $ = window.$;
+module.exports = {  
+    initializeCube : () => {
         $('.shape').shape();
-    }
-    
-    function nextExercise(currentSide){
+    },  
+    nextExercise : (currentSide) => {
         $('.shape').shape('set next side','.side'+currentSide).shape('flip right');
-    }
-    
-    function prevExercise(currentSide){
+    },   
+    prevExercise : (currentSide) => {
         $('.shape').shape('set next side','.side'+currentSide).shape('flip left');
     }
-    
-    return {
-        initializeCube, 
-        nextExercise, 
-        prevExercise}
-    }());
+};

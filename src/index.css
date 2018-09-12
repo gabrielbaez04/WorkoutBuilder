@@ -21,9 +21,7 @@ body {
   justify-content: center !important;
   display: flex !important;
 }
-.workoutButtons{
-  padding-bottom: 0 !important;
-}
+
 .workoutsContainer{
   margin:0 auto !important;
   border:none !important;
