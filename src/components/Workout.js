@@ -1,6 +1,6 @@
 import React from 'react';
 import ExerciseDetails from './ExerciseDetails';
-
+import {initializeCube,nextExercise,prevExercise} from '../utils/helper';
 class Workout extends React.Component {
     state = {
         currentSide:0,
@@ -36,16 +36,16 @@ class Workout extends React.Component {
         ]
     } 
     componentDidMount(){
-        window.helpers.initializeCube();
+        initializeCube();
     }
     handleStepForwardClick = () =>{
         this.setState({currentSide: this.state.currentSide+1 >= this.state.exercises.length? this.state.currentSide : this.state.currentSide+1},
-            () => {window.helpers.nextExercise(this.state.currentSide)});
+            () => {nextExercise(this.state.currentSide)});
         
     }
     handleStepBackwardClick = () =>{
         this.setState({currentSide: this.state.currentSide-1 < 0 ? 0 : this.state.currentSide-1},
-            () => {window.helpers.prevExercise(this.state.currentSide)});
+            () => {prevExercise(this.state.currentSide)});
       
     }
     render() {
@@ -72,16 +72,17 @@ class Workout extends React.Component {
                         </div>
                     </div>
                     <div className="ui clearing segment workoutButtons ">
-                        <h2 className="ui right floated header ">
-                            <button className="ui right icon button compact blue" onClick={this.handleStepForwardClick}>
+                    {this.state.currentSide!=this.state.exercises.length-1 &&
+                            <button className="ui right floated icon button compact blue big" onClick={this.handleStepForwardClick}>
                                 <i className="icon step forward customSmallButton"></i>
                             </button>
-                        </h2>
-                        <h2 className="ui left floated header">
-                            <button className="ui compact icon button blue" onClick={this.handleStepBackwardClick}>
+
+                    }
+                    {this.state.currentSide!=0 &&
+                            <button className="ui compact icon button blue big" onClick={this.handleStepBackwardClick}>
                                 <i className="icon step backward customSmallButton"></i>  
                             </button>  
-                        </h2>
+                    }
                     </div>
                 </div>
                 
