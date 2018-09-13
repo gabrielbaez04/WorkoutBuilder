@@ -13,8 +13,7 @@ class PreviewContainer extends React.Component {
                     <div className='preview'>
                         <ImageContainer
                             images={this.props.images}/>
-                        {this.props.isWorkout && <ButtonsContainer
-                        run='1'/>}
+                        {this.props.isWorkout && <div><button class="ui fluid green button">RUN</button></div>}
                     </div> 
                 </div>
             </div>
