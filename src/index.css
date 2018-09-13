@@ -3,7 +3,10 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-
+.centralize{
+  justify-content: center !important;
+  display: flex !important;
+}
 .No-Break{
   display: inline-block;
   white-space:nowrap;
@@ -17,11 +20,6 @@ body {
 .rightFloated{
   text-align: right !important;
 }
-.centralize{
-  justify-content: center !important;
-  display: flex !important;
-}
-
 .workoutsContainer{
   margin:0 auto !important;
   border:none !important;
