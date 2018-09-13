@@ -10,20 +10,13 @@ class PreviewContainer extends React.Component {
                     {this.props.name}  {this.props.sets>0 && ' - ' + this.props.sets + ' Sets'}
                 </h3>
                 <div className='ui secondary segment attached previewContainer'>
-                        <div className='ui list horizontal preview'>
-                            <div className='item'>
-                                <ImageContainer
-                                    images={this.props.images}/>
-                            </div>
-                            
-                            <div className='item middle aligned'>
-                                <ButtonsContainer
-                                edit='1'
-                                delete='1'
-                                run='1'/>
-                            </div>
-                        </div>
-                </div> 
+                    <div className='preview'>
+                        <ImageContainer
+                            images={this.props.images}/>
+                        {this.props.isWorkout && <ButtonsContainer
+                        run='1'/>}
+                    </div> 
+                </div>
             </div>
         );
     }

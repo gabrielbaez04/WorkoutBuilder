@@ -1,6 +1,6 @@
 import React from 'react';
 import PreviewContainer from './PreviewContainer';
-
+import ButtonsContainer from './ButtonsContainer';
 class ExerciseList extends React.Component {
 
     render() {
@@ -25,6 +25,11 @@ class ExerciseList extends React.Component {
                             images={['https://wger.de/media/exercise-images/81/Biceps-curl-2.png.200x200_q85.png',
                                     'https://wger.de/media/exercise-images/129/Standing-biceps-curl-2.png']
                                     }/>
+                </div>
+                <div className='item middle aligned'>
+                    <ButtonsContainer
+                    edit='1'
+                    delete='1'/>
                 </div>
             </div>
         );
