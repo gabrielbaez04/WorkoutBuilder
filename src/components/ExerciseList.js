@@ -26,11 +26,9 @@ class ExerciseList extends React.Component {
                                     'https://wger.de/media/exercise-images/129/Standing-biceps-curl-2.png']
                                     }/>
                 </div>
-                <div className='item middle aligned'>
-                    <ButtonsContainer
-                    edit='1'
-                    delete='1'/>
-                </div>
+                <button className="ui button blue fluid addButton">
+                    <i className="plus alternate icon big link"></i>
+                </button>
             </div>
         );
     }
