@@ -3,6 +3,10 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+.addButton{
+  margin: 0 auto !important;
+  width: 25% !important;
+}
 .centralize{
   justify-content: center !important;
   display: flex !important;
@@ -13,24 +17,30 @@ body {
 }
 .preview{
   width: 100% !important;
+  overflow: hidden;
 }
 .previewContainer{
-  text-align: right !important;
+  margin-bottom: 15px;
 }
 .rightFloated{
   text-align: right !important;
 }
+
 .workoutsContainer{
   margin:0 auto !important;
   border:none !important;
   box-shadow: 0px 0px 0px 0px !important;
-  max-width: 80%;
+  max-width: 80% !important;
 }
 
 .ui.items > .item > .image:not(.ui) {
   width: auto !important;
 }
 @media only screen and (max-width: 768px) {
+  .addButton{
+    margin: 0 auto !important;
+    width: 95% !important;
+  }
   .No-Break{
     display: inline;
     white-space:unset;
@@ -56,5 +66,16 @@ body {
   }
   .searchIcon{
     font-size: 1.5em !important;
+  }
+}
+
+@media only screen and (min-width: 769px){
+  .workoutsContainer{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-around !important;
+  }
+  .previewContainer{
+    width: 30%;
   }
 }
