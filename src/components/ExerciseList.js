@@ -1,6 +1,6 @@
 import React from 'react';
 import PreviewContainer from './PreviewContainer';
-import ButtonsContainer from './ButtonsContainer';
+
 class ExerciseList extends React.Component {
 
     render() {
