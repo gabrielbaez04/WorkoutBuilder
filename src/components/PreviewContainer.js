@@ -1,6 +1,5 @@
 import React from 'react';
 import ImageContainer from './ImageContainer';
-import ButtonsContainer from './ButtonsContainer';
 
 class PreviewContainer extends React.Component {
     render() {
