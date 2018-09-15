@@ -11,6 +11,9 @@ body {
   justify-content: center !important;
   display: flex !important;
 }
+.icon{
+  margin: 0 auto !important; 
+}
 .No-Break{
   display: inline-block;
   white-space:nowrap;
@@ -25,7 +28,9 @@ body {
 .rightFloated{
   text-align: right !important;
 }
-
+.workoutButtons{
+  width: 100%;
+}
 .workoutsContainer{
   margin:0 auto !important;
   border:none !important;
@@ -47,6 +52,7 @@ body {
   }
   .icon{
     font-size: 2.5em !important;
+    margin: 0 auto !important; 
   }
   .customSmallButton{
     font-size: 1em !important;
