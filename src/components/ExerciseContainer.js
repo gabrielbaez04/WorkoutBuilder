@@ -25,20 +25,19 @@ class ExerciseContainer extends React.Component {
                         </div>
                         <div className='item'>
                         <ExerciseDetails
-                                    name={this.props.exercise.name}
-                                    description={this.props.exercise.description}
-                                    extra={this.props.exercise.extra}
-                                    images = {this.props.exercise.images}
+                                    exercise={this.props.exercise}
                                     />
                         </div>
                     </div>
                 </div>
-                <button className="ui button blue fluid addButton">
-                    <i className="cancel red alternate icon big link circular inverted"></i>
-                </button>
-                <button className="ui button blue fluid addButton">
-                    <i className="save green alternate icon big link circular inverted"></i>
-                </button>
+                <div className="exerciseContainerButtons">
+                    <button className="ui button blue fluid exerciseContainerButton" onClick={this.props.handleBackClick}>
+                        <i className="cancel red alternate icon big link circular inverted"></i>
+                    </button>
+                    <button className="ui button blue fluid exerciseContainerButton">
+                        <i className="save green alternate icon big link circular inverted"></i>
+                    </button>
+                </div>
             </div>
         );
     }

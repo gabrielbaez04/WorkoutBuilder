@@ -14,6 +14,14 @@ body {
   justify-content: center !important;
   display: flex !important;
 }
+.exerciseContainerButtons{
+  display: flex;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+}
+.exerciseContainerButton{
+  width: 30% !important;
+}
 .icon{
   margin: 0 auto !important; 
 }
