@@ -2,23 +2,27 @@ import React from 'react';
 import PreviewContainer from './PreviewContainer';
 import {workoutsData} from '../workoutsTestingData';
 import Workout from './Workout';
+import ExerciseList from './ExerciseList';
 
 class WorkoutList extends React.Component {
     state = {
         selectedWorkout: null,
+        editWorkout:null,
         workouts : workoutsData()       
     }
     handleWorkoutClick = (workout) =>{
-        console.log(workout.exercises)
         this.setState({selectedWorkout: workout});
     }
     handleBackClick = () =>{
-        this.setState({selectedWorkout: null});
+        this.setState({selectedWorkout: null, editWorkout:null});
+    }
+    handleWorkoutEdit = (workout) =>{
+        this.setState({editWorkout: workout});
     }
     render() {
         return (
             <div>
-                {!this.state.selectedWorkout &&
+                {!this.state.selectedWorkout && !this.state.editWorkout &&
                     <div>
                         <h2 className="ui center aligned icon header">
                         <i className="circular hand rock icon"></i>
@@ -30,8 +34,9 @@ class WorkoutList extends React.Component {
                                     key = {workout.id}
                                     name={workout.name}
                                     isWorkout="true"
-                                    workoutData={workout}
+                                    data={workout}
                                     handleWorkoutClick={this.handleWorkoutClick}
+                                    handleEdit={this.handleWorkoutEdit}
                                 />)
                             })}
                         </div>
@@ -43,6 +48,12 @@ class WorkoutList extends React.Component {
                 {this.state.selectedWorkout 
                     && <Workout 
                             exercises={this.state.selectedWorkout.exercises}
+                            handleBackClick={this.handleBackClick}
+                        />
+                }
+                {this.state.editWorkout 
+                    && <ExerciseList
+                            exercises={this.state.editWorkout.exercises}
                             handleBackClick={this.handleBackClick}
                         />
                 }

@@ -1,10 +1,13 @@
 import React from 'react';
 import ExerciseDetails from './ExerciseDetails';
-import ButtonsContainer from './ButtonsContainer';
+
 class ExerciseContainer extends React.Component {
     render() {
         return (
             <div>
+                <button className="ui left floated icon button compact blue big backButton" onClick={this.props.handleBackClick}>
+                    <i className="icon undo customSmallButton"></i>
+                </button>
                 <h2 className="ui center aligned icon header">
                 <i className="circular plus icon"></i>
                 Add/Edit Exercise
@@ -22,16 +25,20 @@ class ExerciseContainer extends React.Component {
                         </div>
                         <div className='item'>
                         <ExerciseDetails
-                                    name='Biceps Curls With Dumbbell'
-                                    description="Hold two barbells, the arms are streched, the hands are on your side, the palms face inwards. Bend the arms and bring the weight with a fast movement up. At the same time, rotate your arms by 90 degrees at the very beginning of the movement. At the highest point, rotate a little the weights further outwards. Without a pause, bring them down, slowly. Don't allow your body to swing during the exercise, all work is done by the biceps, which are the only mucles that should move (pay attention to the elbows)."
-                                    extra='Fluid movements with no pauses at the top or the bottom'
+                                    name={this.props.exercise.name}
+                                    description={this.props.exercise.description}
+                                    extra={this.props.exercise.extra}
+                                    images = {this.props.exercise.images}
                                     />
                         </div>
                     </div>
                 </div>
-                <ButtonsContainer
-                save='1'
-                cancel='1'/>
+                <button className="ui button blue fluid addButton">
+                    <i className="cancel red alternate icon big link circular inverted"></i>
+                </button>
+                <button className="ui button blue fluid addButton">
+                    <i className="save green alternate icon big link circular inverted"></i>
+                </button>
             </div>
         );
     }
