@@ -38,10 +38,7 @@ class Workout extends React.Component {
                                 var activeSide = index==0 ? 'active' : '';
                                     return <div className={activeSide + " side"+index+" side"}  key={index}>
                                                 <ExerciseDetails
-                                                    name={exercise.name}
-                                                    description={exercise.description}
-                                                    extra={exercise.extra}
-                                                    images={exercise.images}
+                                                    exercise={exercise}
                                                     />                            
                                             </div>
                             })}

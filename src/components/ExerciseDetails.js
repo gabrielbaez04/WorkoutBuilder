@@ -10,26 +10,26 @@ class ExerciseDetails extends React.Component {
                     <div className="ui items">
                         <div className="item">
                             <div className="image">
-                                <ImageContainer images={this.props.images}/>
+                                <ImageContainer images={this.props.exercise.images}/>
                             </div>
                             <div className="content">
-                                <span className='header'>{this.props.name}</span>
+                                <span className='header'>{this.props.exercise.name}</span>
                                 <div className="meta">
                                     <span>Description</span>
                                 </div>
                                 <div className="description left aligned">
-                                    <p>{this.props.description}</p>
+                                    <p>{this.props.exercise.description}</p>
                                 </div>
                                 <div className="extra">
-                                    {this.props.extra}
+                                    {this.props.exercise.extra}
                                 </div>
                             </div>
                         </div>  
                         <ExerciseData
-                            data={{sets: 5,
-                                    repetitions:15,
-                                    prevRepetitions:12,
-                                    prevWeight:25}}
+                            data={{sets: this.props.exercise.sets,
+                                    repetitions:this.props.exercise.reps,
+                                    prevRepetitions:this.props.exercise.prevReps,
+                                    prevWeight:this.props.exercise.prevWeight}}
                         />                      
                     </div>
                 </div>

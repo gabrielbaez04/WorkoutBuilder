@@ -36,6 +36,9 @@ class ExerciseList extends React.Component {
                                />
                             ))}
                         </div>
+                        <button className="ui button blue fluid addButton">
+                            <i className="plus alternate icon big link"></i>
+                        </button>
                     </div>
                     }
                     
@@ -45,9 +48,7 @@ class ExerciseList extends React.Component {
                             handleBackClick={this.handleBackClick}
                         />
                     }
-                <button className="ui button blue fluid addButton">
-                    <i className="plus alternate icon big link"></i>
-                </button>
+                
             </div>
         );
     }
