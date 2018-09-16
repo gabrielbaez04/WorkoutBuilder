@@ -1,31 +1,50 @@
 import React from 'react';
 import PreviewContainer from './PreviewContainer';
+import ExerciseContainer from './ExerciseContainer';
 
 class ExerciseList extends React.Component {
-
+    state = {
+        editExercise : null
+    }
+    handleExerciseEdit = (exercise) =>{
+        this.setState({editExercise: exercise})
+    }
+    handleBackClick = () =>{
+        this.setState({editExercise: null});
+    }
     render() {
         return (
             <div>
-                <h2 className="ui center aligned icon header">
-                <i className="circular child icon"></i>
-                Exercise List
-                </h2>
-                <div className='ui segment compact workoutsContainer'>
-                
-                        <PreviewContainer
-                            name='Biceps'
-                            sets='5'
-                            images={['https://wger.de/media/exercise-images/81/Biceps-curl-2.png.200x200_q85.png',
-                                    'https://wger.de/media/exercise-images/129/Standing-biceps-curl-2.png',
-                                    'https://wger.de/media/exercise-images/3/Standing-biceps-curl-1.png',
-                                    'https://wger.de/media/exercise-images/3/Standing-biceps-curl-1.png']}/>
-                    <PreviewContainer
-                            name='Biceps'
-                            sets='8'
-                            images={['https://wger.de/media/exercise-images/81/Biceps-curl-2.png.200x200_q85.png',
-                                    'https://wger.de/media/exercise-images/129/Standing-biceps-curl-2.png']
-                                    }/>
-                </div>
+                 {!this.state.editExercise &&
+                    <div>
+                        <button className="ui left floated icon button compact blue big backButton" onClick={this.props.handleBackClick}>
+                            <i className="icon undo customSmallButton"></i>
+                        </button>
+                        <h2 className="ui center aligned icon header">
+                        <i className="circular child icon"></i>
+                        Exercise List
+                        </h2>
+                        <div className='ui segment compact workoutsContainer'>
+                            { this.props.exercises.map((exercise,index)=>(
+                                <PreviewContainer
+                                key={index}
+                                name={exercise.name}
+                                sets={exercise.sets}
+                                images={exercise.images}
+                                data = {exercise}
+                                handleEdit={this.handleExerciseEdit}
+                               />
+                            ))}
+                        </div>
+                    </div>
+                    }
+                    
+                    {this.state.editExercise && 
+                        <ExerciseContainer
+                            exercise = {this.state.editExercise}
+                            handleBackClick={this.handleBackClick}
+                        />
+                    }
                 <button className="ui button blue fluid addButton">
                     <i className="plus alternate icon big link"></i>
                 </button>

@@ -20,12 +20,13 @@ class Workout extends React.Component {
             () => {prevExercise(this.state.currentSide)});
       
     }
-    onBackClick = () =>{
-        this.props.handleBackClick();
-    }
+
     render() {
         return (
             <div>
+                <button className="ui left floated icon button compact blue big backButton" onClick={this.props.handleBackClick}>
+                    <i className="icon undo customSmallButton"></i>
+                </button>
                 <h2 className="ui center aligned icon header">
                 <i className="circular child icon"></i>
                 Runing Workout
@@ -54,20 +55,9 @@ class Workout extends React.Component {
                             </button>
 
                     }
-                    {this.state.currentSide==this.state.exercises.length-1 &&
-                            <button className="ui right floated icon button compact blue big" onClick={this.onBackClick}>
-                                <i className="icon undo customSmallButton"></i>
-                            </button>
-
-                    }
                     {this.state.currentSide!=0 &&
                             <button className="ui compact icon button blue big" onClick={this.handleStepBackwardClick}>
                                 <i className="icon step backward customSmallButton"></i>  
-                            </button>  
-                    }
-                    {this.state.currentSide==0 &&
-                            <button className="ui compact icon button blue big" onClick={this.onBackClick}>
-                                <i className="icon undo customSmallButton"></i>  
                             </button>  
                     }
                     </div>
