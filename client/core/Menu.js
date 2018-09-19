@@ -18,15 +18,12 @@ const Menu = withRouter(({history}) => (
   <AppBar position="static">
     <Toolbar>
       <Typography type="title" color="inherit">
-        MERN Skeleton
+        Workout Builder
       </Typography>
       <Link to="/">
         <IconButton aria-label="Home" style={isActive(history, "/")}>
           <HomeIcon/>
         </IconButton>
-      </Link>
-      <Link to="/users">
-        <Button style={isActive(history, "/users")}>Users</Button>
       </Link>
       {
         !auth.isAuthenticated() && (<span>
@@ -44,6 +41,10 @@ const Menu = withRouter(({history}) => (
         auth.isAuthenticated() && (<span>
           <Link to={"/user/" + auth.isAuthenticated().user._id}>
             <Button style={isActive(history, "/user/" + auth.isAuthenticated().user._id)}>My Profile</Button>
+          </Link>
+          <Link to="/workout">
+            <Button style={isActive(history, "/workout")}>Workout
+            </Button>
           </Link>
           <Button color="inherit" onClick={() => {
               auth.signout(() => history.push('/'))
