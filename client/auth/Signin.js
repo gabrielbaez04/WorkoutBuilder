@@ -58,7 +58,9 @@ class Signin extends Component {
           this.setState({redirectToReferrer: true})
         })
       }
+      this.props.location.updateMenu();
     })
+    
   }
 
   handleChange = name => event => {
