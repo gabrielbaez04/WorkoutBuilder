@@ -1,5 +1,5 @@
 {
-   "name": "workout_builder",
+  "name": "workout_builder",
   "version": "1.0.0",
   "description": "Personal project using MERN stack.",
   "main": "./dist/server.generated.js",
@@ -43,6 +43,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "@material-ui/core": "^3.1.0",
+    "@material-ui/icons": "^3.0.1",
     "body-parser": "^1.18.2",
     "compression": "^1.7.2",
     "cookie-parser": "^1.4.3",
@@ -52,8 +54,6 @@
     "helmet": "^3.12.0",
     "jsonwebtoken": "^8.2.1",
     "lodash": "^4.17.10",
-    "material-ui": "^1.0.0-beta.43",
-    "material-ui-icons": "^1.0.0-beta.36",
     "mongoose": "^5.0.16",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",

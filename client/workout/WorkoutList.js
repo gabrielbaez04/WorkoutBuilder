@@ -3,9 +3,9 @@ import PreviewContainer from './PreviewContainer';
 import Workout from './Workout';
 import ExerciseList from './ExerciseList';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Icon from 'material-ui/Icon';
-import Typography from 'material-ui/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Icon from '@material-ui/core/Icon';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     root: {
