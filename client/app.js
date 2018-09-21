@@ -9,8 +9,8 @@ import { hot } from 'react-hot-loader'
 const theme = createMuiTheme({
   palette: {
     primary: {
-    light: '#757de8',
-    main: '#3f51b5',
+    light: '#fff',
+    main: '#333',
     dark: '#002984',
     contrastText: '#fff',
   },
