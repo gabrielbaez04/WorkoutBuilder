@@ -4,67 +4,51 @@ import Button from '@material-ui/core/Button'
 import {Link, withRouter} from 'react-router-dom'
 import auth from './../auth/auth-helper'
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {withStyles} from '@material-ui/core/styles'
 
-const styles = theme => ({
-    menu: {
-        position: 'absolute',
-        right: '5%'
-    }
-});
-
+const isActive = (history, path) => {
+    if (history.location.pathname == path)
+      return {color: '#ff4081'}
+    else
+      return {color: '#ffffff'}
+  }
+  
 class AuthMenu extends React.Component{
     state = {
-        anchorEl: null,
+        class: 'topnav',
     };
-    handleClick = event => {
-        this.setState({ anchorEl: event.currentTarget });
+    handleMenuClick = () => {
+        this.setState({ class: this.state.class == 'topnav' ? 'topnav responsive' : 'topnav'});
     };
 
-    handleClose = () => {
-        this.setState({ anchorEl: null });
-    };
-    
     update = (props) =>{
         auth.signout(() => this.props.history.push('/'));
         this.props.updateMenu();
+        
     }
     
 
     render(){
-        const { anchorEl } = this.state;
-        const open = Boolean(anchorEl);
-        const { classes } = this.props;
+        const css = require('./Menu.css');
+        const { history, classes } = this.props;
         return(
-            <div className={classes.menu}>
-                <IconButton
-                    aria-label="More"
-                    aria-owns={open ? 'long-menu' : null}
-                    aria-haspopup="true"
-                    onClick={this.handleClick}>
-                    <MoreVertIcon />
-                </IconButton>
-                <Menu id="long-menu" anchorEl={anchorEl} open={open} onClose={this.handleClose}>
-                    <Link to={"/user/" + this.props.authenticated.user._id}>
-                        <MenuItem onClick={this.handleClose}>
-                            My Profile
-                        </MenuItem>
-                    </Link>
-                    <Link to="/workout">
-                        <MenuItem onClick={this.handleClose}>
-                            Workouts
-                        </MenuItem>
-                    </Link>
-                    <MenuItem onClick={this.update}>
-                        Sign out
-                    </MenuItem>
-                </Menu>
-        </div>
+            <div className={this.state.class} id="myTopnav">
+                <Link to={"/user/" + this.props.authenticated.user._id} 
+                    style={isActive(history, "/user/" + this.props.authenticated.user._id)} 
+                    className="active"
+                    onClick={this.handleMenuClick}> My Profile </Link>
+
+                <Link to="/workout" style={isActive(history, "/workout")}
+                    onClick={this.handleMenuClick}> Workouts </Link>
+
+                <a onClick={this.update}> Sign out </a>
+                
+                <a  className="icon" onClick={this.handleMenuClick}>
+                    <i className="fa fa-bars"></i>
+                </a>
+            </div>
       )
     }
 
 }
-export default withStyles(styles)(withRouter(AuthMenu));
+export default withRouter(AuthMenu);
