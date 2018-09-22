@@ -60,7 +60,10 @@ class Signin extends Component {
           this.setState({redirectToReferrer: true})
         })
       }
-      this.props.location.updateMenu();
+      if(typeof this.props.location.updateMenu === 'function') 
+       {
+          this.props.location.updateMenu();
+       }
     })
     
   }
