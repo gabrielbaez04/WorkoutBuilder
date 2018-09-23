@@ -68,7 +68,6 @@ class WorkoutListItem extends React.Component {
                 images.push(image); 
             })          
         })
-        console.log(images)
         return images.length > 3 ? images.slice(0,3) : images;
     }
     onGoClick = () =>{
