@@ -14,12 +14,20 @@ import {Redirect} from 'react-router-dom'
 
 const styles = theme => ({
   card: {
-    maxWidth: 600,
+    maxWidth: '95%',
     margin: 'auto',
     textAlign: 'center',
-    marginTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 2
+    paddingTop: 5,
+    paddingLeft:5,
+    paddingRight:5,
+    marginTop: theme.spacing.unit * 5
   },
+  [theme.breakpoints.up('sm')]: {
+    card: {
+      maxWidth: '60%',
+    }
+  },
+  
   title: {
     margin: theme.spacing.unit * 2,
     color: theme.palette.protectedTitle

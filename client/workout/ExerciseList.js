@@ -1,5 +1,4 @@
 import React from 'react';
-import PreviewContainer from './PreviewContainer';
 import ExerciseContainer from './ExerciseContainer';
 
 class ExerciseList extends React.Component {
@@ -13,7 +12,7 @@ class ExerciseList extends React.Component {
         this.setState({editExercise: null});
     }
     render() {
-        return (
+       /* return (
             <div>
                  {!this.state.editExercise &&
                     <div>
@@ -50,7 +49,7 @@ class ExerciseList extends React.Component {
                     }
                 
             </div>
-        );
+        );*/
     }
 }
 
