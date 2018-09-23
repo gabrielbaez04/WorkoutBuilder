@@ -7,7 +7,7 @@ In order to run the project, do the following steps:
 - If not installed, install Node.js.
 - In the console, navigate to the project folder.
 - Execute "npm install" to install all project dependencies.
-- Execute "npm start" to run the app.
+- Execute "npm run development" to run the app.
 
 ### Technologies:
 - Material UI.
