@@ -21,15 +21,21 @@ import {Redirect, Link} from 'react-router-dom'
 
 const styles = theme => ({
   root: theme.mixins.gutters({
-    maxWidth: 600,
+    maxWidth: '95%',
     margin: 'auto',
-    padding: theme.spacing.unit * 3,
+    paddingTop: 5,
+    paddingLeft:5,
+    paddingRight:5,
     marginTop: theme.spacing.unit * 5
+    ,
+  [theme.breakpoints.up('sm')]: {
+      maxWidth: '60%',
+  }
   }),
   title: {
     margin: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 2}px`,
     color: theme.palette.protectedTitle
-  }
+  },
 })
 
 class Profile extends Component {
