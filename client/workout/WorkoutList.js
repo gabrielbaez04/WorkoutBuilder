@@ -33,13 +33,13 @@ class WorkoutList extends React.Component {
         editWorkout:null,
         workouts : data.workoutsData()   
     }
-    handleWorkoutClick = (workout) =>{
+    handleGoClick = (workout) =>{
         this.setState({selectedWorkout: workout});
     }
     handleBackClick = () =>{
         this.setState({selectedWorkout: null, editWorkout:null});
     }
-    handleGoClick = (workout) =>{
+    handleEditClick = (workout) =>{
         this.setState({editWorkout: workout});
     }
     render() {
@@ -60,6 +60,12 @@ class WorkoutList extends React.Component {
                             </Grid>
                         </div>
                     </main>
+                }
+                {this.state.selectedWorkout 
+                    && <Workout 
+                            workout={this.state.selectedWorkout}
+                            handleBackClick={this.handleBackClick}
+                        />
                 }
             </div>
         );
@@ -102,4 +108,4 @@ export default withStyles(styles)(WorkoutList)
                             handleBackClick={this.handleBackClick}
                         />
                 }
-*/
+*/  
