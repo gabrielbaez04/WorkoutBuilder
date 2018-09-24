@@ -42,6 +42,9 @@ class WorkoutList extends React.Component {
     handleEditClick = (workout) =>{
         this.setState({editWorkout: workout});
     }
+    handleReturnClick = () =>{
+        this.setState({selectedWorkout: null});
+    }
     render() {
         const {classes} = this.props
         return (
@@ -65,6 +68,7 @@ class WorkoutList extends React.Component {
                     && <Workout 
                             workout={this.state.selectedWorkout}
                             handleBackClick={this.handleBackClick}
+                            handleReturn = {this.handleReturnClick}
                         />
                 }
             </div>

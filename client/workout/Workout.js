@@ -8,17 +8,24 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
     root: {
-      maxWidth: 400,
-      flexGrow: 1,
-    },
+        maxWidth: '95%',
+        margin: 'auto',
+        textAlign: 'center',
+        paddingTop: 5,
+        paddingLeft:5,
+        paddingRight:5,
+        marginTop: theme.spacing.unit * 5
+      },
     header: {
       display: 'flex',
       alignItems: 'center',
@@ -37,7 +44,7 @@ const styles = theme => ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
         cardMedia: {
         paddingTop: '56.25%', // 16:9
@@ -57,14 +64,36 @@ const styles = theme => ({
         padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
     },
     imageContainer:{
+        maxWidth: '100%',
         display:'flex',
         justifyContent:'center'
-    }
+    },
+    leftAligned : {
+        textAlign : 'left'
+    },
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 130,
+    },
+    [theme.breakpoints.up('sm')]: {
+        root: {
+          maxWidth: '60%',
+        }
+      },
+      [theme.breakpoints.up('md')]: {
+        imageContainer:{
+            maxWidth: '50%',
+            float:'left'
+        }
+      },
   });
 
 class Workout extends React.Component {
     state = {
         activeStep: 0,
+        weight:0,
+        repetitions:0
       };
     getWorkoutImages(){
         var images=[];
@@ -89,17 +118,29 @@ class Workout extends React.Component {
         }));
       };
 
+      handleReturn = () =>{
+          this.props.handleReturn();
+      }
+
+      handleNumberChange = name => event => {
+        this.setState({
+          [name]: event.target.value > 3 ? event.target.value.slice(0,3): event.target.value,
+        });
+      };
+      
+
 render() {
     const { classes, theme } = this.props;
     const { activeStep } = this.state;
 
     const maxSteps = this.props.workout.exercises.length;
-
+    const activeStepInfo = this.props.workout.exercises[activeStep];
     return (
       <div className={classes.root}>
+        
         <Card className={classes.card}>
             <CardHeader
-            title={this.props.workout.exercises[activeStep].name}
+            title={activeStepInfo.name}
             className={classes.cardHeader}
             />
             <div className={classes.imageContainer}>
@@ -112,22 +153,109 @@ render() {
                 />)
             })}
             </div>
+            <CardContent>
+                <Typography component="p" className={classes.leftAligned}>
+                   {activeStepInfo.description}
+                </Typography>
+                <br></br>
+                <Typography className={classes.title} color="textSecondary" className={classes.leftAligned}>
+                    {activeStepInfo.extra}
+                </Typography>
+                
+                <pre className={classes.leftAligned}>
+                    <b>Sets:</b> {activeStepInfo.sets}    <b>Repetitions</b>:{activeStepInfo.reps}
+                </pre>
+            </CardContent>
+            <CardContent>
+                <Paper>
+                    <form className={classes.container} noValidate autoComplete="off">
+                        <TextField
+                            id="outlined-read-only-input"
+                            label="Last Reps"
+                            defaultValue={activeStepInfo.prevReps}
+                            className={classes.textField}
+                            margin="normal"
+                            variant="outlined"
+                            InputProps={{
+                                readOnly: true,
+                              }}
+                        />
+                        <TextField
+                            id="outlined-number"
+                            label="Repetitions"
+                            value={this.state.repetitions}
+                            onChange={this.handleNumberChange('repetitions')}
+                            type="number"
+                            className={classes.textField}
+                            inputProps={{
+                                min: "0", 
+                                max: "999"
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="outlined-read-only-input"
+                            label="Last Weigth"
+                            defaultValue={activeStepInfo.prevWeight}
+                            className={classes.textField}
+                            margin="normal"
+                            InputProps={{
+                                readOnly: true,
+                              }}
+                            variant="outlined"
+                        />
+                        <TextField
+                            id="outlined-number"
+                            label="Weight"
+                            value={this.state.weight}
+                            onChange={this.handleNumberChange('weight')}
+                            type="number"
+                            className={classes.textField}
+                            inputProps={{
+                                min: "0", 
+                                max: "999"
+                            }}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            margin="normal"
+                            variant="outlined"
+                        />
+                    </form>
+                </Paper>
+            </CardContent>
         </Card>
         <MobileStepper
           steps={maxSteps}
           position="static"
           activeStep={activeStep}
           className={classes.mobileStepper}
-          nextButton={
-            <Button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
+          nextButton={ activeStep != maxSteps - 1 ?
+            <Button size="small" onClick={this.handleNext}>
               Next
               {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
             </Button>
+            :
+            <Button size="small" onClick={this.handleReturn}>
+              <KeyboardReturn />
+              Return
+            </Button>
           }
+          
           backButton={
-            <Button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
+            activeStep != 0 ?
+            <Button size="small" onClick={this.handleBack}>
               {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
               Back
+            </Button>
+            :
+            <Button size="small" onClick={this.handleReturn}>
+              <KeyboardReturn />
+              Return
             </Button>
           }
         />
