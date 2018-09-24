@@ -85,7 +85,7 @@ class WorkoutListItem extends React.Component {
                     title={this.props.workout.name}
                     className={classes.cardHeader}
                     />
-                    <div className={classes.imageContainer}>
+                    <div className={classes.imageContainer} onClick={this.onGoClick}>
                     {this.getWorkoutImages().map((image,index)=>{
                         return(<CardMedia
                             key={index}
