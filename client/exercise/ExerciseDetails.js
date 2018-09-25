@@ -1,5 +1,4 @@
 import React from 'react';
-import ImageContainer from './ImageContainer';
 import ExerciseData from './ExerciseData';
 
 class ExerciseDetails extends React.Component {
@@ -10,7 +9,6 @@ class ExerciseDetails extends React.Component {
                     <div className="ui items">
                         <div className="item">
                             <div className="image">
-                                <ImageContainer images={this.props.exercise.images}/>
                             </div>
                             <div className="content">
                                 <span className='header'>{this.props.exercise.name}</span>

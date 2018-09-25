@@ -1,4 +1,4 @@
-import ExerciseDetails from './ExerciseDetails';
+import ExerciseDetails from '../exercise/ExerciseDetails';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';

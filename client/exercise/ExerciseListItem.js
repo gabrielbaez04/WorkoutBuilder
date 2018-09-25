@@ -13,7 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import CardHeader from '@material-ui/core/CardHeader';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
-import DeleteWorkout from './DeleteWorkout';
+import DeleteExercise from './DeleteExercise';
+
 const styles = theme => ({
       card: {
         height: '100%',
@@ -36,7 +37,7 @@ const styles = theme => ({
       },
       cardActions:{
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
       },
       button:{
@@ -58,21 +59,18 @@ const styles = theme => ({
       }
 
   });
-class WorkoutListItem extends React.Component {
-    getWorkoutImages(){
-        var images=[];
-        this.props.workout.exercises.forEach((exercise)=>{
-            exercise.images.forEach((image)=>{
-                images.push(image); 
-            })          
+class ExerciseListItem extends React.Component {
+    
+    getexerciseImages = () =>{
+        var imagesArr=[];
+        this.props.exercise.images.forEach((image)=>{
+            imagesArr.push(image); 
         })
-        return images.length > 4 ? images.slice(0,4) : images;
+        return imagesArr.length > 3 ? imagesArr.slice(0,3) : imagesArr;
     }
-    onGoClick = () =>{
-        this.props.handleGoClick(this.props.workout);
-    }
+    
     onEditClick = () =>{
-        this.props.handleEditClick(this.props.workout);
+        this.props.handleEditClick(this.props.exercise);
     }
     render() {
         const {classes} = this.props;
@@ -80,23 +78,20 @@ class WorkoutListItem extends React.Component {
             <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
                 <Card className={classes.card}>
                     <CardHeader
-                    title={this.props.workout.name}
+                    title={this.props.exercise.name}
                     className={classes.cardHeader}
                     />
                     <div className={classes.imageContainer} onClick={this.onGoClick}>
-                    {this.getWorkoutImages().map((image,index)=>{
+                    {this.getexerciseImages().map((image,index)=>{
                         return(<CardMedia
                             key={index}
                             className={classes.cardMedia}
                             image={image}
-                            title="workout title"
+                            title="exercise title"
                         />)
                     })}
                     </div>
                     <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="headline" component="h2">
-                        {this.props.workout.exercises ? this.props.workout.exercises.length : 0} Exercises
-                        </Typography>
                     </CardContent>
                     <CardActions className={classes.cardActions}>
                         <Button variant="contained" className={classes.button} 
@@ -104,12 +99,7 @@ class WorkoutListItem extends React.Component {
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
-                        <DeleteWorkout workoutId={this.props.workout.id}/>
-                        <Button variant="contained" className={classes.button} 
-                                style={{backgroundColor:'#398500', color:'white'}}
-                                onClick={this.onGoClick}>
-                            <NavigateNextOutlinedIcon className={classes.icon}/>
-                        </Button>
+                        <DeleteExercise/>
                     </CardActions>
                 </Card>
             </Grid>
@@ -117,4 +107,4 @@ class WorkoutListItem extends React.Component {
     }
 }
 
-export default withStyles(styles)(WorkoutListItem);
+export default withStyles(styles)(ExerciseListItem);
