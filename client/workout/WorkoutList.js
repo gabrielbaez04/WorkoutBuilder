@@ -1,12 +1,14 @@
 import React from 'react';
 import Workout from './Workout';
-import ExerciseList from './ExerciseList';
+import ExerciseList from '../exercise/ExerciseList';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import data from './data'
 import WorkoutListItem from './WorkoutListItem';
 import classNames from 'classnames';
+import Button from '@material-ui/core/Button';
+import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 
 const styles = theme => ({
     cardGrid: {
@@ -23,6 +25,11 @@ const styles = theme => ({
       },
       justify:{
         justifyContent: 'center'
+      },
+      buttonContainer:{
+          display:'flex',
+          justifyContent: 'center',
+          marginBottom: '10px'
       }
 
   });
@@ -42,15 +49,18 @@ class WorkoutList extends React.Component {
     handleEditClick = (workout) =>{
         this.setState({editWorkout: workout});
     }
+    handleAddClick = (workout) =>{
+        this.setState({editWorkout: []});
+    }
     handleReturnClick = () =>{
-        this.setState({selectedWorkout: null});
+        this.setState({selectedWorkout: null, editWorkout: null});
     }
     render() {
         const {classes} = this.props
         return (
             <div>
                 {!this.state.selectedWorkout && !this.state.editWorkout && 
-                    <main>
+                    <div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
                                 {this.state.workouts.map(workout => (
@@ -62,11 +72,26 @@ class WorkoutList extends React.Component {
                                 ))}
                             </Grid>
                         </div>
-                    </main>
+                        <div className={classes.buttonContainer}>
+                            <Button variant="contained" 
+                                    style={{backgroundColor:'#333', color:'white'}}
+                                    onClick={this.handleAddClick}>
+                                Add Workout
+                            </Button>
+                        </div>
+                    </div>
+                    
                 }
                 {this.state.selectedWorkout 
                     && <Workout 
                             workout={this.state.selectedWorkout}
+                            handleBackClick={this.handleBackClick}
+                            handleReturn = {this.handleReturnClick}
+                        />
+                }
+                {this.state.editWorkout 
+                    && <ExerciseList 
+                            workout={this.state.editWorkout}
                             handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
                         />
@@ -95,9 +120,7 @@ export default withStyles(styles)(WorkoutList)
                                 />)
                             })}
                         </div>
-                        <button className="ui button blue fluid addButton">
-                            <i className="plus alternate icon big link"></i>
-                        </button>
+                        
                     </div>
                 }
                 {this.state.selectedWorkout 
