@@ -106,7 +106,7 @@ class Signup extends Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Link to="/signin">
+          <Link to={{pathname: "/signin", updateMenu: this.props.location.updateMenu}}>
             <Button color="primary" autoFocus="autoFocus" variant="raised">
               Sign In
             </Button>

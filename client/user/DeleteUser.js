@@ -21,6 +21,7 @@ class DeleteUser extends Component {
     this.setState({open: true})
   }
   deleteAccount = () => {
+    this.props.updateMenu();
     const jwt = auth.isAuthenticated()
     remove({
       userId: this.props.userId
@@ -29,6 +30,7 @@ class DeleteUser extends Component {
         console.log(data.error)
       } else {
         auth.signout(() => console.log('deleted'))
+        this.props.updateMenu();
         this.setState({redirect: true})
       }
     })
@@ -39,7 +41,7 @@ class DeleteUser extends Component {
   render() {
     const redirect = this.state.redirect
     if (redirect) {
-      return <Redirect to='/'/>
+      return <Redirect to={{pathname: "/", updateMenu: this.props.updateMenu}}/>
     }
     return (<span>
       <IconButton aria-label="Delete" onClick={this.clickButton} color="secondary">

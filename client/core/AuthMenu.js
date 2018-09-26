@@ -34,7 +34,7 @@ class AuthMenu extends React.Component{
         const { history, classes ,theme } = this.props;
         return(
             <div className={this.state.class} id="myTopnav" style={{backgroundColor:theme.palette.primary.main, }}>
-                <Link to={"/user/" + this.props.authenticated.user._id} 
+                <Link to={{pathname: "/user/" + this.props.authenticated.user._id, updateMenu: this.props.updateMenu}}
                     style={isActive(history, "/user/" + this.props.authenticated.user._id)} 
                     className="active"
                     onClick={this.handleMenuClick}> My Profile </Link>
