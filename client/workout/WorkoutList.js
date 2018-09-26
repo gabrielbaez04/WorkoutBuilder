@@ -53,7 +53,7 @@ class WorkoutList extends React.Component {
     handleEditClick = (workout) =>{
         this.setState({editWorkout: workout});
     }
-    handleAddClick = (workout) =>{
+    handleAddClick = () =>{
         this.setState({editWorkout: []});
     }
     handleReturnClick = () =>{

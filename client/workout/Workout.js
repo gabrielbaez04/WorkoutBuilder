@@ -1,4 +1,3 @@
-import ExerciseDetails from '../exercise/ExerciseDetails';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,7 +8,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 
-import WorkoutInfo from './WorkoutInfo'
+import ExerciseInfo from '../exercise/ExerciseInfo'
 import WorkoutForm from './WorkoutForm'
 
 const styles = theme => ({
@@ -35,6 +34,7 @@ const styles = theme => ({
 class Workout extends React.Component {
     state = {
         activeStep: 0,
+        workout: null
       };         
 
     handleNext = () => {
@@ -53,18 +53,21 @@ class Workout extends React.Component {
         this.props.handleReturn();
     }
 
+    componentWillMount(){
+        this.setState({workout: this.props.workout})
+    }
+
     render() {
         const { classes, theme } = this.props;
         const { activeStep } = this.state;
 
-        const maxSteps = this.props.workout.exercises.length;
-        const activeStepInfo = this.props.workout.exercises[activeStep];
+        const maxSteps = this.state.workout.exercises.length;
+        const activeStepInfo = this.state.workout.exercises[activeStep];
         return (
         <div className={classes.root}>
             
-            <WorkoutInfo activeStepInfo={activeStepInfo}/>
+            <ExerciseInfo activeStepInfo={activeStepInfo} isWorkout={1}/>
             <WorkoutForm activeStepInfo={activeStepInfo}/>
-            
             <MobileStepper
             steps={maxSteps}
             position="static"
@@ -77,11 +80,10 @@ class Workout extends React.Component {
                 </Button>
                 :
                 <Button size="small" onClick={this.handleReturn}>
-                <KeyboardReturn />
-                Return
+                    <KeyboardReturn />
+                    Return
                 </Button>
             }
-            
             backButton={
                 activeStep != 0 ?
                 <Button size="small" onClick={this.handleBack}>
@@ -90,8 +92,8 @@ class Workout extends React.Component {
                 </Button>
                 :
                 <Button size="small" onClick={this.handleReturn}>
-                <KeyboardReturn />
-                Return
+                    <KeyboardReturn />
+                    Return
                 </Button>
             }
             />

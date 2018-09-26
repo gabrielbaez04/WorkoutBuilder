@@ -75,7 +75,7 @@ const styles = theme => ({
     },
   });
 
-const getWorkoutImages = (images) =>{
+const getExerciseImages = (images) =>{
     var imagesArr=[];
     images.forEach((image)=>{
         imagesArr.push(image); 
@@ -83,7 +83,7 @@ const getWorkoutImages = (images) =>{
     return imagesArr.length > 3 ? imagesArr.slice(0,3) : imagesArr;
 }
 
-const WorkoutInfo = (props) =>{
+const ExerciseInfo = (props) =>{
     const { classes } = props;
     return(
         <Card className={classes.card}>
@@ -92,12 +92,12 @@ const WorkoutInfo = (props) =>{
             className={classes.cardHeader}
             />
             <div className={classes.imageContainer}>
-            {getWorkoutImages(props.activeStepInfo.images).map((image,index)=>{
+            {props.activeStepInfo.images && getExerciseImages(props.activeStepInfo.images).map((image,index)=>{
                 return(<CardMedia
                     key={index}
                     className={classes.cardMedia}
                     image={image}
-                    title="workout title"
+                    title={"exercise "+index}
                 />)
             })}
             </div>
@@ -109,14 +109,15 @@ const WorkoutInfo = (props) =>{
                 <Typography className={classes.title} color="textSecondary" className={classes.leftAligned}>
                     {props.activeStepInfo.extra}
                 </Typography>
-                
+                {props.isWorkout && 
                 <pre className={classes.leftAligned}>
                     <b>Sets:</b> {props.activeStepInfo.sets}    <b>Repetitions</b>:{props.activeStepInfo.reps}
                 </pre>
+                }
             </CardContent>
         
         </Card>
     )
 }
 
-export default withStyles(styles)(WorkoutInfo)
+export default withStyles(styles)(ExerciseInfo)
