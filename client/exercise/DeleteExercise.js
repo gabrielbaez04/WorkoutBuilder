@@ -13,11 +13,15 @@ import auth from './../auth/auth-helper'
 import {Redirect, Link} from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
+const styles= theme => ({
   button:{
-    borderRadius:'50%'
+    width: '100%',
+    backgroundColor:theme.palette.primary.main, 
+    color:'white',
+    padding: 0,
+    borderRadius: '4px'
 },
-}
+});
 
 class DeleteExercise extends Component {
   state = {
@@ -39,29 +43,30 @@ class DeleteExercise extends Component {
     if (redirect) {
       return <Redirect to='/workout'/>
     }
-    return (<span>
-      <Button variant="contained" className={classes.button} 
-                                style={{backgroundColor:'#de0025', color:'white'}}
-                                onClick={this.clickButton}>
-                            <DeleteOutlinedIcon className={classes.icon}/>
-                        </Button>
-      <Dialog open={this.state.open} onClose={this.handleRequestClose}>
-        <DialogTitle>{"Delete Exercise"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Confirm to delete this Exercise.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleRequestClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={this.deleteAccount} color="secondary" autoFocus="autoFocus">
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </span>)
+    return (
+      <div className={classes.button}>
+        <Button variant="contained" className={classes.button} 
+                onClick={this.clickButton}>
+            <DeleteOutlinedIcon className={classes.icon}/>
+        </Button>
+        <Dialog open={this.state.open} onClose={this.handleRequestClose}>
+          <DialogTitle>{"Delete Exercise"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Confirm to delete this Exercise.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleRequestClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.deleteAccount} color="secondary" autoFocus="autoFocus">
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    )
   }
 }
 
