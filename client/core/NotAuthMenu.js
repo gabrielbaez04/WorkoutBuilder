@@ -5,7 +5,7 @@ import {Link, withRouter} from 'react-router-dom'
 
 const NotAuthMenu = withRouter((props) =>(
         <span>
-            <Link to="/signup">
+            <Link to={{pathname: "/signup", updateMenu: props.updateMenu}}>
                 <Button style={props.style(props.history, "/signup")}>Sign up
                 </Button>
             </Link>

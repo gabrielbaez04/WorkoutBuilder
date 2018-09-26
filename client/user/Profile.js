@@ -69,7 +69,7 @@ class Profile extends Component {
     const {classes} = this.props
     const redirectToSignin = this.state.redirectToSignin
     if (redirectToSignin) {
-      return <Redirect to='/signin'/>
+      return <Redirect to={{pathname: "/signin", updateMenu: this.props.location.updateMenu}}/>
     }
     return (
       <Paper className={classes.root} elevation={4}>
@@ -91,7 +91,7 @@ class Profile extends Component {
                     <Edit/>
                   </IconButton>
                 </Link>
-                <DeleteUser userId={this.state.user._id}/>
+                <DeleteUser userId={this.state.user._id} updateMenu={this.props.location.updateMenu}/>
               </ListItemSecondaryAction>)
             }
           </ListItem>

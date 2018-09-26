@@ -29,6 +29,7 @@ class DeleteUser extends Component {
         console.log(data.error)
       } else {
         auth.signout(() => console.log('deleted'))
+        this.props.updateMenu();
         this.setState({redirect: true})
       }
     })
@@ -39,7 +40,7 @@ class DeleteUser extends Component {
   render() {
     const redirect = this.state.redirect
     if (redirect) {
-      return <Redirect to='/'/>
+      return <Redirect to="/"/>
     }
     return (<span>
       <IconButton aria-label="Delete" onClick={this.clickButton} color="secondary">
