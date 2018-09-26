@@ -5,8 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import ExerciseListItem from './ExerciseListItem';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import Exercise from './Exercise';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     cardGrid: {
@@ -27,9 +28,12 @@ const styles = theme => ({
       buttonContainer:{
           display:'flex',
           justifyContent: 'center',
-          marginBottom: '10px'
-      }
-
+          marginBottom: '10px',
+      },
+      button:{
+        backgroundColor:theme.palette.primary.main, 
+        color:'white',
+    },
   });
 
 class ExerciseList extends React.Component {
@@ -38,13 +42,16 @@ class ExerciseList extends React.Component {
         editExercise:null, 
     }
     handleGoClick = (Exercise) =>{
-        this.setState({selectedExercise: Exercise});
+        this.setState({editExercise: Exercise});
     }
-    handleBackClick = () =>{
-        this.setState({selectedExercise: null, editExercise:null});
+    handleReturnClick = () =>{
+        this.setState({editExercise: null, editExercise:null});
     }
     handleEditClick = (Exercise) =>{
         this.setState({editExercise: Exercise});
+    }
+    handleAddClick = () =>{
+        this.setState({editExercise: []});
     }
     handleReturn = () =>{
         this.props.handleReturn();
@@ -53,8 +60,12 @@ class ExerciseList extends React.Component {
         const {classes} = this.props
         return (
             <div>
-                {!this.state.selectedExercise && !this.state.editExercise && 
+                {!this.state.editExercise && 
                     <div>
+                        <Typography variant="display1" className={classes.leftAligned}
+                                    style={{textAlign: 'center'}}>
+                            {this.props.workout.name}
+                        </Typography>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
                                 {this.props.workout.exercises && this.props.workout.exercises.map((exercise,index) => (
@@ -72,18 +83,17 @@ class ExerciseList extends React.Component {
                                 Return
                             </Button>
                             <Button variant="contained" 
-                                    style={{backgroundColor:'#333', color:'white'}}
-                                    onClick={this.onEditClick}>
+                                    onClick={this.handleAddClick}
+                                    className={classes.button}>
                                 Add Exercise
                             </Button>
                         </div>
                     </div>
                     
                 }
-                {false && this.state.selectedExercise 
-                    && <Exercise 
-                            Exercise={this.state.selectedExercise}
-                            handleBackClick={this.handleBackClick}
+                {this.state.editExercise
+                    && <Exercise
+                            exercise={this.state.editExercise}
                             handleReturn = {this.handleReturnClick}
                         />
                 }
@@ -92,4 +102,4 @@ class ExerciseList extends React.Component {
     }
 }
 
-export default withStyles(styles)(ExerciseList)
+export default withStyles(styles, { withTheme: true })(ExerciseList)
