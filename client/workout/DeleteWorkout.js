@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
-import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -14,11 +13,15 @@ import {remove} from './api-workout'
 import {Redirect, Link} from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
+const styles= theme => ({
   button:{
-    borderRadius:'50%'
+    width: '100%',
+    backgroundColor:theme.palette.primary.main, 
+    color:'white',
+    padding: 0,
+    borderRadius: '4px'
 },
-}
+});
 
 class DeleteWorkout extends Component {
   state = {
@@ -50,13 +53,14 @@ class DeleteWorkout extends Component {
     if (redirect) {
       return <Redirect to='/workout'/>
     }
-    return (<span>
-      <Button variant="contained" className={classes.button} 
-                                style={{backgroundColor:'#de0025', color:'white'}}
-                                onClick={this.clickButton}>
-                            <DeleteOutlinedIcon className={classes.icon}/>
-                        </Button>
-      <Dialog open={this.state.open} onClose={this.handleRequestClose}>
+    return (
+      <div  className={classes.button}>
+        <Button variant="contained" className={classes.button} 
+                  onClick={this.clickButton}>
+            <DeleteOutlinedIcon className={classes.icon}/>
+            
+          </Button>
+        <Dialog open={this.state.open} onClose={this.handleRequestClose}>
         <DialogTitle>{"Delete Workout"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -72,10 +76,11 @@ class DeleteWorkout extends Component {
           </Button>
         </DialogActions>
       </Dialog>
-    </span>)
+    </div>
+    )
   }
 }
 DeleteWorkout.propTypes = {
   workoutId: PropTypes.any.isRequired
 }
-export default  withStyles(styles)(DeleteWorkout)
+export default  withStyles(styles, { withTheme: true })(DeleteWorkout)

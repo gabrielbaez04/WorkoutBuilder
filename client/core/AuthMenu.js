@@ -6,6 +6,7 @@ import auth from './../auth/auth-helper'
 import IconButton from '@material-ui/core/IconButton';
 import {withStyles} from '@material-ui/core/styles'
 
+const styles = theme => ({});
 const isActive = (history, path) => {
     if (history.location.pathname == path)
       return {color: '#ff4081'}
@@ -30,9 +31,9 @@ class AuthMenu extends React.Component{
 
     render(){
         const css = require('./Menu.css');
-        const { history, classes } = this.props;
+        const { history, classes ,theme } = this.props;
         return(
-            <div className={this.state.class} id="myTopnav">
+            <div className={this.state.class} id="myTopnav" style={{backgroundColor:theme.palette.primary.main, }}>
                 <Link to={"/user/" + this.props.authenticated.user._id} 
                     style={isActive(history, "/user/" + this.props.authenticated.user._id)} 
                     className="active"
@@ -51,4 +52,4 @@ class AuthMenu extends React.Component{
     }
 
 }
-export default withRouter(AuthMenu);
+export default withStyles(styles, { withTheme: true })(withRouter(AuthMenu));

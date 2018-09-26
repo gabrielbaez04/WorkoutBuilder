@@ -41,8 +41,11 @@ const styles = theme => ({
         padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
       },
       button:{
-          borderRadius:'50%'
-      },
+        width: '100%',
+        backgroundColor:theme.palette.primary.main, 
+        color:'white',
+        padding: 0
+    },
       icon:{
         height: '1.2em',
         width: '1.2em'
@@ -95,7 +98,6 @@ class ExerciseListItem extends React.Component {
                     </CardContent>
                     <CardActions className={classes.cardActions}>
                         <Button variant="contained" className={classes.button} 
-                                style={{backgroundColor:'#ffb25b', color:'white'}}
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>

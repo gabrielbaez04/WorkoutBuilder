@@ -40,7 +40,10 @@ const styles = theme => ({
         padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
       },
       button:{
-          borderRadius:'50%'
+          width: '100%',
+          backgroundColor:theme.palette.primary.main, 
+          color:'white',
+          padding: 0
       },
       icon:{
         height: '1.2em',
@@ -100,13 +103,11 @@ class WorkoutListItem extends React.Component {
                     </CardContent>
                     <CardActions className={classes.cardActions}>
                         <Button variant="contained" className={classes.button} 
-                                style={{backgroundColor:'#ffb25b', color:'white'}}
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
                         <DeleteWorkout workoutId={this.props.workout.id}/>
                         <Button variant="contained" className={classes.button} 
-                                style={{backgroundColor:'#398500', color:'white'}}
                                 onClick={this.onGoClick}>
                             <NavigateNextOutlinedIcon className={classes.icon}/>
                         </Button>

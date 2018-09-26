@@ -30,7 +30,11 @@ const styles = theme => ({
           display:'flex',
           justifyContent: 'center',
           marginBottom: '10px'
-      }
+      },
+      button:{
+          backgroundColor:theme.palette.primary.main, 
+          color:'white',
+      },
 
   });
 
@@ -74,8 +78,8 @@ class WorkoutList extends React.Component {
                         </div>
                         <div className={classes.buttonContainer}>
                             <Button variant="contained" 
-                                    style={{backgroundColor:'#333', color:'white'}}
-                                    onClick={this.handleAddClick}>
+                                    onClick={this.handleAddClick}
+                                    className={classes.button}>
                                 Add Workout
                             </Button>
                         </div>
