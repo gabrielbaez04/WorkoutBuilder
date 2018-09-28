@@ -37,12 +37,13 @@ class SearchBox extends React.Component {
       return [];
     }
   
-    const regex = new RegExp('^' + escapedValue, 'i');
+    const regex = new RegExp(escapedValue , 'i');
   
     return this.state.exercises.filter(exercise => regex.test(exercise.name));
   }
   
   getSuggestionValue = (suggestion) => {
+    this.props.populateExercise(suggestion);
     return suggestion.name;
   }
   

@@ -11,7 +11,7 @@ const styles = theme => ({
     root: {
         maxWidth: '95%',
         margin: 'auto',
-        textAlign: 'center',
+        textAlign: 'left',
         paddingTop: 5,
         paddingLeft:5,
         paddingRight:5,
@@ -39,13 +39,13 @@ const styles = theme => ({
         justifyContent: 'center',
     },
     cardMedia: {
-    paddingTop: '50%', // 16:9
-    backgroundSize:50,
-    width:'30%'
+        backgroundSize:100,
+        width:'50%'
     },
     cardContent: {
         flexGrow: 1,
-        padding: `0px ${theme.spacing.unit}px`
+        padding: `0px ${theme.spacing.unit}px`,
+        textAlign: 'left'
     },
     cardHeader:{
         padding: `${theme.spacing.unit}px`
@@ -58,21 +58,29 @@ const styles = theme => ({
     imageContainer:{
         maxWidth: '100%',
         display:'flex',
-        justifyContent:'center'
+        justifyContent:'center',
+        height: '250px'
     },
     [theme.breakpoints.up('md')]: {
         imageContainer:{
-            maxWidth: '45%',
-            minWidth: '45%',
+            maxWidth: '35%',
+            minWidth: '35%',
             float:'left'
         },
         card: {
             display: 'inline',
         },
+        leftAligned : {
+            textAlign : 'left'
+        },
+        cardContent: {
+            height: '250px'
+        },
+        root: {
+            textAlign: 'center',
+        }
     },
-    leftAligned : {
-        textAlign : 'left'
-    },
+  
   });
 
 const getExerciseImages = (images) =>{
@@ -80,7 +88,7 @@ const getExerciseImages = (images) =>{
     images.forEach((image)=>{
         imagesArr.push(image); 
     })
-    return imagesArr.length > 3 ? imagesArr.slice(0,3) : imagesArr;
+    return imagesArr.length > 3 ? imagesArr.slice(0,2) : imagesArr;
 }
 
 const ExerciseInfo = (props) =>{
@@ -101,13 +109,13 @@ const ExerciseInfo = (props) =>{
                 />)
             })}
             </div>
-            <CardContent>
+            <CardContent className={classes.cardContent}>
                 <Typography component="p" className={classes.leftAligned}>
-                   {props.activeStepInfo.description}
+                   {props.activeStepInfo.description.replace(/<[^>]*>/g,'')}
                 </Typography>
                 <br></br>
                 <Typography className={classes.title} color="textSecondary" className={classes.leftAligned}>
-                    {props.activeStepInfo.extra}
+                    {props.activeStepInfo.extra.replace(/<[^>]*>/g,'')}
                 </Typography>
                 {props.isWorkout && 
                 <pre className={classes.leftAligned}>
