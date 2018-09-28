@@ -1,13 +1,13 @@
 import React from 'react';
 import ExerciseInfo from './ExerciseInfo';
 import { withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import Input from '@material-ui/core/Input';
-import { fade } from '@material-ui/core/styles/colorManipulator';
 import ExerciseForm from './ExerciseForm'
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import SearchBox from '../SearchBox/SearchBox';
+import front from '../assets/images/muscular_system_front.svg';
+import back from '../assets/images/muscular_system_back.svg';
 
 const styles = theme => ({
     root: {
@@ -26,30 +26,6 @@ const styles = theme => ({
         root: {
           maxWidth: '60%',
         }
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.primary.main, 0.15),
-        '&:hover': {
-          backgroundColor: fade(theme.palette.primary.main, 0.25),
-        },
-        marginRight: theme.spacing.unit * 2,
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing.unit * 3,
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        width: theme.spacing.unit * 9,
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     inputRoot: {
         color: 'inherit',
@@ -78,11 +54,40 @@ const styles = theme => ({
     },
 });
 
+const defaultImages = [front, back];
 
 class Exercise extends React.Component {
 
     state = {
-        exercise : null
+        exercise : []
+    }
+    populateExercise = (suggestion) => {
+        //fetching comments
+        this.fetchComments(suggestion);     
+    }
+
+    fetchComments = (suggestion) =>{
+        fetch('https://wger.de/api/v2/exercisecomment/?exercise='+suggestion.id)
+        .then(response => response.json())
+        .then(data =>
+        {
+            var comments = data.results.map((comment) => {return comment.comment}).join('. ');
+            this.setState({exercise:Object.assign({},suggestion,{extra: data.count>0 
+                ? comments
+                : ''})},()=>{this.fetchImages(suggestion)});
+        })
+    }
+
+    fetchImages = (suggestion) =>{
+        fetch('https://wger.de/api/v2/exerciseimage/?exercise='+suggestion.id)
+        .then(response => response.json())
+        .then(data => {
+            var arrImg = data.count > 0 ? data.results.map((image) => { return image.image}) : [];
+            this.setState({exercise:Object.assign({},this.state.exercise,{images: data.count>0 
+                ? arrImg
+                : defaultImages})}
+            )
+        })
     }
 
     handleReturn = () =>{
@@ -96,7 +101,7 @@ class Exercise extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
-                <SearchBox/>
+                <SearchBox populateExercise={this.populateExercise}/>
                 <ExerciseInfo
                     activeStepInfo={this.state.exercise}
                 />
