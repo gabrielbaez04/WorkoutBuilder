@@ -69,7 +69,7 @@ self.__precacheManifest = [
   },
   {
     "url": "exercise/Exercise.js",
-    "revision": "c0286d6d5ebd46e85ca6fea6d35f04d2"
+    "revision": "2d4d5a4c2bd38d74d1d07a01df86e183"
   },
   {
     "url": "exercise/ExerciseForm.js",
@@ -94,6 +94,14 @@ self.__precacheManifest = [
   {
     "url": "MainRouter.js",
     "revision": "8a0e5a6e40b115901ba9e3c76ad7eda0"
+  },
+  {
+    "url": "SearchBox/SearchBox.css",
+    "revision": "faf63886cdb8b203c043002eee009a6e"
+  },
+  {
+    "url": "SearchBox/SearchBox.js",
+    "revision": "09dbca760b90ac73618d3438c1f384f3"
   },
   {
     "url": "user/api-user.js",
@@ -147,4 +155,4 @@ self.__precacheManifest = [
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerRoute(/^https:\/\/wger.de\/api\/v2\/exercise\//, workbox.strategies.cacheFirst({ plugins: [new workbox.cacheableResponse.Plugin({"statuses":[0,200]})] }), 'GET');
+workbox.routing.registerRoute(/^https:\/\/wger.de\/api\/v2\/exercise\//, workbox.strategies.cacheFirst({ "cacheName":"exercises", plugins: [new workbox.cacheableResponse.Plugin({"statuses":[0,200]}), new workbox.expiration.Plugin({"maxAgeSeconds":600000,"purgeOnQuotaError":false})] }), 'GET');

@@ -7,6 +7,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import ExerciseForm from './ExerciseForm'
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import SearchBox from '../SearchBox/SearchBox';
 
 const styles = theme => ({
     root: {
@@ -16,7 +17,7 @@ const styles = theme => ({
         paddingTop: 5,
         paddingLeft:5,
         paddingRight:5,
-        marginTop: theme.spacing.unit * 5
+        marginTop: theme.spacing.unit
       },
     leftAligned : {
         textAlign : 'left'
@@ -95,19 +96,7 @@ class Exercise extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
-                <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                        <SearchIcon />
-                    </div>
-                    <Input
-                        placeholder="Search…"
-                        disableUnderline
-                        classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                        }}
-                    />
-                </div>
+                <SearchBox/>
                 <ExerciseInfo
                     activeStepInfo={this.state.exercise}
                 />

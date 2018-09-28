@@ -15,7 +15,7 @@ const styles = theme => ({
         paddingTop: 5,
         paddingLeft:5,
         paddingRight:5,
-        marginTop: theme.spacing.unit * 5
+        marginTop: theme.spacing.unit
       },
     header: {
       display: 'flex',

@@ -5,12 +5,16 @@ module.exports = {
   ],
   "swDest": "sw\\sw.js",
   "runtimeCaching": [{
-  "urlPattern" : new RegExp('^https://wger\.de/api/v2/exercise/'),
-  "handler": 'cacheFirst',
-    "options": {
-      "cacheableResponse": {
-        "statuses": [0, 200]
-      }
-    }
-  }]
+    "urlPattern" : new RegExp('^https://wger\.de/api/v2/exercise/'),
+    "handler": 'cacheFirst',
+      "options": {
+        "cacheableResponse": {
+          "statuses": [0, 200]
+        },
+        cacheName: 'exercises',
+        expiration: {
+          maxAgeSeconds: 600000,
+        },
+      },
+    }]
 };
