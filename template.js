@@ -18,6 +18,13 @@ export default ({markup, css}) => {
         <div id="root">${markup}</div>
         <style id="jss-server-side">${css}</style>
         <script type="text/javascript" src="/dist/bundle.js"></script>
+        <script>
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+          }
+        </script>
       </body>
     </html>`
 }
