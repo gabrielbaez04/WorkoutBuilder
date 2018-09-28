@@ -20,7 +20,7 @@ const styles = theme => ({
     paddingTop: 5,
     paddingLeft:5,
     paddingRight:5,
-    marginTop: theme.spacing.unit * 5
+    marginTop: theme.spacing.unit
   },
   [theme.breakpoints.up('sm')]: {
     card: {
@@ -31,7 +31,7 @@ const styles = theme => ({
     verticalAlign: 'middle'
   },
   title: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit,
     color: theme.palette.openTitle
   },
   textField: {
