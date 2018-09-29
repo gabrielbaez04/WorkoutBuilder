@@ -88,7 +88,11 @@ const getExerciseImages = (images) =>{
     images.forEach((image)=>{
         imagesArr.push(image); 
     })
-    return imagesArr.length > 3 ? imagesArr.slice(0,2) : imagesArr;
+    return imagesArr.length > 2 ? imagesArr.slice(0,2) : imagesArr;
+}
+
+const stripHTMLTags = (value) =>{
+    if(value) return value.replace(/<[^>]*>/g,'')
 }
 
 const ExerciseInfo = (props) =>{
@@ -111,11 +115,11 @@ const ExerciseInfo = (props) =>{
             </div>
             <CardContent className={classes.cardContent}>
                 <Typography component="p" className={classes.leftAligned}>
-                   {props.activeStepInfo.description.replace(/<[^>]*>/g,'')}
+                   {stripHTMLTags(props.activeStepInfo.description)}
                 </Typography>
                 <br></br>
                 <Typography className={classes.title} color="textSecondary" className={classes.leftAligned}>
-                    {props.activeStepInfo.extra.replace(/<[^>]*>/g,'')}
+                    {stripHTMLTags(props.activeStepInfo.extra)}
                 </Typography>
                 {props.isWorkout && 
                 <pre className={classes.leftAligned}>

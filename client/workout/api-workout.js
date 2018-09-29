@@ -14,11 +14,14 @@ const create = (workout) => {
       }).catch((err) => console.log(err))
   }
 
-  const list = () => {
+  const list = (params,credentials) => {
     return fetch('/api/workouts/', {
       method: 'GET',
       headers: {
-        'userId': auth.isAuthenticated().user._id
+        'userId': params.userId,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
       },
     }).then(response => {
       return response.json()

@@ -4,7 +4,8 @@ import ExerciseList from '../exercise/ExerciseList';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import data from './data'
+import {list} from './api-workout'
+import auth from './../auth/auth-helper'
 import WorkoutListItem from './WorkoutListItem';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
@@ -42,7 +43,9 @@ class WorkoutList extends React.Component {
     state = {
         selectedWorkout: null,
         editWorkout:null,
-        workouts : data.workoutsData()   
+        workouts : [],
+        error:'',
+        isNew: false
     }
     handleGoClick = (workout) =>{
         this.setState({selectedWorkout: workout});
@@ -54,10 +57,26 @@ class WorkoutList extends React.Component {
         this.setState({editWorkout: workout});
     }
     handleAddClick = () =>{
-        this.setState({editWorkout: []});
+        this.setState({editWorkout: [], isNew : true});
     }
     handleReturnClick = () =>{
         this.setState({selectedWorkout: null, editWorkout: null});
+        this.fetchWorkouts();
+    }
+    fetchWorkouts = () =>{
+        const jwt = auth.isAuthenticated()
+        list({
+        userId: jwt.user._id
+        }, {t: jwt.token}).then((data) => {
+        if (data.error) {
+            this.setState({error: 'Couldnt read workouts'})
+        } else {
+            this.setState({workouts: data.length>0 ? data : []})
+        }
+        })
+    }
+    componentDidMount = () =>{
+        this.fetchWorkouts();
     }
     render() {
         const {classes} = this.props
@@ -67,12 +86,13 @@ class WorkoutList extends React.Component {
                     <div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {this.state.workouts.map(workout => (
+                                {this.state.workouts.length>0 && this.state.workouts.map(workout => (
                                     <WorkoutListItem
-                                        key={workout.id} 
+                                        key={workout._id} 
                                         workout={workout}
                                         handleGoClick={this.handleGoClick}
-                                        handleEditClick={this.handleEditClick}/>
+                                        handleEditClick={this.handleEditClick}
+                                        handleReturn = {this.handleReturnClick}/>
                                 ))}
                             </Grid>
                         </div>
@@ -98,6 +118,7 @@ class WorkoutList extends React.Component {
                             workout={this.state.editWorkout}
                             handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
+                            isNew = {this.state.isNew}
                         />
                 }
             </div>
@@ -105,38 +126,3 @@ class WorkoutList extends React.Component {
     }
 }
 export default withStyles(styles)(WorkoutList)
-/*
-{!this.state.selectedWorkout && !this.state.editWorkout &&
-                    <div>
-                        <h2 className="ui center aligned icon header">
-                        <i className="circular hand rock icon"></i>
-                        Workout List
-                        </h2>
-                        <div className='ui segment compact workoutsContainer'>
-                            {this.state.workouts.map((workout,index)=>{
-                                return (<PreviewContainer
-                                    key = {workout.id}
-                                    name={workout.name}
-                                    isWorkout="true"
-                                    data={workout}
-                                    handleWorkoutClick={this.handleWorkoutClick}
-                                    handleEdit={this.handleWorkoutEdit}
-                                />)
-                            })}
-                        </div>
-                        
-                    </div>
-                }
-                {this.state.selectedWorkout 
-                    && <Workout 
-                            exercises={this.state.selectedWorkout.exercises}
-                            handleBackClick={this.handleBackClick}
-                        />
-                }
-                {this.state.editWorkout 
-                    && <ExerciseList
-                            exercises={this.state.editWorkout.exercises}
-                            handleBackClick={this.handleBackClick}
-                        />
-                }
-*/  

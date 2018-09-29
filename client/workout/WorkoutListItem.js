@@ -106,7 +106,8 @@ class WorkoutListItem extends React.Component {
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
-                        <DeleteWorkout workoutId={this.props.workout.id}/>
+                        <DeleteWorkout workoutId={this.props.workout._id}
+                                        handleReturn = {this.props.handleReturn}/>
                         <Button variant="contained" className={classes.button} 
                                 onClick={this.onGoClick}>
                             <NavigateNextOutlinedIcon className={classes.icon}/>
