@@ -10,7 +10,6 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import auth from './../auth/auth-helper'
 import {remove} from './api-workout'
-import {Redirect, Link} from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 
 const styles= theme => ({
@@ -25,7 +24,6 @@ const styles= theme => ({
 
 class DeleteWorkout extends Component {
   state = {
-    redirect: false,
     open: false
   }
   clickButton = () => {
@@ -39,8 +37,7 @@ class DeleteWorkout extends Component {
       if (data.error) {
         console.log(data.error)
       } else {
-        auth.signout(() => console.log('deleted'))
-        this.setState({redirect: true})
+        this.props.handleReturn();
       }
     })
   }
@@ -48,11 +45,7 @@ class DeleteWorkout extends Component {
     this.setState({open: false})
   }
   render() {
-    const redirect = this.state.redirect
     const {classes} = this.props;
-    if (redirect) {
-      return <Redirect to='/workout'/>
-    }
     return (
       <div  className={classes.button}>
         <Button variant="contained" className={classes.button} 

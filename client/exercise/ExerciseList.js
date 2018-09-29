@@ -8,6 +8,9 @@ import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Exercise from './Exercise';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import {create, read, update} from '../workout/api-workout'
+import auth from './../auth/auth-helper'
 
 const styles = theme => ({
     cardGrid: {
@@ -34,11 +37,19 @@ const styles = theme => ({
         backgroundColor:theme.palette.primary.main, 
         color:'white',
     },
+    workoutName:{
+        textAlign: 'center',
+        fontWeight:'bold'
+    },
+    textField:{
+        width:'80%',
+        
+    }
   });
 
 class ExerciseList extends React.Component {
     state = {
-        selectedExercise: null,
+        workout: {name:''},
         editExercise:null, 
     }
     handleGoClick = (Exercise) =>{
@@ -56,19 +67,61 @@ class ExerciseList extends React.Component {
     handleReturn = () =>{
         this.props.handleReturn();
     }
+    handleChange = name => event => {
+        this.setState({workout : Object.assign({},this.state.workout,{[name]: event.target.value})})
+    };
+
+    clickSave = () => {
+        if(this.props.isNew){
+            create(this.state.workout).then((data) => {
+                if (data.error) {
+                  this.setState({error: data.error})
+                } else {
+                    console.log(data);
+                  //this.setState({workout: data, isNew: false })
+                }
+              })
+        }else{
+            const jwt = auth.isAuthenticated();
+            update({
+                workoutId: this.state.workout.id
+                }, {
+                t: jwt.token
+                }, workout).then((data) => {
+                if (data.error) {
+                    this.setState({error: data.error})
+                } else {
+                    this.setState({workout: data})
+                }
+            })
+        }
+      }
+      componentDidMount = () =>{
+          console.log(this.props.workout);
+        this.setState({workout : this.props.isNew
+                                ? Object.assign({},this.state.workout,{userId:auth.isAuthenticated().user._id,name:''})
+                                : this.props.workout
+                     })
+     }
     render() {
         const {classes} = this.props
         return (
             <div>
                 {!this.state.editExercise && 
                     <div>
-                        <Typography variant="display1" className={classes.leftAligned}
-                                    style={{textAlign: 'center'}}>
-                            {this.props.workout.name}
-                        </Typography>
+                        <div className={classes.workoutName}>
+                            <TextField
+                                id="standard-name"
+                                label="Workout Name"
+                                className={classes.textField}
+                                value={this.state.workout.name}
+                                onChange={this.handleChange('name')}
+                                margin="normal"
+                            />
+                        </div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {this.props.workout.exercises && this.props.workout.exercises.map((exercise,index) => (
+                                {this.state.workout && this.state.workout.exercises && this.state.workout.exercises.map((exercise,index) => (
                                     <ExerciseListItem
                                         key={index} 
                                         exercise={exercise}
@@ -86,6 +139,11 @@ class ExerciseList extends React.Component {
                                     onClick={this.handleAddClick}
                                     className={classes.button}>
                                 Add Exercise
+                            </Button>
+                            <Button variant="contained" 
+                                onClick={this.clickSave}
+                                className={classes.button}>
+                                Save
                             </Button>
                         </div>
                     </div>
