@@ -82,7 +82,18 @@ class ExerciseList extends React.Component {
         this.setState({workout : Object.assign({},this.state.workout,{[name]: event.target.value})})
     };
     handleExerciseSave = exercise => {
-        this.setState({workout : Object.assign({},this.state.workout,{exercises: [...this.state.workout.exercises, exercise]})},
+        var match = false;
+        var exercises = this.state.workout.exercises.map((ex,index)=>
+        {
+            if(ex._id == exercise._id)
+            {
+                match = true;
+                return exercise
+            }
+            return ex
+        });
+        !match && exercises.push(exercise);
+        this.setState({workout : Object.assign({},this.state.workout,{exercises: exercises})},
                                 ()=>{ this.clickSave()})
     };
 

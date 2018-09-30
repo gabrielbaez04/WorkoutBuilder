@@ -63,7 +63,8 @@ class Exercise extends React.Component {
     }
     populateExercise = (suggestion) => {
         //fetching comments
-        this.fetchComments(suggestion);     
+        this.fetchComments(suggestion);
+        this.setState({exercise:Object.assign({},this.state.exercise,{...suggestion})});
     }
 
     fetchComments = (suggestion) =>{
@@ -72,7 +73,7 @@ class Exercise extends React.Component {
         .then(data =>
         {
             var comments = data.results.map((comment) => {return comment.comment}).join('. ');
-            this.setState({exercise:Object.assign({},suggestion,{extra: data.count>0 
+            this.setState({exercise:Object.assign({},this.state.exercise,{extra: data.count>0 
                 ? comments
                 : ''})},()=>{this.fetchImages(suggestion)});
         })
