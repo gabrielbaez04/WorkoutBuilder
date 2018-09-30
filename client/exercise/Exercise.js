@@ -93,6 +93,20 @@ class Exercise extends React.Component {
     handleReturn = () =>{
         this.props.handleReturn();
     }
+    handleExerciseSave = () =>{
+        this.props.handleExerciseSave(this.state.exercise);
+        this.props.handleReturn();
+    }
+
+    handleExerciseDelete = () =>{
+        this.props.handleExerciseDelete(this.state.exercise._id);
+    }
+
+    handleNumberChange = (name) => event => {
+        this.setState({
+            exercise: Object.assign({},this.state.exercise,{[name]: event.target.value > 3 ? event.target.value.slice(0,3): event.target.value})
+        });
+    };
 
     componentWillMount(){
         this.setState({exercise: this.props.exercise})
@@ -105,14 +119,15 @@ class Exercise extends React.Component {
                 <ExerciseInfo
                     activeStepInfo={this.state.exercise}
                 />
-                <ExerciseForm activeStepInfo={this.state.exercise}/>
+                <ExerciseForm activeStepInfo={this.state.exercise}
+                              handleNumberChange={this.handleNumberChange}/>
                 <div className={classes.buttonContainer}>
                     <Button size="small" onClick={this.handleReturn}>
                         <KeyboardReturn />
                         Return
                     </Button>
                     <Button variant="contained" 
-                            onClick={this.onEditClick}
+                            onClick={this.handleExerciseSave}
                             className={classes.button}>
                         Save
                     </Button>

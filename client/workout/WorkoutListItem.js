@@ -23,10 +23,9 @@ const styles = theme => ({
         
       },
       cardMedia: {
-        paddingTop: '50%', // 16:9
-        backgroundSize:50,
-        width:'30%'
-      },
+        backgroundSize:75,
+        width:'25%'
+    },
       cardContent: {
         flexGrow: 1,
         padding: `0px ${theme.spacing.unit}px`
@@ -56,9 +55,11 @@ const styles = theme => ({
         justifyContent: 'center'
       },
       imageContainer:{
-          display:'flex',
-          justifyContent:'center'
-      }
+        maxWidth: '100%',
+        display:'flex',
+        justifyContent:'center',
+        height: '250px'
+    },
 
   });
 class WorkoutListItem extends React.Component {
@@ -108,10 +109,13 @@ class WorkoutListItem extends React.Component {
                         </Button>
                         <DeleteWorkout workoutId={this.props.workout._id}
                                         handleReturn = {this.props.handleReturn}/>
-                        <Button variant="contained" className={classes.button} 
-                                onClick={this.onGoClick}>
-                            <NavigateNextOutlinedIcon className={classes.icon}/>
-                        </Button>
+                        {this.props.workout.exercises.length > 0 && 
+                            <Button variant="contained" className={classes.button} 
+                                    onClick={this.onGoClick}>
+                                <NavigateNextOutlinedIcon className={classes.icon}/>
+                            </Button>
+                        }
+                        
                     </CardActions>
                 </Card>
             </Grid>

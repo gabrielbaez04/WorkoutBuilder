@@ -54,7 +54,7 @@ class WorkoutList extends React.Component {
         this.setState({selectedWorkout: null, editWorkout:null});
     }
     handleEditClick = (workout) =>{
-        this.setState({editWorkout: workout});
+        this.setState({editWorkout: workout, isNew : false});
     }
     handleAddClick = () =>{
         this.setState({editWorkout: [], isNew : true});

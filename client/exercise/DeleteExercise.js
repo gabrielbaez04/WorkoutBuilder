@@ -32,7 +32,8 @@ class DeleteExercise extends Component {
     this.setState({open: true})
   }
   deleteExercise = () => {
-    
+    this.props.handleExerciseDelete();
+    this.setState({open: false})
   }
   handleRequestClose = () => {
     this.setState({open: false})
@@ -60,7 +61,7 @@ class DeleteExercise extends Component {
             <Button onClick={this.handleRequestClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.deleteAccount} color="secondary" autoFocus="autoFocus">
+            <Button onClick={this.deleteExercise} color="secondary" autoFocus="autoFocus">
               Confirm
             </Button>
           </DialogActions>

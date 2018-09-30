@@ -123,7 +123,7 @@ const ExerciseInfo = (props) =>{
                 </Typography>
                 {props.isWorkout && 
                 <pre className={classes.leftAligned}>
-                    <b>Sets:</b> {props.activeStepInfo.sets}    <b>Repetitions</b>:{props.activeStepInfo.reps}
+                    <b>Sets:</b> {props.activeStepInfo.sets}    <b>Repetitions</b>:{props.activeStepInfo.repetitions}
                 </pre>
                 }
             </CardContent>

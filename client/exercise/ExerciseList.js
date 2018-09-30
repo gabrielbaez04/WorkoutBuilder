@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import {create, read, update} from '../workout/api-workout'
 import auth from './../auth/auth-helper'
+import Icon from '@material-ui/core/Icon'
 
 const styles = theme => ({
     cardGrid: {
@@ -36,6 +37,7 @@ const styles = theme => ({
       button:{
         backgroundColor:theme.palette.primary.main, 
         color:'white',
+        margin: '0px 5px'
     },
     workoutName:{
         textAlign: 'center',
@@ -44,6 +46,13 @@ const styles = theme => ({
     textField:{
         width:'80%',
         
+    },
+    saved: {
+        verticalAlign: 'middle',
+        color:'green'
+    },
+    savedMessage:{
+        textAlign:'center'
     }
   });
 
@@ -51,6 +60,8 @@ class ExerciseList extends React.Component {
     state = {
         workout: {name:''},
         editExercise:null, 
+        saved: false,
+        isNew: false
     }
     handleGoClick = (Exercise) =>{
         this.setState({editExercise: Exercise});
@@ -70,35 +81,44 @@ class ExerciseList extends React.Component {
     handleChange = name => event => {
         this.setState({workout : Object.assign({},this.state.workout,{[name]: event.target.value})})
     };
+    handleExerciseSave = exercise => {
+        this.setState({workout : Object.assign({},this.state.workout,{exercises: [...this.state.workout.exercises, exercise]})},
+                                ()=>{ this.clickSave()})
+    };
 
+    handleExerciseDelete = exerciseId => {
+        this.setState({workout : Object.assign({},this.state.workout,
+                                {exercises: this.state.workout.exercises.filter((exercise)=>{return exercise._id != exerciseId})})},
+                                ()=>{ this.clickSave()})
+    };
     clickSave = () => {
-        if(this.props.isNew){
+        if(this.state.isNew){
             create(this.state.workout).then((data) => {
                 if (data.error) {
                   this.setState({error: data.error})
                 } else {
-                    console.log(data);
-                  //this.setState({workout: data, isNew: false })
+                    this.setState({isNew: false, saved: true })
                 }
               })
         }else{
             const jwt = auth.isAuthenticated();
             update({
-                workoutId: this.state.workout.id
+                workoutId: this.state.workout._id
                 }, {
                 t: jwt.token
-                }, workout).then((data) => {
+                }, this.state.workout).then((data) => {
                 if (data.error) {
                     this.setState({error: data.error})
                 } else {
-                    this.setState({workout: data})
+                    this.setState({workout: data, saved: true})
                 }
             })
         }
       }
-      componentDidMount = () =>{
-          console.log(this.props.workout);
-        this.setState({workout : this.props.isNew
+      componentWillMount = () =>{
+        this.setState({ isNew: this.props.isNew,
+                        saved: false,
+                        workout : this.props.isNew
                                 ? Object.assign({},this.state.workout,{userId:auth.isAuthenticated().user._id,name:''})
                                 : this.props.workout
                      })
@@ -126,7 +146,9 @@ class ExerciseList extends React.Component {
                                         key={index} 
                                         exercise={exercise}
                                         handleGoClick={this.handleGoClick}
-                                        handleEditClick={this.handleEditClick}/>
+                                        handleEditClick={this.handleEditClick}
+                                        handleExerciseDelete = {this.handleExerciseDelete}
+                                        />
                                 ))}
                             </Grid>
                         </div>
@@ -146,6 +168,14 @@ class ExerciseList extends React.Component {
                                 Save
                             </Button>
                         </div>
+                        {this.state.saved && (
+                            <div className={classes.savedMessage}>
+                            <Typography component="p" color="primary">
+                                <Icon color="primary" className={classes.saved}>check_circle</Icon>
+                                    Workout Saved!
+                                </Typography>
+                            </div>)
+                        }
                     </div>
                     
                 }
@@ -153,6 +183,7 @@ class ExerciseList extends React.Component {
                     && <Exercise
                             exercise={this.state.editExercise}
                             handleReturn = {this.handleReturnClick}
+                            handleExerciseSave = {this.handleExerciseSave}
                         />
                 }
             </div>

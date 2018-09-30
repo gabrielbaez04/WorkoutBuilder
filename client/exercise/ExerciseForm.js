@@ -15,16 +15,6 @@ const styles = theme => ({
   });
 
 class ExerciseForm extends React.Component{
-    state = {
-        sets:this.props.activeStepInfo.sets,
-        repetitions:this.props.activeStepInfo.reps
-      }; 
-
-    handleNumberChange = name => event => {
-        this.setState({
-        [name]: event.target.value > 3 ? event.target.value.slice(0,3): event.target.value,
-        });
-    };
     
     render(){
         const { classes, activeStepInfo } = this.props;
@@ -35,8 +25,8 @@ class ExerciseForm extends React.Component{
                     <TextField
                         id="outlined-number"
                         label="Sets"
-                        value={this.state.sets}
-                        onChange={this.handleNumberChange('sets')}
+                        value={this.props.activeStepInfo.sets || ''}
+                        onChange={this.props.handleNumberChange('sets')}
                         type="number"
                         className={classes.textField}
                         inputProps={{
@@ -52,8 +42,8 @@ class ExerciseForm extends React.Component{
                     <TextField
                         id="outlined-number"
                         label="Repetitions"
-                        value={this.state.repetitions}
-                        onChange={this.handleNumberChange('repetitions')}
+                        value={this.props.activeStepInfo.repetitions || ''}
+                        onChange={this.props.handleNumberChange('repetitions')}
                         type="number"
                         className={classes.textField}
                         inputProps={{
