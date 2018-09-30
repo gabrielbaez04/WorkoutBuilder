@@ -24,10 +24,9 @@ const styles = theme => ({
         
       },
       cardMedia: {
-        paddingTop: '50%', // 16:9
-        backgroundSize:50,
-        width:'30%'
-      },
+        backgroundSize:100,
+        width:'50%'
+    },
       cardContent: {
         flexGrow: 1,
         padding: `0px ${theme.spacing.unit}px`
@@ -57,9 +56,11 @@ const styles = theme => ({
         justifyContent: 'center'
       },
       imageContainer:{
-          display:'flex',
-          justifyContent:'center'
-      }
+        maxWidth: '100%',
+        display:'flex',
+        justifyContent:'center',
+        height: '250px'
+    },
 
   });
 class ExerciseListItem extends React.Component {
@@ -74,6 +75,9 @@ class ExerciseListItem extends React.Component {
     
     onEditClick = () =>{
         this.props.handleEditClick(this.props.exercise);
+    }
+    handleExerciseDelete = () =>{
+        this.props.handleExerciseDelete(this.props.exercise._id)
     }
     render() {
         const {classes} = this.props;
@@ -101,7 +105,7 @@ class ExerciseListItem extends React.Component {
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
-                        <DeleteExercise/>
+                        <DeleteExercise handleExerciseDelete={this.handleExerciseDelete}/>
                     </CardActions>
                 </Card>
             </Grid>
