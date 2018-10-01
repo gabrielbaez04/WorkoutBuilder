@@ -16,14 +16,18 @@ const Exercise = new mongoose.Schema({
   },
   sets: {
     type: Number,
-    default: 0,
   },
   repetitions: {
     type: Number,
-    default: 0,
   },
-  previousSets: {
+  currentWeight: {
+    type: Number
+  },
+  previousWeights: {
     type: [Number],
+  },
+  currentRepetitions:{
+    type:Number
   },
   previousRepetitions: {
     type: [Number],

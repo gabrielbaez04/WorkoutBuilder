@@ -9,7 +9,7 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Exercise from './Exercise';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {create, read, update} from '../workout/api-workout'
+import {create, update} from '../workout/api-workout'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
 
@@ -83,15 +83,19 @@ class ExerciseList extends React.Component {
     };
     handleExerciseSave = exercise => {
         var match = false;
-        var exercises = this.state.workout.exercises.map((ex,index)=>
+        var exercises = [];
+        if(this.state.workout.exercises)
         {
-            if(ex._id == exercise._id)
+            exercises = this.state.workout.exercises.map((ex,index)=>
             {
-                match = true;
-                return exercise
-            }
-            return ex
-        });
+                if(ex._id == exercise._id)
+                {
+                    match = true;
+                    return exercise
+                }
+                return ex
+            });
+        }
         !match && exercises.push(exercise);
         this.setState({workout : Object.assign({},this.state.workout,{exercises: exercises})},
                                 ()=>{ this.clickSave()})
