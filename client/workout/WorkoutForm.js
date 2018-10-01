@@ -15,16 +15,6 @@ const styles = theme => ({
   });
 
 class WorkoutForm extends React.Component{
-    state = {
-        weight:'',
-        repetitions:''
-      }; 
-
-    handleNumberChange = name => event => {
-        this.setState({
-        [name]: event.target.value > 3 ? event.target.value.slice(0,3): event.target.value,
-        });
-    };
     
     render(){
         const { classes, activeStepInfo } = this.props;
@@ -36,7 +26,10 @@ class WorkoutForm extends React.Component{
                     <TextField
                         id="outlined-read-only-input"
                         label="Last Reps"
-                        defaultValue={activeStepInfo.prevReps}
+                        value={activeStepInfo.previousRepetitions && activeStepInfo.previousRepetitions.length > 0 ? 
+                                        activeStepInfo.previousRepetitions[activeStepInfo.previousRepetitions.length-1]
+                                        : ''
+                                    }
                         className={classes.textField}
                         margin="normal"
                         variant="outlined"
@@ -47,8 +40,8 @@ class WorkoutForm extends React.Component{
                     <TextField
                         id="outlined-number"
                         label="Repetitions"
-                        value={this.state.repetitions}
-                        onChange={this.handleNumberChange('repetitions')}
+                        value={activeStepInfo.currentRepetitions || ''}
+                        onChange={this.props.handleNumberChange('currentRepetitions')}
                         type="number"
                         className={classes.textField}
                         inputProps={{
@@ -65,8 +58,11 @@ class WorkoutForm extends React.Component{
                     <div>
                     <TextField
                         id="outlined-read-only-input"
-                        label="Last Weigth"
-                        defaultValue={activeStepInfo.prevWeight}
+                        label="Last Weight"
+                        value={activeStepInfo.previousWeights && activeStepInfo.previousWeights.length > 0 ? 
+                            activeStepInfo.previousWeights[activeStepInfo.previousWeights.length-1]
+                            : ''
+                        }
                         className={classes.textField}
                         margin="normal"
                         InputProps={{
@@ -77,8 +73,8 @@ class WorkoutForm extends React.Component{
                     <TextField
                         id="outlined-number"
                         label="Weight"
-                        value={this.state.weight}
-                        onChange={this.handleNumberChange('weight')}
+                        value={activeStepInfo.currentWeight || ''}
+                        onChange={this.props.handleNumberChange('currentWeight')}
                         type="number"
                         className={classes.textField}
                         inputProps={{
