@@ -9,7 +9,7 @@ import {withStyles} from '@material-ui/core/styles'
 const styles = theme => ({});
 const isActive = (history, path) => {
     if (history.location.pathname == path)
-      return {color: '#ff4081'}
+      return {color: '#5bb4dc'}
     else
       return {color: '#ffffff'}
   }

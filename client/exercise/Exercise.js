@@ -6,8 +6,8 @@ import ExerciseForm from './ExerciseForm'
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import SearchBox from '../SearchBox/SearchBox';
-import front from '../assets/images/muscular_system_front.svg';
-import back from '../assets/images/muscular_system_back.svg';
+import front from '../assets/images/128px-Muscular_system.svg.png';
+import back from '../assets/images/128px-Muscular_system-back.svg.png';
 
 const styles = theme => ({
     root: {
