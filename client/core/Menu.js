@@ -24,7 +24,7 @@ class Menu extends React.Component{
   {
     const isActive = (history, path) => {
       if (this.props.history.location.pathname == path)
-        return {color: '#ff4081'}
+        return {color: '#5bb4dc'}
       else
         return {color: '#ffffff'}
     }

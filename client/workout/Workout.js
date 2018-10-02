@@ -129,7 +129,7 @@ class Workout extends React.Component {
                 :
                 <Button size="small" onClick={this.handleSaveAndReturn}>
                     <KeyboardReturn />
-                    Return
+                    Save
                 </Button>
             }
             backButton={
