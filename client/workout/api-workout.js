@@ -15,10 +15,9 @@ const create = (workout) => {
   }
 
   const list = (params,credentials) => {
-    return fetch('/api/workouts/', {
+    return fetch('/api/workouts/'+params.userId, {
       method: 'GET',
       headers: {
-        'userId': params.userId,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + credentials.t
@@ -29,7 +28,7 @@ const create = (workout) => {
   }
 
   const read = (params, credentials) => {
-    return fetch('/api/workouts/' + params.workoutId, {
+    return fetch('/api/workout/' + params.workoutId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
