@@ -16,8 +16,8 @@ const create = (req, res, next) => {
     })
   }
 
-const list = (req, res) => {
-    Workout.find((err, Workouts) => {
+const list = (req, res, next, userId) => {
+    Workout.find({userId: userId},(err, Workouts) => {
         if (err) {
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
