@@ -59,12 +59,13 @@ const defaultImages = [front, back];
 class Exercise extends React.Component {
 
     state = {
-        exercise : []
+        exercise : [],
+        loading: false
     }
     populateExercise = (suggestion) => {
         //fetching comments
         this.fetchComments(suggestion);
-        this.setState({exercise:Object.assign({},this.state.exercise,{...suggestion})});
+        this.setState({exercise:Object.assign({},this.state.exercise,{...suggestion}), loading:true});
     }
 
     fetchComments = (suggestion) =>{
@@ -86,7 +87,7 @@ class Exercise extends React.Component {
             var arrImg = data.count > 0 ? data.results.map((image) => { return image.image}) : [];
             this.setState({exercise:Object.assign({},this.state.exercise,{images: data.count>0 
                 ? arrImg
-                : defaultImages})}
+                : defaultImages}),loading: false}
             )
         })
     }
@@ -129,7 +130,8 @@ class Exercise extends React.Component {
                     </Button>
                     <Button variant="contained" 
                             onClick={this.handleExerciseSave}
-                            className={classes.button}>
+                            className={classes.button}
+                            disabled={this.state.loading || this.state.exercise.length == 0}>
                         Save
                     </Button>
                 </div>
