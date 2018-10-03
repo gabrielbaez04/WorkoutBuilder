@@ -1,7 +1,7 @@
 import auth from './../auth/auth-helper'
 
 const create = (workout) => {
-    return fetch('/api/workouts/', {
+    return fetch('/api/workout', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -41,7 +41,7 @@ const create = (workout) => {
   }
 
   const update = (params, credentials, workout) => {
-    return fetch('/api/workouts/' + params.workoutId, {
+    return fetch('/api/workout/' + params.workoutId, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -57,7 +57,7 @@ const create = (workout) => {
   }
 
   const remove = (params, credentials) => {
-    return fetch('/api/workouts/' + params.workoutId, {
+    return fetch('/api/workout/' + params.workoutId, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

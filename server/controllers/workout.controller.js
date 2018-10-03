@@ -10,9 +10,7 @@ const create = (req, res, next) => {
           error: errorHandler.getErrorMessage(err)
         })
       }
-      res.status(200).json({
-        message: "Successfully created!"
-      })
+      res.json(workout)
     })
   }
 

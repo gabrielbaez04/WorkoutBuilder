@@ -112,7 +112,7 @@ class ExerciseList extends React.Component {
                 if (data.error) {
                   this.setState({error: data.error})
                 } else {
-                    this.setState({isNew: false, saved: true })
+                    this.setState({workout:data, isNew: false, saved: true })
                 }
               })
         }else{
@@ -174,12 +174,15 @@ class ExerciseList extends React.Component {
                             </Button>
                             <Button variant="contained" 
                                     onClick={this.handleAddClick}
-                                    className={classes.button}>
+                                    className={classes.button}
+                                    disabled={this.state.workout.name == ""}
+                                    >
                                 Add Exercise
                             </Button>
                             <Button variant="contained" 
                                 onClick={this.clickSave}
-                                className={classes.button}>
+                                className={classes.button}
+                                disabled={this.state.workout.name == ""}>
                                 Save
                             </Button>
                         </div>
