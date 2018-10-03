@@ -334,10 +334,11 @@ var advices = [
 
 const getAdvices = (numberOfAdvices) => {
     var result = [];
-    for(var i = 1 ; i<=3; i++){
-        let index = Math.floor(Math.random()*advices.length);       
-        result.push(advices[index]);
-        advices.splice(index,1);
+    var newArr = advices.slice();
+    for(var i = 1 ; i<=numberOfAdvices; i++){
+        let index = Math.floor(Math.random()*newArr.length);       
+        result.push(newArr[index]);
+        newArr.splice(index,1);
     }
     return result;
 }

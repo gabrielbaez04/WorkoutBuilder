@@ -45,69 +45,54 @@ const styles = theme => ({
   }
 });
 
-
-
-class Home extends React.Component {
-  state = {
-    cards : null
+const Home = withStyles(styles)((props) => {
+  const { classes } = props;
+  const cards = getAdvices(65);
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      {cards &&
+        <div>
+          <main>
+            <div className={classNames(classes.layout, classes.cardGrid)}>
+              <Grid container spacing={40} className={classes.justify}>
+                {cards.map((card, index) => (
+                  <Grid item key={index} sm={6} md={4} lg={3}>
+                    <Card className={classes.card}>
+                      <CardMedia
+                        className={classes.cardMedia}
+                        image={require('../assets/images/advices/advice'+card.imageId+'.jpg')}
+                        title="Image title"
+                      />
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="headline" component="h2">
+                          {card.title}
+                        </Typography>
+                        <Typography>
+                          {card.body}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </div>
+          </main>
+          {/* Footer */}
+          <footer className={classes.footer}>
+            <Typography variant="title" align="center" gutterBottom>
+              Footer
+            </Typography>
+            <Typography variant="subheading" align="center" color="textSecondary" component="p">
+              Something here to give the footer a purpose!
+            </Typography>
+          </footer>
+          {/* End footer */}
+        </div>
+      }
+      </React.Fragment>
+    );
   }
+)
 
-  componentDidMount(){
-    this.setState({cards: getAdvices(3)})
-  }
-  render()
-  {
-    const { classes } = this.props;
-
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        {this.state.cards &&
-          <div>
-            <main>
-              <div className={classNames(classes.layout, classes.cardGrid)}>
-                <Grid container spacing={40} className={classes.justify}>
-                  {this.state.cards.map((card, index) => (
-                    <Grid item key={index} sm={6} md={4} lg={3}>
-                      <Card className={classes.card}>
-                        <CardMedia
-                          className={classes.cardMedia}
-                          image={require('../assets/images/advice'+card.imageId+'.jpg')}
-                          title="Image title"
-                        />
-                        <CardContent className={classes.cardContent}>
-                          <Typography gutterBottom variant="headline" component="h2">
-                            {card.title}
-                          </Typography>
-                          <Typography>
-                            {card.body}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))}
-                </Grid>
-              </div>
-            </main>
-            {/* Footer */}
-            <footer className={classes.footer}>
-              <Typography variant="title" align="center" gutterBottom>
-                Footer
-              </Typography>
-              <Typography variant="subheading" align="center" color="textSecondary" component="p">
-                Something here to give the footer a purpose!
-              </Typography>
-            </footer>
-            {/* End footer */}
-          </div>
-        }
-        </React.Fragment>
-      );
-  }
-}
-
-Home.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Home);
+export default Home;
