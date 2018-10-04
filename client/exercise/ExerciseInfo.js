@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
-
+import {muscles} from '../assets/js/muscles-data'
 const styles = theme => ({
     root: {
         maxWidth: '95%',
@@ -83,9 +83,9 @@ const styles = theme => ({
   
   });
 
-const getExerciseImages = (images) =>{
+const getExerciseImages = (activeStepimages) =>{
     var imagesArr=[];
-    images.forEach((image)=>{
+    activeStepimages.forEach((image)=>{
         imagesArr.push(image); 
     })
     return imagesArr.length > 2 ? imagesArr.slice(0,2) : imagesArr;
@@ -94,9 +94,38 @@ const getExerciseImages = (images) =>{
 const stripHTMLTags = (value) =>{
     if(value) return value.replace(/<[^>]*>/g,'')
 }
+const getMuscles = (musclesImages) =>{
+    let frontMuscles = [];
+    let backMuscles = [];
+    musclesImages.primaryMuscles.map((muscle)=>{
+        if(muscles[muscle].isFront){
+            frontMuscles.push('url("/assets/images/muscles/main/muscle-'+muscle+'.svg")');
+        }else{
+            backMuscles.push('url("/assets/images/muscles/main/muscle-'+muscle+'.svg")');
+        }
+    });
+    musclesImages.secondaryMuscles.map((muscle)=>{
+        if(muscles[muscle].isFront){
+            frontMuscles.push('url("/assets/images/muscles/secondary/muscle-'+muscle+'.svg")')
+        }else{
+            backMuscles.push('url("/assets/images/muscles/secondary/muscle-'+muscle+'.svg")')
+        }
+    });
+    frontMuscles.push('url("/assets/images/muscles/muscular_system_front.svg)');
+    backMuscles.push('url("/assets/images/muscles/muscular_system_back.svg)');
+    
+    let bodyMuscles = {
+        frontMuscles: frontMuscles,
+        backMuscles:backMuscles
+    }
+
+    return bodyMuscles;
+}
 
 const ExerciseInfo = (props) =>{
     const { classes } = props;
+    var bodyMuscles = null;
+    if(props.musclesImages) bodyMuscles = getMuscles(props.musclesImages);
     return(
         <Card className={classes.card}>
             <CardHeader
@@ -104,7 +133,19 @@ const ExerciseInfo = (props) =>{
             className={classes.cardHeader}
             />
             <div className={classes.imageContainer}>
-            {props.activeStepInfo.images && getExerciseImages(props.activeStepInfo.images).map((image,index)=>{
+            {props.musclesImages &&
+                <div>
+                    <div
+                        className={classes.cardMedia} 
+                        style={{backgroundImage:bodyMuscles.frontMuscles.join()}}>
+                    </div>
+                    <div
+                        className={classes.cardMedia} 
+                        style={{backgroundImage:bodyMuscles.backMuscles.join()}}>
+                    </div>
+                </div>
+            }
+            {!props.musclesImages && props.activeStepInfo.images && getExerciseImages(props.activeStepInfo.images).map((image,index)=>{
                 return(<CardMedia
                     key={index}
                     className={classes.cardMedia}
@@ -123,7 +164,7 @@ const ExerciseInfo = (props) =>{
                 </Typography>
                 {props.isWorkout && 
                 <pre className={classes.leftAligned}>
-                    <b>Sets:</b> {props.activeStepInfo.sets}    <b>Repetitions</b>:{props.activeStepInfo.repetitions}
+                    <b>Sets:</b> {props.activeStepInfo.sets}<b>Repetitions</b>:{props.activeStepInfo.repetitions}
                 </pre>
                 }
             </CardContent>

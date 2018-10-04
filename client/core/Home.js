@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import {getAdvices} from '../assets/advices-data'
+import {getAdvices} from '../assets/js/advices-data'
 
 const styles = theme => ({
   layout: {
@@ -38,25 +38,33 @@ const styles = theme => ({
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing.unit * 6,
+    padding: theme.spacing.unit * 4,
   },
   justify:{
     justifyContent: 'center'
   }
 });
 
-const Home = withStyles(styles)((props) => {
-  const { classes } = props;
-  const cards = getAdvices(65);
-  return (
+class Home extends React.Component {
+  state = {
+    cards : null
+  }
+  componentDidMount(){
+    this.setState({cards: getAdvices(3)})
+  }
+  render()
+  {
+    const { classes } = this.props;
+
+    return (
     <React.Fragment>
       <CssBaseline />
-      {cards &&
+      {this.state.cards &&
         <div>
           <main>
             <div className={classNames(classes.layout, classes.cardGrid)}>
               <Grid container spacing={40} className={classes.justify}>
-                {cards.map((card, index) => (
+                {this.state.cards.map((card, index) => (
                   <Grid item key={index} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
                       <CardMedia
@@ -80,11 +88,8 @@ const Home = withStyles(styles)((props) => {
           </main>
           {/* Footer */}
           <footer className={classes.footer}>
-            <Typography variant="title" align="center" gutterBottom>
-              Footer
-            </Typography>
             <Typography variant="subheading" align="center" color="textSecondary" component="p">
-              Something here to give the footer a purpose!
+              Develop & Desing by <a href="https://github.com/gabrielbaez04" target="_blank" rel="noopener noreferrer">Gabriel Baez</a>
             </Typography>
           </footer>
           {/* End footer */}
@@ -93,6 +98,10 @@ const Home = withStyles(styles)((props) => {
       </React.Fragment>
     );
   }
-)
+}
 
-export default Home;
+Home.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Home);

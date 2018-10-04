@@ -60,7 +60,8 @@ class Exercise extends React.Component {
 
     state = {
         exercise : [],
-        loading: false
+        loading: false,
+        musclesImages: null
     }
     populateExercise = (suggestion) => {
         //fetching comments
@@ -87,9 +88,30 @@ class Exercise extends React.Component {
             var arrImg = data.count > 0 ? data.results.map((image) => { return image.image}) : [];
             this.setState({exercise:Object.assign({},this.state.exercise,{images: data.count>0 
                 ? arrImg
-                : defaultImages}),loading: false}
+                : this.getDefaulImages(suggestion)}),loading: false}
             )
         })
+    }
+
+    getDefaulImages = (suggestion) =>{
+        let primaryMuscles = suggestion.muscles;
+        let secondaryMuscles = suggestion.muscles_secondary;
+        let musclesImages = {
+            primaryMuscles:[],
+            secondaryMuscles:[]
+        };
+        if(primaryMuscles.length == 0 && secondaryMuscles.length == 0)
+        {
+            return defaultImages;
+        }
+        primaryMuscles.forEach((muscle)=>{
+            musclesImages.primaryMuscles.push(muscle)
+        });
+        secondaryMuscles.forEach((muscle)=>{
+            musclesImages.secondaryMuscles.push(muscle)
+        });
+
+        this.setState({musclesImages: musclesImages})
     }
 
     handleReturn = () =>{
@@ -120,6 +142,7 @@ class Exercise extends React.Component {
                 <SearchBox populateExercise={this.populateExercise}/>
                 <ExerciseInfo
                     activeStepInfo={this.state.exercise}
+                    musclesImages = {this.state.musclesImages}
                 />
                 <ExerciseForm activeStepInfo={this.state.exercise}
                               handleNumberChange={this.handleNumberChange}/>
