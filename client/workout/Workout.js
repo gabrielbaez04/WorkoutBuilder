@@ -25,7 +25,7 @@ const styles = theme => ({
     leftAligned : {
         textAlign : 'left'
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
         root: {
           maxWidth: '60%',
         }

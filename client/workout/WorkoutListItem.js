@@ -14,6 +14,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteWorkout from './DeleteWorkout';
+import ExerciseMuscles from '../exercise/ExerciseMuscles';
+
 const styles = theme => ({
       card: {
         height: '100%',
@@ -58,20 +60,16 @@ const styles = theme => ({
         maxWidth: '100%',
         display:'flex',
         justifyContent:'center',
-        height: '250px'
+        height: '200px'
     },
+    bodyMusclesContainer:{
+        maxWidth: '50%',
+        minWidth: '50%',
+    }
 
   });
 class WorkoutListItem extends React.Component {
-    getWorkoutImages(){
-        var images=[];
-        this.props.workout.exercises.forEach((exercise)=>{
-            exercise.images.forEach((image)=>{
-                images.push(image); 
-            })          
-        })
-        return images.length > 4 ? images.slice(0,4) : images;
-    }
+
     onGoClick = () =>{
         this.props.handleGoClick(this.props.workout);
     }
@@ -88,14 +86,21 @@ class WorkoutListItem extends React.Component {
                     className={classes.cardHeader}
                     />
                     <div className={classes.imageContainer} onClick={this.onGoClick}>
-                    {this.getWorkoutImages().map((image,index)=>{
-                        return(<CardMedia
-                            key={index}
-                            className={classes.cardMedia}
-                            image={image}
-                            title="workout title"
-                        />)
-                    })}
+                    {
+                        this.props.workout.exercises.map((exercise,index)=>{
+                            if(index==2) return;
+                            return(
+                            <div
+                                key={index}
+                                className={classes.bodyMusclesContainer}>
+                                <ExerciseMuscles
+                                    exercise={exercise}
+                                    title="workout title"
+                                />
+                            </div>
+                            )
+                         })          
+                    }
                     </div>
                     <CardContent className={classes.cardContent}>
                         <Typography gutterBottom variant="headline" component="h2">

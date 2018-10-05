@@ -14,6 +14,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteExercise from './DeleteExercise';
+import ExerciseMuscles from './ExerciseMuscles';
 
 const styles = theme => ({
       card: {
@@ -59,7 +60,7 @@ const styles = theme => ({
         maxWidth: '100%',
         display:'flex',
         justifyContent:'center',
-        height: '250px'
+        height: '200px'
     },
 
   });
@@ -81,6 +82,8 @@ class ExerciseListItem extends React.Component {
     }
     render() {
         const {classes} = this.props;
+        const exerciseImages = this.getexerciseImages();
+        
         return (
             <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
                 <Card className={classes.card}>
@@ -89,14 +92,19 @@ class ExerciseListItem extends React.Component {
                     className={classes.cardHeader}
                     />
                     <div className={classes.imageContainer} onClick={this.onGoClick}>
-                    {this.getexerciseImages().map((image,index)=>{
+                    {exerciseImages.length > 0 ? 
+                    
+                    exerciseImages.map((image,index)=>{
                         return(<CardMedia
                             key={index}
                             className={classes.cardMedia}
                             image={image}
                             title="exercise title"
                         />)
-                    })}
+                    })
+                    :
+                    <ExerciseMuscles exercise={ this.props.exercise}/>
+                }
                     </div>
                     <CardContent className={classes.cardContent}>
                     </CardContent>

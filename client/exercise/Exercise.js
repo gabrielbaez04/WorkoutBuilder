@@ -6,8 +6,6 @@ import ExerciseForm from './ExerciseForm'
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import SearchBox from '../SearchBox/SearchBox';
-import front from '../assets/images/128px-Muscular_system.svg.png';
-import back from '../assets/images/128px-Muscular_system-back.svg.png';
 
 const styles = theme => ({
     root: {
@@ -54,8 +52,6 @@ const styles = theme => ({
     },
 });
 
-const defaultImages = [front, back];
-
 class Exercise extends React.Component {
 
     state = {
@@ -86,32 +82,9 @@ class Exercise extends React.Component {
         .then(response => response.json())
         .then(data => {
             var arrImg = data.count > 0 ? data.results.map((image) => { return image.image}) : [];
-            this.setState({exercise:Object.assign({},this.state.exercise,{images: data.count>0 
-                ? arrImg
-                : this.getDefaulImages(suggestion)}),loading: false}
+            this.setState({exercise:Object.assign({},this.state.exercise,{images: arrImg ? arrImg : []}),loading: false}
             )
         })
-    }
-
-    getDefaulImages = (suggestion) =>{
-        let primaryMuscles = suggestion.muscles;
-        let secondaryMuscles = suggestion.muscles_secondary;
-        let musclesImages = {
-            primaryMuscles:[],
-            secondaryMuscles:[]
-        };
-        if(primaryMuscles.length == 0 && secondaryMuscles.length == 0)
-        {
-            return defaultImages;
-        }
-        primaryMuscles.forEach((muscle)=>{
-            musclesImages.primaryMuscles.push(muscle)
-        });
-        secondaryMuscles.forEach((muscle)=>{
-            musclesImages.secondaryMuscles.push(muscle)
-        });
-
-        this.setState({musclesImages: musclesImages})
     }
 
     handleReturn = () =>{
@@ -142,7 +115,6 @@ class Exercise extends React.Component {
                 <SearchBox populateExercise={this.populateExercise}/>
                 <ExerciseInfo
                     activeStepInfo={this.state.exercise}
-                    musclesImages = {this.state.musclesImages}
                 />
                 <ExerciseForm activeStepInfo={this.state.exercise}
                               handleNumberChange={this.handleNumberChange}/>
