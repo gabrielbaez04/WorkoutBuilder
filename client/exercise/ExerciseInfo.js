@@ -135,17 +135,19 @@ const ExerciseInfo = (props) =>{
             })}
             </div>
             <CardContent className={classes.cardContent}>
-                <Typography component="p" className={classes.leftAligned}>
+                <Typography variant="subheading" className={classes.leftAligned}>
                    {stripHTMLTags(props.activeStepInfo.description)}
                 </Typography>
-                <br></br>
                 <Typography className={classes.title} color="textSecondary" className={classes.leftAligned}>
+                    {props.activeStepInfo.extra && <br/>}
                     {stripHTMLTags(props.activeStepInfo.extra)}
                 </Typography>
+                <br/>
                 {props.isWorkout && 
-                <pre className={classes.leftAligned}>
-                    <b>Sets:</b> {props.activeStepInfo.sets}<b>Repetitions</b>:{props.activeStepInfo.repetitions}
-                </pre>
+                <Typography variant="title" className={classes.leftAligned}>
+                   Sets:  {props.activeStepInfo.sets}  &emsp;
+                   Repetitions:{props.activeStepInfo.repetitions}
+                </Typography>
                 }
             </CardContent>
         

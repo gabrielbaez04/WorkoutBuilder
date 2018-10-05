@@ -26,7 +26,7 @@ const styles = theme => ({
     paddingTop: 5,
     paddingLeft:5,
     paddingRight:5,
-    marginTop: theme.spacing.unit
+    marginTop: '24px'
     ,
   [theme.breakpoints.up('sm')]: {
       maxWidth: '60%',

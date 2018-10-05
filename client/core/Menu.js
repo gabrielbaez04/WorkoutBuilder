@@ -30,7 +30,7 @@ class Menu extends React.Component{
     }
     return(
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{minHeight: '0px'}}>
         <Link to="/">
           <Typography variant="display1" color="secondary" aria-label="Home" style={isActive(this.props.history, "/")}>
             Workout Builder

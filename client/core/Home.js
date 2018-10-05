@@ -21,7 +21,7 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 3,
   },
   cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
+    padding: `${theme.spacing.unit * 3}px 0`,
   },
   card: {
     height: '100%',
@@ -76,7 +76,7 @@ class Home extends React.Component {
                         <Typography gutterBottom variant="headline" component="h2">
                           {card.title}
                         </Typography>
-                        <Typography>
+                        <Typography variant="subheading">
                           {card.body}
                         </Typography>
                       </CardContent>

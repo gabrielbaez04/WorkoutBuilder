@@ -170,11 +170,6 @@ var advices = [
         imageId: 33
     },
     {
-        title:'Weight loss trick: Make snacks count.',
-        body: 'Some of the most accessible snack foods—pretzels, crackers, chips—scratch the itch, but only temporarily. Before you know it, you’ll be reaching for more food after these carbs. “Make sure every snack is balanced, consisting of some carb, protein, fat, and fiber,” Delbridge says. “This is the best way to stay full and control the body’s insulin response and digestion.” Our suggestion? Unsalted nuts.',
-        imageId: 34
-    },
-    {
         title:'Weight loss trick: Spice it up.',
         body: 'Make a point to use more chili peppers and other spices in your cooking—in homemade soups, salad dressings, meat marinades, and even breakfast scrambles. Along with potentially lowering your risk of heart disease and cancer, spicy foods may help you lose weight Opens a New Window. . The secret weapon is capsaicin, the compound that gives peppers their spice. There’s some evidence Opens a New Window.  that it activates the same brain receptors that tell you you’re full, leading you to eat less. Capsaicin also may prompt your body to turn jiggly white fat into energy-burning brown fat.',
         imageId: 35
@@ -203,11 +198,6 @@ var advices = [
         title:'Work on your weak points.',
         body: 'If you can’t lock out your elbows on the bench press, try setting the safety rails in a power rack at about your sticking point on the lift. Put roughly 10% more than your one-rep maximum weight on the bar and then try to press it. You probably won’t be able to move the bar, but try hard anyway for 6–10 seconds. Do four to six reps, resting a few seconds in between, and then lighten the load to the weight you usually have trouble locking out. Your central nervous system should now be sufficiently fired up for you to lift it.',
         imageId: 40
-    },
-    {
-        title:'Train with someone stronger than you.',
-        body: 'Even if you have to invite the biggest animal in the gym to spot you, having someone around who inspires (or intimidates) you will always make you up your intensity.',
-        imageId: 41
     },
     {
         title:'Load the bar with small plates.',
