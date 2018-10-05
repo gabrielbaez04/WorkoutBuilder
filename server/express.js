@@ -42,6 +42,7 @@ app.use(helmet())
 app.use(cors())
 
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')))
+app.use('/assets',express.static(path.join(CURRENT_WORKING_DIR, 'client/assets')))
 app.use(express.static(path.join(CURRENT_WORKING_DIR, 'sw')))
 
 // mount routes

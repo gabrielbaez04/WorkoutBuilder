@@ -89,7 +89,7 @@ class Home extends React.Component {
           {/* Footer */}
           <footer className={classes.footer}>
             <Typography variant="subheading" align="center" color="textSecondary" component="p">
-              Develop & Desing by <a href="https://github.com/gabrielbaez04" target="_blank" rel="noopener noreferrer">Gabriel Baez</a>
+              Developed and designed by <a href="https://github.com/gabrielbaez04" target="_blank" rel="noopener noreferrer">Gabriel Baez</a>
             </Typography>
           </footer>
           {/* End footer */}

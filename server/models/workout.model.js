@@ -35,6 +35,12 @@ const Exercise = new mongoose.Schema({
   images: {
     type: [String],
   },
+  muscles: {
+    type: [Number],
+  },
+  muscles_secondary: {
+    type: [Number],
+  },
   created: {
     type: Date,
     default: Date.now
