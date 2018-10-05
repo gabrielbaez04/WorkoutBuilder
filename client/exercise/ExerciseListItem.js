@@ -21,7 +21,8 @@ const styles = theme => ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        textAlign: 'center'
         
       },
       cardMedia: {
@@ -37,14 +38,16 @@ const styles = theme => ({
       },
       cardActions:{
         display: 'flex',
-        justifyContent: 'space-around',
-        padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
+        padding: 0
       },
       button:{
         width: '100%',
-        backgroundColor:theme.palette.primary.main, 
-        color:'white',
-        padding: 0
+        backgroundColor:'rgb(234, 234, 234)', 
+        color:'rgb(130, 124, 124)',
+        padding: 0,
+        borderRadius: 0,
+        margin:0,
+        boxShadow:'none'
     },
       icon:{
         height: '1.2em',

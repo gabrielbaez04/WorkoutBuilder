@@ -21,7 +21,8 @@ const styles = theme => ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        textAlign: 'center'
         
       },
       cardMedia: {
@@ -33,18 +34,20 @@ const styles = theme => ({
         padding: `0px ${theme.spacing.unit}px`
       },
       cardHeader:{
-        padding: `${theme.spacing.unit}px`
+        padding: `${theme.spacing.unit}px`,
       },
       cardActions:{
         display: 'flex',
-        justifyContent: 'space-between',
-        padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
+        padding: 0,
       },
       button:{
           width: '100%',
-          backgroundColor:theme.palette.primary.main, 
-          color:'white',
-          padding: 0
+          backgroundColor:'rgb(234, 234, 234)', 
+          color:'rgb(130, 124, 124)',
+          padding: 0,
+          borderRadius: 0,
+          margin:0,
+          boxShadow:'none'
       },
       icon:{
         height: '1.2em',
@@ -65,8 +68,10 @@ const styles = theme => ({
     bodyMusclesContainer:{
         maxWidth: '50%',
         minWidth: '50%',
+    },
+    subtitle:{
+        color:'grey'
     }
-
   });
 class WorkoutListItem extends React.Component {
 
@@ -103,7 +108,7 @@ class WorkoutListItem extends React.Component {
                     }
                     </div>
                     <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="headline" component="h2">
+                        <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
                         {this.props.workout.exercises ? this.props.workout.exercises.length : 0} Exercises
                         </Typography>
                     </CardContent>

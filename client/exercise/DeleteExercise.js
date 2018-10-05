@@ -16,10 +16,10 @@ import { withStyles } from '@material-ui/core/styles';
 const styles= theme => ({
   button:{
     width: '100%',
-    backgroundColor:theme.palette.primary.main, 
-    color:'white',
+    backgroundColor:'rgb(234, 234, 234)',  
+    color:'rgb(130, 124, 124)',
     padding: 0,
-    borderRadius: '4px'
+    boxShadow:'none'
 },
 });
 

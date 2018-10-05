@@ -9,7 +9,7 @@ import {withStyles} from '@material-ui/core/styles'
 const styles = theme => ({});
 const isActive = (history, path) => {
     if (history.location.pathname == path)
-      return {color: '#5bb4dc'}
+      return {color: '#5bb4dc' , borderBottom: '3px solid'}
     else
       return {color: '#ffffff'}
   }
@@ -45,7 +45,9 @@ class AuthMenu extends React.Component{
                 <a onClick={this.update}> Sign out </a>
                 
                 <a  className="icon" onClick={this.handleMenuClick}>
-                    <i className="fa fa-bars"></i>
+                    {this.state.class == 'topnav' 
+                    ? <i className="fa fa-bars"></i>
+                    : <i className="fa fa-times"></i>}
                 </a>
             </div>
       )
