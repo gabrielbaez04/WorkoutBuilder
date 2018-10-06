@@ -7,12 +7,6 @@ import IconButton from '@material-ui/core/IconButton';
 import {withStyles} from '@material-ui/core/styles'
 
 const styles = theme => ({});
-const isActive = (history, path) => {
-    if (history.location.pathname == path)
-      return {color: '#5bb4dc' , borderBottom: '3px solid'}
-    else
-      return {color: '#ffffff'}
-  }
   
 class AuthMenu extends React.Component{
     state = {
@@ -27,7 +21,6 @@ class AuthMenu extends React.Component{
         this.props.updateMenu();
         
     }
-    
 
     render(){
         const css = require('./Menu.css');
@@ -35,11 +28,11 @@ class AuthMenu extends React.Component{
         return(
             <div className={this.state.class} id="myTopnav" style={{backgroundColor:theme.palette.primary.main, }}>
                 <Link to={{pathname: "/user/" + this.props.authenticated.user._id, updateMenu: this.props.updateMenu}}
-                    style={isActive(history, "/user/" + this.props.authenticated.user._id)} 
+                    style={this.props.style(history, "/user/" + this.props.authenticated.user._id)} 
                     className="active"
                     onClick={this.handleMenuClick}> My Profile </Link>
 
-                <Link to="/workout" style={isActive(history, "/workout")}
+                <Link to="/workout" style={this.props.style(history, "/workout")}
                     onClick={this.handleMenuClick}> Workouts </Link>
 
                 <a onClick={this.update}> Sign out </a>

@@ -23,8 +23,8 @@ class Menu extends React.Component{
   render()
   {
     const isActive = (history, path) => {
-      if (this.props.history.location.pathname == path)
-        return {color: '#5bb4dc'}
+      if (history.location.pathname == path)
+        return {color: '#5bb4dc' , borderBottom: '3px solid'}
       else
         return {color: '#ffffff'}
     }
