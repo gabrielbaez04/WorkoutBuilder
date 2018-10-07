@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 
-const Exercise = new mongoose.Schema({
+const ExerciseSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: 'Workout name is required'
+    required: 'Exercise name is required'
   }, 
   description: {
     type: String,
@@ -48,8 +48,21 @@ const Exercise = new mongoose.Schema({
   updated: Date
 });
 
-
 const WorkoutSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      trim: true,
+      required: 'Workout name is required'
+    },  
+    exercises:[ExerciseSchema],
+    created: {
+      type: Date,
+      default: Date.now
+    },
+});
+
+
+const RoutineSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: 'Authenticated user is required'
@@ -57,9 +70,9 @@ const WorkoutSchema = new mongoose.Schema({
       name: {
         type: String,
         trim: true,
-        required: 'Workout name is required'
+        required: 'Routine name is required'
       },  
-      exercises:[Exercise],
+      workouts:[WorkoutSchema],
       created: {
         type: Date,
         default: Date.now
@@ -68,4 +81,4 @@ const WorkoutSchema = new mongoose.Schema({
 });
 
 
-export default mongoose.model('Workout', WorkoutSchema)
+export default mongoose.model('Routine', RoutineSchema)

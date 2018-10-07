@@ -8,7 +8,7 @@ import helmet from 'helmet'
 import Template from './../template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
-import workoutRoutes from './routes/workout.routes'
+import routineRoutes from './routes/routine.routes'
 
 // modules for server side rendering
 import React from 'react'
@@ -48,7 +48,7 @@ app.use(express.static(path.join(CURRENT_WORKING_DIR, 'sw')))
 // mount routes
 app.use('/', userRoutes)
 app.use('/', authRoutes)
-app.use('/',workoutRoutes)
+app.use('/',routineRoutes)
 
 app.get('*', (req, res) => {
    const sheetsRegistry = new SheetsRegistry()
