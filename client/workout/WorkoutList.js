@@ -9,9 +9,9 @@ import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
-import {requestRoutines} from '../../redux/actions'
 import Grid from '@material-ui/core/Grid';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import {selectRoutine} from '../../redux/actions/routines'
 
 const styles = theme => ({
     cardGrid: {
@@ -41,14 +41,18 @@ const styles = theme => ({
 
   });
 
-class WorkoutList extends React.Component {
-    state = {
-        selectedWorkout: null,
-        editWorkout:null,
-        workouts : [],
-        error:'',
-        isNew: false
+const mapStateToProps = state => {
+    return {
+        routine: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ),
+        SelectedRoutine : state.routines.SelectedRoutine,
+        SelectedWorkout : state.routines.SelectedWorkout,
     }
+}
+
+class WorkoutList extends React.Component {
+
     handleGoClick = (workout) =>{
         this.setState({selectedWorkout: workout});
     }
@@ -65,23 +69,21 @@ class WorkoutList extends React.Component {
         this.setState({selectedWorkout: null, editWorkout: null});
     }
     handleReturn = () =>{
-        this.props.handleReturn();
+        this.props.dispatch(selectRoutine(null));
     }
     render() {
-        const {classes, routines} = this.props
+        const {classes, routine} = this.props
         return (
             <div>
-                {!this.state.selectedWorkout && !this.state.editWorkout && 
+                {!this.props.SelectedWorkout && 
                     <div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {this.props.workouts.length>0 && this.props.workouts.map(workout => (
+                                {routine.workouts.length>0 && routine.workouts.map(workout => (
                                     <WorkoutListItem
                                         key={workout._id} 
                                         workout={workout}
-                                        handleGoClick={this.handleGoClick}
-                                        handleEditClick={this.handleEditClick}
-                                        handleReturn = {this.handleReturnClick}/>
+                                        handleGoClick={this.handleGoClick}/>
                                 ))}
                             </Grid>
                         </div>
@@ -99,23 +101,21 @@ class WorkoutList extends React.Component {
                     </div>
                     
                 }
-                {this.state.selectedWorkout 
+                {false && this.props.SelectedWorkout 
                     && <Workout 
-                            workout={this.state.selectedWorkout}
                             handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
                         />
                 }
-                {this.state.editWorkout 
+                {this.props.SelectedWorkout 
                     && <ExerciseList 
-                            workout={this.state.editWorkout}
                             handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
-                            isNew = {this.state.isNew}
+                            isNew = {false}
                         />
                 }
             </div>
         );
     }
 }
-export default withStyles(styles)(WorkoutList);
+export default connect(mapStateToProps)(withStyles(styles)(WorkoutList));

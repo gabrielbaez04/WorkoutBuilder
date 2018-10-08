@@ -34,6 +34,27 @@ export const requestRoutines = (userId, token) =>{
 export const receiveRoutines = (routines) =>{
     return {
       type: RECEIVE_ROUTINES,
-      routines: routines
+      routines
     }
   }
+
+export const selectRoutine = (routineId) =>{
+    return {
+        type: SELECT_ROUTINE,
+        routineId,
+    }
+}
+
+export const selectWorkout = (workoutId) =>{
+    return {
+        type: SELECT_WORKOUT,
+        workoutId,
+    }
+}
+
+export const selectExercise = (exerciseId) =>{
+    return {
+        type: SELECT_EXERCISE,
+        exerciseId,
+    }
+}
