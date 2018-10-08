@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import ExerciseInfo from '../exercise/ExerciseInfo'
 import WorkoutForm from './WorkoutForm'
-import {update} from '../workout/api-workout'
+import {update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 
 const styles = theme => ({

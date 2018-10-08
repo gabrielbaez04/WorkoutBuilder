@@ -9,7 +9,7 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Exercise from './Exercise';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {create, update} from '../workout/api-workout'
+import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
 

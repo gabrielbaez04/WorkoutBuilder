@@ -4,6 +4,10 @@ import {BrowserRouter} from 'react-router-dom'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
 import {indigo, pink} from '@material-ui/core/colors'
 import { hot } from 'react-hot-loader'
+import { Provider } from 'react-redux'
+import configureStore from '../redux/configureStore'
+
+const store = configureStore()
 
 // Create a theme instance.
 const theme = createMuiTheme({
@@ -27,11 +31,13 @@ const theme = createMuiTheme({
 })
 
 const App = () => (
-  <BrowserRouter>
-    <MuiThemeProvider theme={theme}>
-      <MainRouter/>
-    </MuiThemeProvider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <MuiThemeProvider theme={theme}>
+        <MainRouter/>
+      </MuiThemeProvider>
+    </BrowserRouter>
+  </Provider>
 )
 
 export default hot(module)(App)

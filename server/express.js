@@ -25,6 +25,11 @@ import { indigo, pink } from '@material-ui/core/colors'
 //comment out before building for production
 import devBundle from './devBundle'
 
+import { Provider } from 'react-redux'
+import configureStore from '../redux/configureStore'
+
+const store = configureStore()
+
 const CURRENT_WORKING_DIR = process.cwd()
 const app = express()
 
@@ -74,13 +79,15 @@ app.get('*', (req, res) => {
    const generateClassName = createGenerateClassName()
    const context = {}
    const markup = ReactDOMServer.renderToString(
-      <StaticRouter location={req.url} context={context}>
-         <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-              <MainRouter/>
-            </MuiThemeProvider>
-         </JssProvider>
-      </StaticRouter>
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+              <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+                <MainRouter/>
+              </MuiThemeProvider>
+          </JssProvider>
+        </StaticRouter>
+      </Provider>
      )
     if (context.url) {
       return res.redirect(303, context.url)

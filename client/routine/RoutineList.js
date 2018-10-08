@@ -1,17 +1,16 @@
 import React from 'react';
-import Workout from './Workout';
-import ExerciseList from '../exercise/ExerciseList';
+import WorkoutList from '../workout/WorkoutList';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import {list} from './api-routine'
 import auth from './../auth/auth-helper'
-import WorkoutListItem from './WorkoutListItem';
+import RoutineListItem from './RoutineListItem';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import {requestRoutines} from '../../redux/actions'
-import Grid from '@material-ui/core/Grid';
-import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 
 const styles = theme => ({
     cardGrid: {
@@ -40,75 +39,66 @@ const styles = theme => ({
       },
 
   });
+const mapStateToProps = state => {
+    return {
+        routines: state.routines.routines
+    }
+}
 
-class WorkoutList extends React.Component {
+class RoutineList extends React.Component {
     state = {
-        selectedWorkout: null,
-        editWorkout:null,
-        workouts : [],
+        editRoutine:null,
         error:'',
         isNew: false
     }
-    handleGoClick = (workout) =>{
-        this.setState({selectedWorkout: workout});
-    }
-    handleBackClick = () =>{
-        this.setState({selectedWorkout: null, editWorkout:null});
-    }
-    handleEditClick = (workout) =>{
-        this.setState({editWorkout: workout, isNew : false});
+    handleEditClick = (routine) =>{
+        this.setState({editRoutine: routine, isNew : false});
+        
     }
     handleAddClick = () =>{
-        this.setState({editWorkout: [], isNew : true});
+        this.setState({editRoutine: [], isNew : true});
     }
     handleReturnClick = () =>{
-        this.setState({selectedWorkout: null, editWorkout: null});
+        this.setState({editRoutine: null});
+        this.fetchRoutines();
     }
-    handleReturn = () =>{
-        this.props.handleReturn();
+    fetchRoutines = () =>{
+        const jwt = auth.isAuthenticated()
+        this.props.dispatch(requestRoutines(jwt.user._id,jwt.token));
+    }
+    componentDidMount = () =>{
+        this.fetchRoutines();
     }
     render() {
         const {classes, routines} = this.props
         return (
             <div>
-                {!this.state.selectedWorkout && !this.state.editWorkout && 
+                {!this.state.editRoutine && 
                     <div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {this.props.workouts.length>0 && this.props.workouts.map(workout => (
-                                    <WorkoutListItem
-                                        key={workout._id} 
-                                        workout={workout}
-                                        handleGoClick={this.handleGoClick}
+                                {this.props.routines.map(routine => (
+                                    <RoutineListItem
+                                        key={routine._id} 
+                                        routine={routine}
                                         handleEditClick={this.handleEditClick}
                                         handleReturn = {this.handleReturnClick}/>
                                 ))}
                             </Grid>
                         </div>
                         <div className={classes.buttonContainer}>
-                            <Button size="small" onClick={this.handleReturn}>
-                                <KeyboardReturn />
-                                Return
-                            </Button>
                             <Button variant="contained" 
-                                    onClick={this.handleAddClick}
                                     className={classes.button}>
-                                Add Workout
+                                Add Routine
                             </Button>
                         </div>
                     </div>
                     
                 }
-                {this.state.selectedWorkout 
-                    && <Workout 
-                            workout={this.state.selectedWorkout}
-                            handleBackClick={this.handleBackClick}
-                            handleReturn = {this.handleReturnClick}
-                        />
-                }
-                {this.state.editWorkout 
-                    && <ExerciseList 
-                            workout={this.state.editWorkout}
+                
+                {this.state.editRoutine 
+                    && <WorkoutList 
+                            workouts={this.state.editRoutine.workouts}
                             handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
                             isNew = {this.state.isNew}
@@ -118,4 +108,4 @@ class WorkoutList extends React.Component {
         );
     }
 }
-export default withStyles(styles)(WorkoutList);
+export default connect(mapStateToProps)(withStyles(styles)(RoutineList))

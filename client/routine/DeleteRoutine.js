@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import auth from './../auth/auth-helper'
-import {remove} from '../routine/api-routine'
+import {remove} from './api-routine'
 import { withStyles } from '@material-ui/core/styles';
 
 const styles= theme => ({
