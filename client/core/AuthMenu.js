@@ -32,8 +32,8 @@ class AuthMenu extends React.Component{
                     className="active"
                     onClick={this.handleMenuClick}> My Profile </Link>
 
-                <Link to="/workout" style={this.props.style(history, "/workout")}
-                    onClick={this.handleMenuClick}> Workouts </Link>
+                <Link to="/routine" style={this.props.style(history, "/routine")}
+                    onClick={this.handleMenuClick}> Routines </Link>
 
                 <a onClick={this.update}> Sign out </a>
                 

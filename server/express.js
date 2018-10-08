@@ -8,7 +8,7 @@ import helmet from 'helmet'
 import Template from './../template'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
-import workoutRoutes from './routes/workout.routes'
+import routineRoutes from './routes/routine.routes'
 
 // modules for server side rendering
 import React from 'react'
@@ -24,6 +24,11 @@ import { indigo, pink } from '@material-ui/core/colors'
 
 //comment out before building for production
 import devBundle from './devBundle'
+
+import { Provider } from 'react-redux'
+import configureStore from '../redux/configureStore'
+
+const store = configureStore()
 
 const CURRENT_WORKING_DIR = process.cwd()
 const app = express()
@@ -48,7 +53,7 @@ app.use(express.static(path.join(CURRENT_WORKING_DIR, 'sw')))
 // mount routes
 app.use('/', userRoutes)
 app.use('/', authRoutes)
-app.use('/',workoutRoutes)
+app.use('/',routineRoutes)
 
 app.get('*', (req, res) => {
    const sheetsRegistry = new SheetsRegistry()
@@ -74,13 +79,15 @@ app.get('*', (req, res) => {
    const generateClassName = createGenerateClassName()
    const context = {}
    const markup = ReactDOMServer.renderToString(
-      <StaticRouter location={req.url} context={context}>
-         <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-            <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-              <MainRouter/>
-            </MuiThemeProvider>
-         </JssProvider>
-      </StaticRouter>
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+              <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+                <MainRouter/>
+              </MuiThemeProvider>
+          </JssProvider>
+        </StaticRouter>
+      </Provider>
      )
     if (context.url) {
       return res.redirect(303, context.url)

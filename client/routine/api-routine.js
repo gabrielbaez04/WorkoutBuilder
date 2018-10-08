@@ -1,13 +1,13 @@
 import auth from './../auth/auth-helper'
 
-const create = (workout) => {
-    return fetch('/api/workout', {
+const create = (routine) => {
+    return fetch('/api/routine', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(workout)
+        body: JSON.stringify(routine)
       })
       .then((response) => {
         return response.json()
@@ -15,7 +15,7 @@ const create = (workout) => {
   }
 
   const list = (params,credentials) => {
-    return fetch('/api/workouts/'+params.userId, {
+    return fetch('/api/routines/'+params.userId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -28,7 +28,7 @@ const create = (workout) => {
   }
 
   const read = (params, credentials) => {
-    return fetch('/api/workout/' + params.workoutId, {
+    return fetch('/api/routine/' + params.routineId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -40,15 +40,15 @@ const create = (workout) => {
     }).catch((err) => console.log(err))
   }
 
-  const update = (params, credentials, workout) => {
-    return fetch('/api/workout/' + params.workoutId, {
+  const update = (params, credentials, routine) => {
+    return fetch('/api/routine/' + params.routineId, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + credentials.t
       },
-      body: JSON.stringify(workout)
+      body: JSON.stringify(routine)
     }).then((response) => {
       return response.json()
     }).catch((err) => {
@@ -57,7 +57,7 @@ const create = (workout) => {
   }
 
   const remove = (params, credentials) => {
-    return fetch('/api/workout/' + params.workoutId, {
+    return fetch('/api/routine/' + params.routineId, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

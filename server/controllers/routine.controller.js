@@ -1,70 +1,70 @@
-import Workout from '../models/workout.model'
+import Routine from '../models/routine.model'
 import _ from 'lodash'
 import errorHandler from './../helpers/dbErrorHandler'
 
 const create = (req, res, next) => {
-    const workout = new Workout(req.body)
-    workout.save((err, result) => {
+    const routine = new Routine(req.body)
+    routine.save((err, result) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler.getErrorMessage(err)
         })
       }
-      res.json(workout)
+      res.json(routine)
     })
   }
 
 const list = (req, res, next, userId) => {
-    Workout.find({userId: userId},(err, Workouts) => {
+  Routine.find({userId: userId},(err, Routine) => {
         if (err) {
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)
         })
         }
-        res.json(Workouts)
+        res.json(Routine)
     })
 }
 
-const workoutByID = (req, res, next, id) => {
-    Workout.findById(id).exec((err, workout) => {
-      if (err || !workout)
+const routineByID = (req, res, next, id) => {
+    Routine.findById(id).exec((err, routine) => {
+      if (err || !routine)
         return res.status('400').json({
-          error: "workout not found"
+          error: "routine not found"
         })
-      req.workout = workout
+      req.routine = routine
       next()
     })
 }
 
 const read = (req, res) => {
-    return res.json(req.workout)
+    return res.json(req.routine)
 }
 
 const update = (req, res, next) => {
-    let workout = req.workout
-    workout = _.extend(workout, req.body)
-    workout.updated = Date.now()
-    workout.save((err) => {
+    let routine = req.routine
+    routine = _.extend(routine, req.body)
+    routine.updated = Date.now()
+    routine.save((err) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler.getErrorMessage(err)
         })
       }
-      res.json(workout)
+      res.json(routine)
     })
 }
 
 const remove = (req, res, next) => {
-    let workout = req.workout
-    workout.remove((err, deletedworkout) => {
+    let routine = req.routine
+    routine.remove((err, deletedroutine) => {
       if (err) {
         return res.status(400).json({
           error: errorHandler.getErrorMessage(err)
         })
       }
-      res.json(deletedworkout)
+      res.json(deletedroutine)
     })
 
 }
-  export default { create, workoutByID, read, list, remove, update }
+  export default { create, routineByID, read, list, remove, update }
 
