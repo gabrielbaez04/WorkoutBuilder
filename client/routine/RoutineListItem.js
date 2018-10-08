@@ -15,6 +15,8 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteRoutine from './DeleteRoutine';
 import ExerciseMuscles from '../exercise/ExerciseMuscles';
+import {selectRoutine} from '../../redux/actions/routines'
+import { connect } from 'react-redux'
 
 const styles = theme => ({
       card: {
@@ -76,7 +78,7 @@ const styles = theme => ({
 class WorkoutListItem extends React.Component {
 
     onEditClick = () =>{
-        this.props.handleEditClick(this.props.routine);
+        this.props.dispatch(selectRoutine(this.props.routine._id));
     }
     render() {
         const {classes} = this.props;
@@ -115,7 +117,7 @@ class WorkoutListItem extends React.Component {
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
-                        <DeleteRoutine workoutId={this.props.routine._id}
+                        <DeleteRoutine RoutineId={this.props.routine._id}
                                         handleReturn = {this.props.handleReturn}/>
                     </CardActions>
                 </Card>
@@ -124,4 +126,4 @@ class WorkoutListItem extends React.Component {
     }
 }
 
-export default withStyles(styles)(WorkoutListItem);
+export default connect()(withStyles(styles)(WorkoutListItem));

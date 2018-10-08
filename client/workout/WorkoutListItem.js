@@ -15,6 +15,8 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteWorkout from './DeleteWorkout';
 import ExerciseMuscles from '../exercise/ExerciseMuscles';
+import {selectWorkout} from '../../redux/actions/routines'
+import { connect } from 'react-redux'
 
 const styles = theme => ({
       card: {
@@ -79,7 +81,7 @@ class WorkoutListItem extends React.Component {
         this.props.handleGoClick(this.props.workout);
     }
     onEditClick = () =>{
-        this.props.handleEditClick(this.props.workout);
+        this.props.dispatch(selectWorkout(this.props.workout._id));
     }
     render() {
         const {classes} = this.props;
@@ -133,4 +135,4 @@ class WorkoutListItem extends React.Component {
     }
 }
 
-export default withStyles(styles)(WorkoutListItem);
+export default connect()(withStyles(styles)(WorkoutListItem));

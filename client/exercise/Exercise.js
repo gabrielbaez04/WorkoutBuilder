@@ -6,6 +6,8 @@ import ExerciseForm from './ExerciseForm'
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import SearchBox from '../SearchBox/SearchBox';
+import { connect } from 'react-redux'
+import { selectExercise } from '../../redux/actions/routines';
 
 const styles = theme => ({
     root: {
@@ -52,6 +54,19 @@ const styles = theme => ({
     },
 });
 
+const mapStateToProps = state => {
+    return {
+        exercise: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ).workouts.find(workout=>
+            workout._id == state.routines.SelectedWorkout
+        ).exercises.find(exercise=>
+            exercise._id == state.routines.SelectedExercise
+        ),
+    }
+}
+
+
 class Exercise extends React.Component {
 
     state = {
@@ -88,7 +103,7 @@ class Exercise extends React.Component {
     }
 
     handleReturn = () =>{
-        this.props.handleReturn();
+        this.props.dispatch(selectExercise(null));
     }
     handleExerciseSave = () =>{
         this.props.handleExerciseSave(this.state.exercise);
@@ -114,9 +129,9 @@ class Exercise extends React.Component {
             <div className={classes.root}>
                 <SearchBox populateExercise={this.populateExercise}/>
                 <ExerciseInfo
-                    activeStepInfo={this.state.exercise}
+                    activeStepInfo={this.props.exercise}
                 />
-                <ExerciseForm activeStepInfo={this.state.exercise}
+                <ExerciseForm activeStepInfo={this.props.exercise}
                               handleNumberChange={this.handleNumberChange}/>
                 <div className={classes.buttonContainer}>
                     <Button size="small" onClick={this.handleReturn}>
@@ -135,4 +150,4 @@ class Exercise extends React.Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Exercise);
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Exercise));

@@ -12,6 +12,8 @@ import TextField from '@material-ui/core/TextField';
 import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
+import {selectWorkout} from '../../redux/actions/routines'
+import { connect } from 'react-redux'
 
 const styles = theme => ({
     cardGrid: {
@@ -56,6 +58,17 @@ const styles = theme => ({
     }
   });
 
+const mapStateToProps = state => {
+    return {
+        workout: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ).workouts.find(workout=>
+            workout._id == state.routines.SelectedWorkout),
+        SelectedWorkout : state.routines.SelectedWorkout,
+        SelectedExercise : state.routines.SelectedExercise
+    }
+}
+
 class ExerciseList extends React.Component {
     state = {
         workout: {name:''},
@@ -76,7 +89,7 @@ class ExerciseList extends React.Component {
         this.setState({editExercise: []});
     }
     handleReturn = () =>{
-        this.props.handleReturn();
+        this.props.dispatch(selectWorkout(null));
     }
     handleChange = name => event => {
         this.setState({workout : Object.assign({},this.state.workout,{[name]: event.target.value})})
@@ -142,7 +155,7 @@ class ExerciseList extends React.Component {
         const {classes} = this.props
         return (
             <div>
-                {!this.state.editExercise && 
+                {!this.props.SelectedExercise && 
                     <div>
                         <div className={classes.workoutName}>
                             <TextField
@@ -156,7 +169,7 @@ class ExerciseList extends React.Component {
                         </div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {this.state.workout && this.state.workout.exercises && this.state.workout.exercises.map((exercise,index) => (
+                                {this.props.workout && this.props.workout.exercises && this.state.workout.exercises.map((exercise,index) => (
                                     <ExerciseListItem
                                         key={index} 
                                         exercise={exercise}
@@ -197,9 +210,9 @@ class ExerciseList extends React.Component {
                     </div>
                     
                 }
-                {this.state.editExercise
+                {this.props.SelectedExercise
                     && <Exercise
-                            exercise={this.state.editExercise}
+                            exercise={this.props.SelectedExercise}
                             handleReturn = {this.handleReturnClick}
                             handleExerciseSave = {this.handleExerciseSave}
                         />
@@ -209,4 +222,4 @@ class ExerciseList extends React.Component {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(ExerciseList)
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ExerciseList))

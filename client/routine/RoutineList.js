@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
-import {requestRoutines} from '../../redux/actions'
+import {requestRoutines} from '../../redux/actions/routines'
 
 const styles = theme => ({
     cardGrid: {
@@ -41,7 +41,8 @@ const styles = theme => ({
   });
 const mapStateToProps = state => {
     return {
-        routines: state.routines.routines
+        routines: state.routines.data,
+        SelectedRoutine : state.routines.SelectedRoutine
     }
 }
 
@@ -50,10 +51,6 @@ class RoutineList extends React.Component {
         editRoutine:null,
         error:'',
         isNew: false
-    }
-    handleEditClick = (routine) =>{
-        this.setState({editRoutine: routine, isNew : false});
-        
     }
     handleAddClick = () =>{
         this.setState({editRoutine: [], isNew : true});
@@ -73,15 +70,14 @@ class RoutineList extends React.Component {
         const {classes, routines} = this.props
         return (
             <div>
-                {!this.state.editRoutine && 
+                {!this.props.SelectedRoutine && 
                     <div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
                                 {this.props.routines.map(routine => (
                                     <RoutineListItem
-                                        key={routine._id} 
-                                        routine={routine}
-                                        handleEditClick={this.handleEditClick}
+                                        key = {routine._id}
+                                        routine = {routine}
                                         handleReturn = {this.handleReturnClick}/>
                                 ))}
                             </Grid>
@@ -96,10 +92,8 @@ class RoutineList extends React.Component {
                     
                 }
                 
-                {this.state.editRoutine 
+                {this.props.SelectedRoutine 
                     && <WorkoutList 
-                            workouts={this.state.editRoutine.workouts}
-                            handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
                             isNew = {this.state.isNew}
                         />

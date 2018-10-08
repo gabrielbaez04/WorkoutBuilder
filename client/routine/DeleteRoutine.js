@@ -22,17 +22,17 @@ const styles= theme => ({
 },
 });
 
-class DeleteWorkout extends Component {
+class DeleteRoutine extends Component {
   state = {
     open: false
   }
   clickButton = () => {
     this.setState({open: true})
   }
-  deleteWorkout = () => {
+  deleteRoutine = () => {
     const jwt = auth.isAuthenticated()
     remove({
-      workoutId: this.props.workoutId
+      RoutineId: this.props.RoutineId
     }, {t: jwt.token}).then((data) => {
       if (data.error) {
         console.log(data.error)
@@ -54,17 +54,17 @@ class DeleteWorkout extends Component {
             
           </Button>
         <Dialog open={this.state.open} onClose={this.handleRequestClose}>
-        <DialogTitle>{"Delete Workout"}</DialogTitle>
+        <DialogTitle>{"Delete Routine"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Confirm to delete this Workout.
+            Confirm to delete this Routine.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleRequestClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.deleteWorkout} color="secondary" autoFocus="autoFocus">
+          <Button onClick={this.deleteRoutine} color="secondary" autoFocus="autoFocus">
             Confirm
           </Button>
         </DialogActions>
@@ -73,7 +73,7 @@ class DeleteWorkout extends Component {
     )
   }
 }
-DeleteWorkout.propTypes = {
-  workoutId: PropTypes.any.isRequired
+DeleteRoutine.propTypes = {
+  RoutineId: PropTypes.any.isRequired
 }
-export default  withStyles(styles, { withTheme: true })(DeleteWorkout)
+export default  withStyles(styles, { withTheme: true })(DeleteRoutine)
