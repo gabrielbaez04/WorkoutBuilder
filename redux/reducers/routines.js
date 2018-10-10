@@ -4,7 +4,8 @@ import {
     RECEIVE_ROUTINES, 
     SELECT_ROUTINE,
     SELECT_WORKOUT,
-    SELECT_EXERCISE
+    SELECT_EXERCISE,
+    CREATE_EXERCISE
 } from '../actions/routines'
 
 const initialState = {
@@ -36,6 +37,18 @@ const routines = ( state=initialState , action) => {
         return Object.assign({}, state, {
           SelectedExercise: action.exerciseId,
       })
+
+      case CREATE_EXERCISE:
+      
+      case CREATE_EXERCISE:      
+        let newData = Object.assign({},state);
+          newData.data.find(routine=>
+          routine._id == newData.SelectedRoutine
+        ).workouts.find(workout=>
+          workout._id == newData.SelectedWorkout
+        ).exercises.push(action.exercise);
+
+        return Object.assign({}, state, {newData})
 
       default:
         return state
