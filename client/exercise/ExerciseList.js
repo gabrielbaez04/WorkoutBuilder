@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
-import {selectWorkout} from '../../redux/actions/routines'
+import {selectWorkout, selectExercise} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -64,17 +64,17 @@ const mapStateToProps = state => {
             routine._id == state.routines.SelectedRoutine
         ).workouts.find(workout=>
             workout._id == state.routines.SelectedWorkout),
+        SelectedRoutine : state.routines.SelectedRoutine,
         SelectedWorkout : state.routines.SelectedWorkout,
-        SelectedExercise : state.routines.SelectedExercise
+        SelectedExercise : state.routines.SelectedExercise,
+        routine: state.routines.data
     }
 }
 
 class ExerciseList extends React.Component {
     state = {
-        workout: {name:''},
-        editExercise:null, 
         saved: false,
-        isNew: false
+        isNew: this.props.isNew
     }
     handleGoClick = (Exercise) =>{
         this.setState({editExercise: Exercise});
@@ -86,7 +86,7 @@ class ExerciseList extends React.Component {
         this.setState({editExercise: Exercise});
     }
     handleAddClick = () =>{
-        this.setState({editExercise: []});
+        this.props.dispatch(selectExercise([]));
     }
     handleReturn = () =>{
         this.props.dispatch(selectWorkout(null));
@@ -94,24 +94,20 @@ class ExerciseList extends React.Component {
     handleChange = name => event => {
         this.setState({workout : Object.assign({},this.state.workout,{[name]: event.target.value})})
     };
-    handleExerciseSave = exercise => {
-        var match = false;
-        var exercises = [];
-        if(this.state.workout.exercises)
-        {
-            exercises = this.state.workout.exercises.map((ex,index)=>
-            {
-                if(ex._id == exercise._id)
-                {
-                    match = true;
-                    return exercise
-                }
-                return ex
-            });
-        }
-        !match && exercises.push(exercise);
-        this.setState({workout : Object.assign({},this.state.workout,{exercises: exercises})},
-                                ()=>{ this.clickSave()})
+    handleSave = () => {
+        const jwt = auth.isAuthenticated();
+        update({
+            routineId: this.props.SelectedRoutine
+            }, {
+            t: jwt.token
+            }, this.props.routine).then((data) => {
+            if (data.error) {
+                this.setState({error: data.error})
+            } else {
+                this.setState({saved: true})
+                this.props.dispatch(selectExercise(null));
+            }
+        })
     };
 
     handleExerciseDelete = exerciseId => {
@@ -119,38 +115,7 @@ class ExerciseList extends React.Component {
                                 {exercises: this.state.workout.exercises.filter((exercise)=>{return exercise._id != exerciseId})})},
                                 ()=>{ this.clickSave()})
     };
-    clickSave = () => {
-        if(this.state.isNew){
-            create(this.state.workout).then((data) => {
-                if (data.error) {
-                  this.setState({error: data.error})
-                } else {
-                    this.setState({workout:data, isNew: false, saved: true })
-                }
-              })
-        }else{
-            const jwt = auth.isAuthenticated();
-            update({
-                workoutId: this.state.workout._id
-                }, {
-                t: jwt.token
-                }, this.state.workout).then((data) => {
-                if (data.error) {
-                    this.setState({error: data.error})
-                } else {
-                    this.setState({workout: data, saved: true})
-                }
-            })
-        }
-      }
-      componentWillMount = () =>{
-        this.setState({ isNew: this.props.isNew,
-                        saved: false,
-                        workout : this.props.isNew
-                                ? Object.assign({},this.state.workout,{userId:auth.isAuthenticated().user._id,name:''})
-                                : this.props.workout
-                     })
-     }
+
     render() {
         const {classes} = this.props
         return (
@@ -162,14 +127,14 @@ class ExerciseList extends React.Component {
                                 id="standard-name"
                                 label="Workout Name"
                                 className={classes.textField}
-                                value={this.state.workout.name}
+                                value={this.props.workout.name}
                                 onChange={this.handleChange('name')}
                                 margin="normal"
                             />
                         </div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {this.props.workout && this.props.workout.exercises && this.state.workout.exercises.map((exercise,index) => (
+                                {this.props.workout && this.props.workout.exercises && this.props.workout.exercises.map((exercise,index) => (
                                     <ExerciseListItem
                                         key={index} 
                                         exercise={exercise}
@@ -188,14 +153,14 @@ class ExerciseList extends React.Component {
                             <Button variant="contained" 
                                     onClick={this.handleAddClick}
                                     className={classes.button}
-                                    disabled={this.state.workout.name == ""}
+                                    disabled={this.props.workout.name == ""}
                                     >
                                 Add Exercise
                             </Button>
                             <Button variant="contained" 
                                 onClick={this.clickSave}
                                 className={classes.button}
-                                disabled={this.state.workout.name == ""}>
+                                disabled={this.props.workout.name == ""}>
                                 Save
                             </Button>
                         </div>
@@ -212,9 +177,9 @@ class ExerciseList extends React.Component {
                 }
                 {this.props.SelectedExercise
                     && <Exercise
-                            exercise={this.props.SelectedExercise}
+                            exercise = {this.props.SelectedExercise}
                             handleReturn = {this.handleReturnClick}
-                            handleExerciseSave = {this.handleExerciseSave}
+                            handleExerciseSave = {this.handleSave}
                         />
                 }
             </div>
