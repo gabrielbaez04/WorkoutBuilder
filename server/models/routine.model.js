@@ -46,7 +46,7 @@ const ExerciseSchema = new mongoose.Schema({
     default: Date.now
   },
   updated: Date
-});
+}, { toObject: { versionKey: false } });
 
 const WorkoutSchema = new mongoose.Schema({
     name: {
@@ -59,7 +59,7 @@ const WorkoutSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     },
-});
+},  { toObject: { versionKey: false } });
 
 
 const RoutineSchema = new mongoose.Schema({
@@ -78,7 +78,7 @@ const RoutineSchema = new mongoose.Schema({
         default: Date.now
       },
       updated: Date
-});
+},  { toObject: { versionKey: false } });
 
 
 export default mongoose.model('Routine', RoutineSchema)

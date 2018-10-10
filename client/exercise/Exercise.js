@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import SearchBox from '../SearchBox/SearchBox';
 import { connect } from 'react-redux'
-import { selectExercise, createExercise} from '../../redux/actions/routines';
+import { selectExercise, createExercise, editExercise} from '../../redux/actions/routines';
 
 const styles = theme => ({
     root: {
@@ -54,6 +54,19 @@ const styles = theme => ({
     },
 });
 
+const mapStateToProps = state => {
+    return {
+        exercise: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ).workouts.find(workout=>
+            workout._id == state.routines.SelectedWorkout
+        ).exercises.find(exercise=>
+            exercise._id == state.routines.SelectedExercise
+        ),
+        SelectedExercise : state.routines.SelectedExercise
+    }
+}
+
 class Exercise extends React.Component {
 
     state = {
@@ -94,8 +107,10 @@ class Exercise extends React.Component {
     }
     handleExerciseSave = () =>{
         //
-        this.props.dispatch(createExercise(this.state.exercise));
-        this.props.handleExerciseSave(this.state.exercise);     
+        this.props.SelectedExercise == 'new'
+        ?this.props.dispatch(createExercise(this.state.exercise))
+        :this.props.dispatch(editExercise(this.state.exercise))
+        this.props.handleExerciseSave(this.state.exercise);   
     }
 
     handleExerciseDelete = () =>{
@@ -109,7 +124,7 @@ class Exercise extends React.Component {
     };
 
     componentWillMount(){
-        this.setState({exercise: this.props.exercise})
+        this.setState({exercise: this.props.exercise ? this.props.exercise : []})
     }
     render() {
         const {classes} = this.props;
@@ -138,4 +153,4 @@ class Exercise extends React.Component {
     }
 }
 
-export default connect()(withStyles(styles, { withTheme: true })(Exercise));
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Exercise));
