@@ -17,6 +17,7 @@ import DeleteExercise from './DeleteExercise';
 import ExerciseMuscles from './ExerciseMuscles';
 import {selectExercise} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
+import {deleteExercise} from '../../redux/actions/routines'
 
 const styles = theme => ({
       card: {
@@ -83,7 +84,9 @@ class ExerciseListItem extends React.Component {
         this.props.dispatch(selectExercise(this.props.exercise._id));
     }
     handleExerciseDelete = () =>{
-        this.props.handleExerciseDelete(this.props.exercise._id)
+        this.props.dispatch(deleteExercise(this.props.exercise._id))
+        this.props.handleSave();
+       
     }
     render() {
         const {classes} = this.props;

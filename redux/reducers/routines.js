@@ -5,7 +5,9 @@ import {
     SELECT_ROUTINE,
     SELECT_WORKOUT,
     SELECT_EXERCISE,
-    CREATE_EXERCISE
+    CREATE_EXERCISE,
+    UPDATE_EXERCISE,
+    DELETE_EXERCISE
 } from '../actions/routines'
 
 const initialState = {
@@ -17,43 +19,69 @@ const initialState = {
 }
 
 const routines = ( state=initialState , action) => {
-    switch (action.type) {     
-      case RECEIVE_ROUTINES:
-        return Object.assign({}, state, {
-          data: action.routines,
-        })
-
-      case SELECT_ROUTINE:
-        return Object.assign({}, state, {
-          SelectedRoutine: action.routineId,
-        })
-        
-      case SELECT_WORKOUT:
-        return Object.assign({}, state, {
-          SelectedWorkout: action.workoutId,
+  let newData, workout;
+  switch (action.type) {     
+    case RECEIVE_ROUTINES:
+      return Object.assign({}, state, {
+        data: action.routines,
       })
 
-      case SELECT_EXERCISE:
-        return Object.assign({}, state, {
-          SelectedExercise: action.exerciseId,
+    case SELECT_ROUTINE:
+      return Object.assign({}, state, {
+        SelectedRoutine: action.routineId,
       })
-
-      case CREATE_EXERCISE:
       
-      case CREATE_EXERCISE:      
-        let newData = Object.assign({},state);
-          newData.data.find(routine=>
-          routine._id == newData.SelectedRoutine
-        ).workouts.find(workout=>
-          workout._id == newData.SelectedWorkout
-        ).exercises.push(action.exercise);
+    case SELECT_WORKOUT:
+      return Object.assign({}, state, {
+        SelectedWorkout: action.workoutId,
+    })
 
-        return Object.assign({}, state, {newData})
+    case SELECT_EXERCISE:
+      return Object.assign({}, state, {
+        SelectedExercise: action.exerciseId,
+    })
 
-      default:
-        return state
-    }
-    
+    case CREATE_EXERCISE:      
+      newData = Object.assign({},state);
+      newData.data.find(routine=>
+        routine._id == newData.SelectedRoutine
+      ).workouts.find(workout=>
+        workout._id == newData.SelectedWorkout
+      ).exercises.push(action.exercise);
+      return Object.assign({}, state, {data:newData.data})
+
+    case UPDATE_EXERCISE: 
+      newData = Object.assign({},state);
+        workout = newData.data.find(routine=>
+        routine._id == newData.SelectedRoutine
+      ).workouts.find(workout=>
+        workout._id == newData.SelectedWorkout
+      )
+      workout.exercises = workout.exercises.map((exercise)=>{
+        if(exercise._id == newData.SelectedExercise){
+          return action.exercise
+        }
+          return exercise
+      });
+
+      return Object.assign({}, state, {data:newData.data})
+      
+      case DELETE_EXERCISE: 
+      newData = Object.assign({},state);
+        workout = newData.data.find(routine=>
+        routine._id == newData.SelectedRoutine
+      ).workouts.find(workout=>
+        workout._id == newData.SelectedWorkout
+      )
+      workout.exercises = workout.exercises.filter((exercise)=>{
+        return exercise._id != action.exerciseId
+      });
+
+      return Object.assign({}, state, {data:newData.data})
+
+    default:
+      return state
   }
+}
 
 export {routines}

@@ -81,3 +81,17 @@ export const createExercise = (exercise) =>{
         exercise,
     }
 }
+
+export const editExercise = (exercise) =>{
+    return {
+        type: UPDATE_EXERCISE,
+        exercise,
+    }
+}
+
+export const deleteExercise = (exerciseId) =>{
+    return {
+        type: DELETE_EXERCISE,
+        exerciseId,
+    }
+}

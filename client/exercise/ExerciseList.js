@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
-import {selectWorkout, selectExercise} from '../../redux/actions/routines'
+import {selectWorkout, selectExercise, requestRoutines} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -67,7 +67,9 @@ const mapStateToProps = state => {
         SelectedRoutine : state.routines.SelectedRoutine,
         SelectedWorkout : state.routines.SelectedWorkout,
         SelectedExercise : state.routines.SelectedExercise,
-        routine: state.routines.data
+        routine: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        )
     }
 }
 
@@ -79,14 +81,8 @@ class ExerciseList extends React.Component {
     handleGoClick = (Exercise) =>{
         this.setState({editExercise: Exercise});
     }
-    handleReturnClick = () =>{
-        this.setState({editExercise: null, editExercise:null});
-    }
-    handleEditClick = (Exercise) =>{
-        this.setState({editExercise: Exercise});
-    }
     handleAddClick = () =>{
-        this.props.dispatch(selectExercise([]));
+        this.props.dispatch(selectExercise('new'));
     }
     handleReturn = () =>{
         this.props.dispatch(selectWorkout(null));
@@ -106,6 +102,7 @@ class ExerciseList extends React.Component {
             } else {
                 this.setState({saved: true})
                 this.props.dispatch(selectExercise(null));
+                this.props.dispatch(requestRoutines(jwt.user._id,jwt.token));
             }
         })
     };
@@ -141,6 +138,7 @@ class ExerciseList extends React.Component {
                                         handleGoClick={this.handleGoClick}
                                         handleEditClick={this.handleEditClick}
                                         handleExerciseDelete = {this.handleExerciseDelete}
+                                        handleSave = {this.handleSave}
                                         />
                                 ))}
                             </Grid>
