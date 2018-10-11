@@ -82,7 +82,7 @@ export const createExercise = (exercise) =>{
     }
 }
 
-export const editExercise = (exercise) =>{
+export const updateExercise = (exercise) =>{
     return {
         type: UPDATE_EXERCISE,
         exercise,
@@ -93,5 +93,12 @@ export const deleteExercise = (exerciseId) =>{
     return {
         type: DELETE_EXERCISE,
         exerciseId,
+    }
+}
+
+export const updateWorkout = (workoutName) =>{
+    return {
+        type: UPDATE_WORKOUT,
+        workoutName
     }
 }

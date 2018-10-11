@@ -88,9 +88,10 @@ class WorkoutListItem extends React.Component {
                     <CardHeader
                     title={this.props.routine.name}
                     className={classes.cardHeader}
+                    onClick={this.onEditClick}
                     />
                     
-                    <div className={classes.imageContainer} onClick={this.onGoClick}>
+                    <div className={classes.imageContainer} onClick={this.onEditClick}>
                     {/*
                         this.props.workout.exercises.map((exercise,index)=>{
                             if(index==2) return;
@@ -107,7 +108,9 @@ class WorkoutListItem extends React.Component {
                          })    */      
                     }
                     </div>
-                    <CardContent className={classes.cardContent}>
+                    <CardContent 
+                        className={classes.cardContent}
+                        onClick={this.onEditClick}>
                         <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
                         {this.props.routine.workouts ? this.props.routine.workouts.length : 0} Workouts
                         </Typography>

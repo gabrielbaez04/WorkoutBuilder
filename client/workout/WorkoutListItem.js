@@ -77,9 +77,6 @@ const styles = theme => ({
   });
 class WorkoutListItem extends React.Component {
 
-    onGoClick = () =>{
-        this.props.handleGoClick(this.props.workout);
-    }
     onEditClick = () =>{
         this.props.dispatch(selectWorkout(this.props.workout._id));
     }
@@ -91,8 +88,9 @@ class WorkoutListItem extends React.Component {
                     <CardHeader
                     title={this.props.workout.name}
                     className={classes.cardHeader}
+                    onClick={this.onEditClick}
                     />
-                    <div className={classes.imageContainer} onClick={this.onGoClick}>
+                    <div className={classes.imageContainer} onClick={this.onEditClick}>
                     {
                         this.props.workout.exercises.map((exercise,index)=>{
                             if(index==2) return;
@@ -109,7 +107,8 @@ class WorkoutListItem extends React.Component {
                          })          
                     }
                     </div>
-                    <CardContent className={classes.cardContent}>
+                    <CardContent className={classes.cardContent}
+                        onClick={this.onEditClick}>
                         <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
                         {this.props.workout.exercises ? this.props.workout.exercises.length : 0} Exercises
                         </Typography>

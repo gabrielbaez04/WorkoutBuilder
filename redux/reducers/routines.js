@@ -4,10 +4,12 @@ import {
     RECEIVE_ROUTINES, 
     SELECT_ROUTINE,
     SELECT_WORKOUT,
+    UPDATE_WORKOUT,
     SELECT_EXERCISE,
     CREATE_EXERCISE,
     UPDATE_EXERCISE,
     DELETE_EXERCISE
+
 } from '../actions/routines'
 
 const initialState = {
@@ -16,6 +18,13 @@ const initialState = {
   SelectedWorkout: null,
   SelectedExercise: null
   
+}
+const getWorkout = (newData) =>{
+  return newData.data.find(routine=>
+    routine._id == newData.SelectedRoutine
+  ).workouts.find(workout=>
+    workout._id == newData.SelectedWorkout
+  )
 }
 
 const routines = ( state=initialState , action) => {
@@ -43,41 +52,30 @@ const routines = ( state=initialState , action) => {
 
     case CREATE_EXERCISE:      
       newData = Object.assign({},state);
-      newData.data.find(routine=>
-        routine._id == newData.SelectedRoutine
-      ).workouts.find(workout=>
-        workout._id == newData.SelectedWorkout
-      ).exercises.push(action.exercise);
+      getWorkout(newData).exercises.push(action.exercise);
       return Object.assign({}, state, {data:newData.data})
 
     case UPDATE_EXERCISE: 
       newData = Object.assign({},state);
-        workout = newData.data.find(routine=>
-        routine._id == newData.SelectedRoutine
-      ).workouts.find(workout=>
-        workout._id == newData.SelectedWorkout
-      )
+      workout = getWorkout(newData);
       workout.exercises = workout.exercises.map((exercise)=>{
-        if(exercise._id == newData.SelectedExercise){
-          return action.exercise
-        }
-          return exercise
+        return exercise._id == newData.SelectedExercise ? action.exercise : exercise
       });
-
       return Object.assign({}, state, {data:newData.data})
       
-      case DELETE_EXERCISE: 
+    case DELETE_EXERCISE: 
       newData = Object.assign({},state);
-        workout = newData.data.find(routine=>
-        routine._id == newData.SelectedRoutine
-      ).workouts.find(workout=>
-        workout._id == newData.SelectedWorkout
-      )
+      workout = getWorkout(newData);
       workout.exercises = workout.exercises.filter((exercise)=>{
         return exercise._id != action.exerciseId
       });
-
       return Object.assign({}, state, {data:newData.data})
+    
+      case UPDATE_WORKOUT:
+        newData = Object.assign({},state);
+        workout = getWorkout(newData);
+        workout.name = action.workoutName;
+        return Object.assign({}, state, {data:newData.data})
 
     default:
       return state

@@ -11,7 +11,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
-import {selectRoutine} from '../../redux/actions/routines'
+import {selectRoutine, selectWorkout} from '../../redux/actions/routines'
 
 const styles = theme => ({
     cardGrid: {
@@ -56,17 +56,11 @@ class WorkoutList extends React.Component {
     handleGoClick = (workout) =>{
         this.setState({selectedWorkout: workout});
     }
-    handleBackClick = () =>{
-        this.setState({selectedWorkout: null, editWorkout:null});
-    }
     handleEditClick = (workout) =>{
         this.setState({editWorkout: workout, isNew : false});
     }
     handleAddClick = () =>{
-        this.setState({editWorkout: [], isNew : true});
-    }
-    handleReturnClick = () =>{
-        this.setState({selectedWorkout: null, editWorkout: null});
+        this.props.dispatch(selectWorkout([]));
     }
     handleReturn = () =>{
         this.props.dispatch(selectRoutine(null));
@@ -111,7 +105,6 @@ class WorkoutList extends React.Component {
                     && <ExerciseList 
                             handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturnClick}
-                            isNew = {false}
                         />
                 }
             </div>
