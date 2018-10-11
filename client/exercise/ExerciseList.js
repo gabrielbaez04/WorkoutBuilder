@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
-import {selectWorkout, selectExercise, requestRoutines} from '../../redux/actions/routines'
+import {selectWorkout, selectExercise, requestRoutines, updateWorkout} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -64,8 +64,6 @@ const mapStateToProps = state => {
             routine._id == state.routines.SelectedRoutine
         ).workouts.find(workout=>
             workout._id == state.routines.SelectedWorkout),
-        SelectedRoutine : state.routines.SelectedRoutine,
-        SelectedWorkout : state.routines.SelectedWorkout,
         SelectedExercise : state.routines.SelectedExercise,
         routine: state.routines.data.find(routine=>
             routine._id == state.routines.SelectedRoutine
@@ -76,24 +74,29 @@ const mapStateToProps = state => {
 class ExerciseList extends React.Component {
     state = {
         saved: false,
-        isNew: this.props.isNew
+        name: this.props.workout ? this.props.workout.name : ''
     }
     handleGoClick = (Exercise) =>{
         this.setState({editExercise: Exercise});
     }
     handleAddClick = () =>{
-        this.props.dispatch(selectExercise('new'));
+        this.props.dispatch(selectExercise([]));
+    }
+    handleSaveClick = () =>{
+        this.props.dispatch(updateWorkout(this.state.name));
+        this.handleSave();
     }
     handleReturn = () =>{
         this.props.dispatch(selectWorkout(null));
     }
     handleChange = name => event => {
-        this.setState({workout : Object.assign({},this.state.workout,{[name]: event.target.value})})
+        this.setState({[name]: event.target.value})
     };
+    
     handleSave = () => {
         const jwt = auth.isAuthenticated();
         update({
-            routineId: this.props.SelectedRoutine
+            routineId: this.props.routine._id
             }, {
             t: jwt.token
             }, this.props.routine).then((data) => {
@@ -107,12 +110,6 @@ class ExerciseList extends React.Component {
         })
     };
 
-    handleExerciseDelete = exerciseId => {
-        this.setState({workout : Object.assign({},this.state.workout,
-                                {exercises: this.state.workout.exercises.filter((exercise)=>{return exercise._id != exerciseId})})},
-                                ()=>{ this.clickSave()})
-    };
-
     render() {
         const {classes} = this.props
         return (
@@ -124,7 +121,7 @@ class ExerciseList extends React.Component {
                                 id="standard-name"
                                 label="Workout Name"
                                 className={classes.textField}
-                                value={this.props.workout.name}
+                                value={this.state.name}
                                 onChange={this.handleChange('name')}
                                 margin="normal"
                             />
@@ -151,14 +148,14 @@ class ExerciseList extends React.Component {
                             <Button variant="contained" 
                                     onClick={this.handleAddClick}
                                     className={classes.button}
-                                    disabled={this.props.workout.name == ""}
+                                    disabled={this.state.name == ""}
                                     >
                                 Add Exercise
                             </Button>
                             <Button variant="contained" 
-                                onClick={this.clickSave}
+                                onClick={this.handleSaveClick}
                                 className={classes.button}
-                                disabled={this.props.workout.name == ""}>
+                                disabled={this.state.name == ""}>
                                 Save
                             </Button>
                         </div>

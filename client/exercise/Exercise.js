@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import SearchBox from '../SearchBox/SearchBox';
 import { connect } from 'react-redux'
-import { selectExercise, createExercise, editExercise} from '../../redux/actions/routines';
+import { selectExercise, createExercise, updateExercise} from '../../redux/actions/routines';
 
 const styles = theme => ({
     root: {
@@ -107,9 +107,9 @@ class Exercise extends React.Component {
     }
     handleExerciseSave = () =>{
         //
-        this.props.SelectedExercise == 'new'
+        this.props.SelectedExercise == []
         ?this.props.dispatch(createExercise(this.state.exercise))
-        :this.props.dispatch(editExercise(this.state.exercise))
+        :this.props.dispatch(updateExercise(this.state.exercise))
         this.props.handleExerciseSave(this.state.exercise);   
     }
 

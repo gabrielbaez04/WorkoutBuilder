@@ -15,9 +15,8 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteExercise from './DeleteExercise';
 import ExerciseMuscles from './ExerciseMuscles';
-import {selectExercise} from '../../redux/actions/routines'
+import {selectExercise, deleteExercise} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
-import {deleteExercise} from '../../redux/actions/routines'
 
 const styles = theme => ({
       card: {
@@ -78,8 +77,7 @@ class ExerciseListItem extends React.Component {
             imagesArr.push(image); 
         })
         return imagesArr.length > 3 ? imagesArr.slice(0,3) : imagesArr;
-    }
-    
+    }   
     onEditClick = () =>{
         this.props.dispatch(selectExercise(this.props.exercise._id));
     }
@@ -96,10 +94,11 @@ class ExerciseListItem extends React.Component {
             <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
                 <Card className={classes.card}>
                     <CardHeader
-                    title={this.props.exercise.name}
-                    className={classes.cardHeader}
+                        title={this.props.exercise.name}
+                        className={classes.cardHeader}
+                        onClick={this.onEditClick}
                     />
-                    <div className={classes.imageContainer} onClick={this.onGoClick}>
+                    <div className={classes.imageContainer} onClick={this.onEditClick}>
                     {exerciseImages.length > 0 ? 
                     
                     exerciseImages.map((image,index)=>{
@@ -114,8 +113,6 @@ class ExerciseListItem extends React.Component {
                     <ExerciseMuscles exercise={ this.props.exercise}/>
                 }
                     </div>
-                    <CardContent className={classes.cardContent}>
-                    </CardContent>
                     <CardActions className={classes.cardActions}>
                         <Button variant="contained" className={classes.button} 
                                 onClick={this.onEditClick}>
