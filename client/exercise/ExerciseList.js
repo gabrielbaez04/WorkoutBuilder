@@ -12,7 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
-import {selectWorkout, selectExercise, requestRoutines, updateWorkout} from '../../redux/actions/routines'
+import {selectWorkout, selectExercise, requestRoutines, updateWorkout,createWorkout, updateRoutine} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -65,9 +65,10 @@ const mapStateToProps = state => {
         ).workouts.find(workout=>
             workout._id == state.routines.SelectedWorkout),
         SelectedExercise : state.routines.SelectedExercise,
+        SelectedWorkout : state.routines.SelectedWorkout,
         routine: state.routines.data.find(routine=>
             routine._id == state.routines.SelectedRoutine
-        )
+        ),
     }
 }
 
@@ -83,8 +84,11 @@ class ExerciseList extends React.Component {
         this.props.dispatch(selectExercise([]));
     }
     handleSaveClick = () =>{
-        this.props.dispatch(updateWorkout(this.state.name));
+        this.props.SelectedWorkout.length == 0
+        ?this.props.dispatch(createWorkout(this.state.name))
+        :this.props.dispatch(updateWorkout(this.state.name));     
         this.handleSave();
+        
     }
     handleReturn = () =>{
         this.props.dispatch(selectWorkout(null));
@@ -103,9 +107,13 @@ class ExerciseList extends React.Component {
             if (data.error) {
                 this.setState({error: data.error})
             } else {
+                console.log(data);
                 this.setState({saved: true})
+                this.props.dispatch(updateRoutine(data));
                 this.props.dispatch(selectExercise(null));
-                this.props.dispatch(requestRoutines(jwt.user._id,jwt.token));
+                if(this.props.SelectedWorkout.length == 0){
+                    this.props.dispatch(selectWorkout(data.workouts[data.workouts.length-1]._id));
+                }
             }
         })
     };
@@ -148,7 +156,7 @@ class ExerciseList extends React.Component {
                             <Button variant="contained" 
                                     onClick={this.handleAddClick}
                                     className={classes.button}
-                                    disabled={this.state.name == ""}
+                                    disabled={this.props.SelectedWorkout.length == 0}
                                     >
                                 Add Exercise
                             </Button>

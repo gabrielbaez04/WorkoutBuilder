@@ -15,7 +15,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteWorkout from './DeleteWorkout';
 import ExerciseMuscles from '../exercise/ExerciseMuscles';
-import {selectWorkout} from '../../redux/actions/routines'
+import {selectWorkout, deleteWorkout} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
@@ -76,9 +76,15 @@ const styles = theme => ({
     }
   });
 class WorkoutListItem extends React.Component {
-
+    onGoClick = () =>{
+        this.props.handleGoClick(this.props.workout._id);
+    }
     onEditClick = () =>{
         this.props.dispatch(selectWorkout(this.props.workout._id));
+    }
+    onDeleteClick = () =>{
+        this.props.dispatch(deleteWorkout(this.props.workout._id))
+        this.props.handleSave();   
     }
     render() {
         const {classes} = this.props;
@@ -119,7 +125,7 @@ class WorkoutListItem extends React.Component {
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
                         <DeleteWorkout workoutId={this.props.workout._id}
-                                        handleReturn = {this.props.handleReturn}/>
+                                        handleWorkoutDelete = {this.onDeleteClick}/>
                         {this.props.workout.exercises.length > 0 && 
                             <Button variant="contained" className={classes.button} 
                                     onClick={this.onGoClick}>

@@ -11,6 +11,7 @@ import ExerciseInfo from '../exercise/ExerciseInfo'
 import WorkoutForm from './WorkoutForm'
 import {update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
+import { connect } from 'react-redux'
 
 const styles = theme => ({
     root: {
@@ -32,6 +33,18 @@ const styles = theme => ({
     },
   });
 
+const mapStateToProps = state => {
+    return {
+        workout: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ).workouts.find(workout=>
+            workout._id == state.routines.SelectedWorkout),
+        SelectedWorkout : state.routines.SelectedWorkout,
+        routine: state.routines.data.find(routine=>
+        routine._id == state.routines.SelectedRoutine
+        ),
+    }
+}
 class Workout extends React.Component {
     state = {
         activeStep: 0,
@@ -151,4 +164,4 @@ class Workout extends React.Component {
 }
 
 
-export default withStyles(styles, { withTheme: true })(Workout);
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Workout));
