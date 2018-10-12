@@ -11,7 +11,8 @@ import {
     UPDATE_EXERCISE,
     DELETE_EXERCISE,
     DELETE_WORKOUT,
-    UPDATE_ROUTINE
+    UPDATE_ROUTINE,
+    CREATE_ROUTINE
 
 } from '../actions/routines'
 
@@ -101,8 +102,13 @@ const routines = ( state=initialState , action) => {
     case UPDATE_ROUTINE:
       newData = Object.assign({},state);
       newData.data = newData.data.map(routine=>
-        routine._id == newData.SelectedRoutine ? action.routine : routine
+        routine._id == newData.SelectedRoutine ? Object.assign({},routine,{...action.routine}) : routine
       )
+      return Object.assign({}, state, {data:newData.data})
+
+    case CREATE_ROUTINE: 
+      newData = Object.assign({},state);
+      newData.data.push({...action.routine});
       return Object.assign({}, state, {data:newData.data})
 
     default:

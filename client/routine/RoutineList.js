@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
-import {requestRoutines} from '../../redux/actions/routines'
+import {requestRoutines, selectRoutine} from '../../redux/actions/routines'
 
 const styles = theme => ({
     cardGrid: {
@@ -48,15 +48,13 @@ const mapStateToProps = state => {
 
 class RoutineList extends React.Component {
     state = {
-        editRoutine:null,
         error:'',
-        isNew: false
+        saved: false
     }
     handleAddClick = () =>{
-        this.setState({editRoutine: [], isNew : true});
+        this.props.dispatch(selectRoutine([]));
     }
     handleReturnClick = () =>{
-        this.setState({editRoutine: null});
         this.fetchRoutines();
     }
     fetchRoutines = () =>{
@@ -77,14 +75,14 @@ class RoutineList extends React.Component {
                                 {this.props.routines.map(routine => (
                                     <RoutineListItem
                                         key = {routine._id}
-                                        routine = {routine}
-                                        handleReturn = {this.handleReturnClick}/>
+                                        routine = {routine}/>
                                 ))}
                             </Grid>
                         </div>
                         <div className={classes.buttonContainer}>
                             <Button variant="contained" 
-                                    className={classes.button}>
+                                    className={classes.button}
+                                    onClick={this.handleAddClick}>
                                 Add Routine
                             </Button>
                         </div>
@@ -95,7 +93,6 @@ class RoutineList extends React.Component {
                 {this.props.SelectedRoutine 
                     && <WorkoutList 
                             handleReturn = {this.handleReturnClick}
-                            isNew = {this.state.isNew}
                         />
                 }
             </div>

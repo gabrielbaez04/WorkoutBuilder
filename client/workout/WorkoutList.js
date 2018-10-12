@@ -11,8 +11,9 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
-import {selectRoutine, selectWorkout, deleteWorkout, requestRoutines, updateRoutine} from '../../redux/actions/routines'
-import { update } from '../routine/api-routine'
+import {selectRoutine, selectWorkout, deleteWorkout, requestRoutines, updateRoutine, createRoutine} from '../../redux/actions/routines'
+import { update ,create } from '../routine/api-routine'
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
     cardGrid: {
@@ -33,11 +34,20 @@ const styles = theme => ({
       buttonContainer:{
           display:'flex',
           justifyContent: 'center',
-          marginBottom: '10px'
+          marginBottom: '10px',
       },
       button:{
-          backgroundColor:theme.palette.primary.main, 
-          color:'white',
+        backgroundColor:theme.palette.primary.main, 
+        color:'white',
+        margin: '0px 5px'
+    },
+      routineName:{
+          textAlign: 'center',
+          fontWeight:'bold'
+      },
+      textField:{
+          width:'80%',
+          
       },
 
   });
@@ -56,7 +66,8 @@ class WorkoutList extends React.Component {
     state = {
         error: '',
         saved: false,
-        run: false
+        run: false,
+        name: this.props.routine ? this.props.routine.name : ''
     }
 
     handleGoClick = (workoutId) =>{
@@ -73,23 +84,49 @@ class WorkoutList extends React.Component {
         this.props.dispatch(selectWorkout(null));   
         this.setState({run: false});     
     }
+    handleBack = () =>{
+        this.props.dispatch(selectRoutine(null));
+    }
+    handleSaveClick = () =>{
+        this.props.SelectedRoutine.length == 0
+        ?this.props.dispatch(createRoutine({name:this.state.name}))
+        :this.props.dispatch(updateRoutine({name:this.state.name}));     
+        this.handleSave();
+    }
+
+    handleChange = name => event => {
+        this.setState({[name]: event.target.value})
+    };
+    
     handleSave = () => {
         const jwt = auth.isAuthenticated();
-        update({
-            routineId: this.props.routine._id
-            }, {
-            t: jwt.token
-            }, this.props.routine).then((data) => {
-            if (data.error) {
-                this.setState({error: data.error})
-            } else {
-                this.setState({saved: true})
-                this.props.dispatch(updateRoutine(data));
-            }
-        })/*.then(
-            this.props.SelectedRoutine.length == 0 &&
-            this.props.dispatch(selectLastRoutine())
-        )*/
+        if(this.props.SelectedRoutine.length > 0)
+        {
+            update({
+                routineId: this.props.routine._id
+                }, {
+                t: jwt.token
+                }, this.props.routine).then((data) => {
+                if (data.error) {
+                    this.setState({error: data.error})
+                } else {
+                    this.setState({saved: true})
+                    this.props.dispatch(updateRoutine(data));                  
+                }
+            })
+        }
+        else
+        {
+            create({name:this.state.name, userId: jwt.user._id}).then((data) => {
+                if (data.error) {
+                    this.setState({error: data.error})
+                } else {
+                    this.setState({saved: true})
+                    this.props.dispatch(createRoutine(data));                  
+                }
+            })
+        }
+
     };
 
     render() {
@@ -98,9 +135,19 @@ class WorkoutList extends React.Component {
             <div>
                 {!this.props.SelectedWorkout && 
                     <div>
+                        <div className={classes.routineName}>
+                            <TextField
+                                id="standard-name"
+                                label="Routine Name"
+                                className={classes.textField}
+                                value={this.state.name}
+                                onChange={this.handleChange('name')}
+                                margin="normal"
+                            />
+                        </div>
                         <div className={classNames(classes.layout, classes.cardGrid)}>
                             <Grid container spacing={40} className={classes.justify}>
-                                {routine.workouts.length>0 && routine.workouts.map(workout => (
+                                {routine && routine.workouts && routine.workouts.map(workout => (
                                     <WorkoutListItem
                                         key={workout._id} 
                                         workout={workout}
@@ -111,14 +158,21 @@ class WorkoutList extends React.Component {
                             </Grid>
                         </div>
                         <div className={classes.buttonContainer}>
-                            <Button size="small" onClick={this.handleReturn}>
+                            <Button size="small" onClick={this.handleBack}>
                                 <KeyboardReturn />
                                 Return
                             </Button>
                             <Button variant="contained" 
                                     onClick={this.handleAddClick}
-                                    className={classes.button}>
+                                    className={classes.button}
+                                    disabled={this.props.SelectedRoutine.length == 0}>
                                 Add Workout
+                            </Button>
+                            <Button variant="contained" 
+                                onClick={this.handleSaveClick}
+                                className={classes.button}
+                                disabled={this.state.name == ""}>
+                                Save
                             </Button>
                         </div>
                     </div>

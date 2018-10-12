@@ -41,6 +41,7 @@ const create = (routine) => {
   }
 
   const update = (params, credentials, routine) => {
+    console.log(routine);
     return fetch('/api/routine/' + params.routineId, {
       method: 'PUT',
       headers: {

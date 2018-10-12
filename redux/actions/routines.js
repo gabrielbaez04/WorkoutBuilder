@@ -107,3 +107,10 @@ export const updateRoutine = (routine) =>{
         routine
     }
 }
+
+export const createRoutine = (routine) =>{
+    return {
+        type: CREATE_ROUTINE,
+        routine
+    }
+}
