@@ -11,7 +11,8 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
-import {selectRoutine, selectWorkout} from '../../redux/actions/routines'
+import {selectRoutine, selectWorkout, deleteWorkout, requestRoutines, updateRoutine} from '../../redux/actions/routines'
+import { update } from '../routine/api-routine'
 
 const styles = theme => ({
     cardGrid: {
@@ -52,9 +53,15 @@ const mapStateToProps = state => {
 }
 
 class WorkoutList extends React.Component {
+    state = {
+        error: '',
+        saved: false,
+        run: false
+    }
 
-    handleGoClick = (workout) =>{
-        this.setState({selectedWorkout: workout});
+    handleGoClick = (workoutId) =>{
+        this.setState({run: true});
+        this.props.dispatch(selectWorkout(workoutId));
     }
     handleEditClick = (workout) =>{
         this.setState({editWorkout: workout, isNew : false});
@@ -63,8 +70,28 @@ class WorkoutList extends React.Component {
         this.props.dispatch(selectWorkout([]));
     }
     handleReturn = () =>{
-        this.props.dispatch(selectRoutine(null));
+        this.props.dispatch(selectWorkout(null));   
+        this.setState({run: false});     
     }
+    handleSave = () => {
+        const jwt = auth.isAuthenticated();
+        update({
+            routineId: this.props.routine._id
+            }, {
+            t: jwt.token
+            }, this.props.routine).then((data) => {
+            if (data.error) {
+                this.setState({error: data.error})
+            } else {
+                this.setState({saved: true})
+                this.props.dispatch(updateRoutine(data));
+            }
+        })/*.then(
+            this.props.SelectedRoutine.length == 0 &&
+            this.props.dispatch(selectLastRoutine())
+        )*/
+    };
+
     render() {
         const {classes, routine} = this.props
         return (
@@ -77,7 +104,9 @@ class WorkoutList extends React.Component {
                                     <WorkoutListItem
                                         key={workout._id} 
                                         workout={workout}
-                                        handleGoClick={this.handleGoClick}/>
+                                        handleGoClick={this.handleGoClick}
+                                        handleSave={this.handleSave}
+                                        />
                                 ))}
                             </Grid>
                         </div>
@@ -95,16 +124,15 @@ class WorkoutList extends React.Component {
                     </div>
                     
                 }
-                {false && this.props.SelectedWorkout 
+                {this.state.run && this.props.SelectedWorkout 
                     && <Workout 
                             handleBackClick={this.handleBackClick}
-                            handleReturn = {this.handleReturnClick}
+                            handleReturn = {this.handleReturn}
                         />
                 }
-                {this.props.SelectedWorkout 
+                {!this.state.run && this.props.SelectedWorkout 
                     && <ExerciseList 
                             handleBackClick={this.handleBackClick}
-                            handleReturn = {this.handleReturnClick}
                         />
                 }
             </div>

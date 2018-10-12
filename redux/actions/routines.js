@@ -31,22 +31,6 @@ export const requestRoutines = (userId, token) =>{
     }
 }
 
-export const updateRoutine = (routine, token) =>{
-    return fetch('/api/routine/' + routine._id, {
-        method: 'PUT',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify(routine)
-    }).then((response) => {
-        return response.json()
-    }).catch((err) => {
-        console.log(err)
-    })
-}
-
 export const receiveRoutines = (routines) =>{
     return {
       type: RECEIVE_ROUTINES,
@@ -100,5 +84,26 @@ export const updateWorkout = (workoutName) =>{
     return {
         type: UPDATE_WORKOUT,
         workoutName
+    }
+}
+
+export const createWorkout = (workoutName) =>{
+    return {
+        type: CREATE_WORKOUT,
+        workoutName
+    }
+}
+
+export const deleteWorkout = (workoutId) =>{
+    return {
+        type: DELETE_WORKOUT,
+        workoutId
+    }
+}
+
+export const updateRoutine = (routine) =>{
+    return {
+        type: UPDATE_ROUTINE,
+        routine
     }
 }

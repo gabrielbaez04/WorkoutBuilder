@@ -107,7 +107,7 @@ class Exercise extends React.Component {
     }
     handleExerciseSave = () =>{
         //
-        this.props.SelectedExercise == []
+        this.props.SelectedExercise.length == 0
         ?this.props.dispatch(createExercise(this.state.exercise))
         :this.props.dispatch(updateExercise(this.state.exercise))
         this.props.handleExerciseSave(this.state.exercise);   

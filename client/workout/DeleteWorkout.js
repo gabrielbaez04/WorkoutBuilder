@@ -29,6 +29,11 @@ class DeleteWorkout extends Component {
   clickButton = () => {
     this.setState({open: true})
   }
+  handleWorkoutDelete = () =>{
+    this.props.handleWorkoutDelete();
+    this.setState({open: false})
+  }
+
   deleteWorkout = () => {
     const jwt = auth.isAuthenticated()
     remove({
@@ -64,7 +69,7 @@ class DeleteWorkout extends Component {
           <Button onClick={this.handleRequestClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.deleteWorkout} color="secondary" autoFocus="autoFocus">
+          <Button onClick={this.handleWorkoutDelete} color="secondary" autoFocus="autoFocus">
             Confirm
           </Button>
         </DialogActions>
