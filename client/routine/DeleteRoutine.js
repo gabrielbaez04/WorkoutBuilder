@@ -11,6 +11,8 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import auth from './../auth/auth-helper'
 import {remove} from './api-routine'
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux'
+import {deleteRoutine} from '../../redux/actions/routines'
 
 const styles= theme => ({
   button:{
@@ -29,15 +31,16 @@ class DeleteRoutine extends Component {
   clickButton = () => {
     this.setState({open: true})
   }
-  deleteRoutine = () => {
+  handleDelete = () => {
     const jwt = auth.isAuthenticated()
     remove({
-      RoutineId: this.props.RoutineId
+      routineId: this.props.RoutineId
     }, {t: jwt.token}).then((data) => {
       if (data.error) {
         console.log(data.error)
       } else {
-        this.props.handleReturn();
+        this.handleRequestClose();
+        this.props.dispatch(deleteRoutine(this.props.RoutineId))
       }
     })
   }
@@ -64,7 +67,7 @@ class DeleteRoutine extends Component {
           <Button onClick={this.handleRequestClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.deleteRoutine} color="secondary" autoFocus="autoFocus">
+          <Button onClick={this.handleDelete} color="secondary" autoFocus="autoFocus">
             Confirm
           </Button>
         </DialogActions>
@@ -76,4 +79,4 @@ class DeleteRoutine extends Component {
 DeleteRoutine.propTypes = {
   RoutineId: PropTypes.any.isRequired
 }
-export default  withStyles(styles, { withTheme: true })(DeleteRoutine)
+export default  connect()(withStyles(styles, { withTheme: true })(DeleteRoutine))

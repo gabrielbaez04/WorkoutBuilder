@@ -12,7 +12,8 @@ import WorkoutForm from './WorkoutForm'
 import {update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import { connect } from 'react-redux'
-
+import {updateWorkoutData, updateRoutine} from '../../redux/actions/routines'
+updateWorkoutData
 const styles = theme => ({
     root: {
         maxWidth: '95%',
@@ -41,7 +42,7 @@ const mapStateToProps = state => {
             workout._id == state.routines.SelectedWorkout),
         SelectedWorkout : state.routines.SelectedWorkout,
         routine: state.routines.data.find(routine=>
-        routine._id == state.routines.SelectedRoutine
+            routine._id == state.routines.SelectedRoutine
         ),
     }
 }
@@ -70,15 +71,17 @@ class Workout extends React.Component {
 
     handleSaveAndReturn = () =>{
         this.saveRepsAndWeights();
+        this.props.dispatch(updateWorkoutData(this.state.workout)); 
         const jwt = auth.isAuthenticated();
         update({
-            workoutId: this.state.workout._id
+            routineId: this.props.routine._id
             }, {
             t: jwt.token
-            }, this.state.workout).then((data) => {
+            }, this.props.routine).then((data) => {
             if (data.error) {
                 this.setState({error: data.error})
             } else {
+                this.props.dispatch(updateRoutine(data)); 
                 this.handleReturn();
             }
         })
@@ -96,6 +99,7 @@ class Workout extends React.Component {
         this.setState({
             workout: newWorkout
         });
+        
     };
 
     saveRepsAndWeights = () =>{
