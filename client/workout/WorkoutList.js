@@ -11,7 +11,7 @@ import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
-import {selectRoutine, selectWorkout, deleteWorkout, requestRoutines, updateRoutine, createRoutine} from '../../redux/actions/routines'
+import {selectRoutine, selectWorkout, deleteWorkout, requestRoutines, updateRoutine, createRoutine, updateRoutineName} from '../../redux/actions/routines'
 import { update ,create } from '../routine/api-routine'
 import TextField from '@material-ui/core/TextField';
 
@@ -88,9 +88,8 @@ class WorkoutList extends React.Component {
         this.props.dispatch(selectRoutine(null));
     }
     handleSaveClick = () =>{
-        this.props.SelectedRoutine.length == 0
-        ?this.props.dispatch(createRoutine({name:this.state.name}))
-        :this.props.dispatch(updateRoutine({name:this.state.name}));     
+        this.props.SelectedRoutine.length > 0
+        && this.props.dispatch(updateRoutineName(this.state.name));     
         this.handleSave();
     }
 
@@ -111,7 +110,7 @@ class WorkoutList extends React.Component {
                     this.setState({error: data.error})
                 } else {
                     this.setState({saved: true})
-                    this.props.dispatch(updateRoutine(data));                  
+                    this.props.dispatch(updateRoutine(data)); 
                 }
             })
         }
@@ -121,8 +120,11 @@ class WorkoutList extends React.Component {
                 if (data.error) {
                     this.setState({error: data.error})
                 } else {
-                    this.setState({saved: true})
-                    this.props.dispatch(createRoutine(data));                  
+                    this.setState({saved: true}) 
+                    this.props.dispatch(createRoutine(data))
+                    if(this.props.SelectedRoutine.length == 0){
+                        this.props.dispatch(selectRoutine(data._id));
+                    }                 
                 }
             })
         }

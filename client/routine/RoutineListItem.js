@@ -120,8 +120,7 @@ class WorkoutListItem extends React.Component {
                                 onClick={this.onEditClick}>
                             <EditOutlinedIcon className={classes.icon}/>
                         </Button>
-                        <DeleteRoutine RoutineId={this.props.routine._id}
-                                        handleReturn = {this.props.handleReturn}/>
+                        <DeleteRoutine RoutineId={this.props.routine._id}/>
                     </CardActions>
                 </Card>
             </Grid>

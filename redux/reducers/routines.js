@@ -12,7 +12,10 @@ import {
     DELETE_EXERCISE,
     DELETE_WORKOUT,
     UPDATE_ROUTINE,
-    CREATE_ROUTINE
+    CREATE_ROUTINE,
+    UPDATE_ROUTINE_NAME,
+    DELETE_ROUTINE,
+    UPDATE_WORKOUT_DATA
 
 } from '../actions/routines'
 
@@ -109,6 +112,24 @@ const routines = ( state=initialState , action) => {
     case CREATE_ROUTINE: 
       newData = Object.assign({},state);
       newData.data.push({...action.routine});
+      return Object.assign({}, state, {data:newData.data})
+
+    case UPDATE_ROUTINE_NAME:
+      newData = Object.assign({},state);
+      routine = getRoutine(newData);
+      routine.name = action.routineName;
+      return Object.assign({}, state, {data:newData.data})
+
+    case DELETE_ROUTINE:
+      newData = Object.assign({},state);
+      newData.data = newData.data.filter((routine)=>{
+        return routine._id != action.routineId
+      });
+      return Object.assign({}, state, {data:newData.data})
+
+    case UPDATE_WORKOUT_DATA:
+      newData = Object.assign({},state);
+      workout = Object.assign({},getWorkout(newData),{...action.workout});
       return Object.assign({}, state, {data:newData.data})
 
     default:
