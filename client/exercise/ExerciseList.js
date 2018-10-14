@@ -107,7 +107,6 @@ class ExerciseList extends React.Component {
             if (data.error) {
                 this.setState({error: data.error})
             } else {
-                console.log(data);
                 this.setState({saved: true})
                 this.props.dispatch(updateRoutine(data));
                 this.props.dispatch(selectExercise(null));

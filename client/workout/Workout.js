@@ -2,26 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import ExerciseInfo from '../exercise/ExerciseInfo'
 import WorkoutForm from './WorkoutForm'
-import {update} from '../routine/api-routine'
+import { update } from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import { connect } from 'react-redux'
 import {updateWorkoutData, updateRoutine} from '../../redux/actions/routines'
-updateWorkoutData
+
 const styles = theme => ({
     root: {
         maxWidth: '95%',
         margin: 'auto',
         textAlign: 'center',
-        paddingTop: 5,
-        paddingLeft:5,
-        paddingRight:5,
         marginTop: '24px'
       },
     leftAligned : {
@@ -49,7 +45,7 @@ const mapStateToProps = state => {
 class Workout extends React.Component {
     state = {
         activeStep: 0,
-        workout: null,
+        workout: this.props.workout,
         error: ''
       };         
 
@@ -96,10 +92,7 @@ class Workout extends React.Component {
             }
             return exercise
         });
-        this.setState({
-            workout: newWorkout
-        });
-        
+        this.setState({workout: newWorkout});     
     };
 
     saveRepsAndWeights = () =>{
@@ -112,60 +105,57 @@ class Workout extends React.Component {
             return exercise;
         });
         
-        this.setState({
-            workout: newWorkout
-        });
-    }
-
-    componentWillMount(){
-        this.setState({workout: this.props.workout})
+        this.setState({workout: newWorkout});
     }
 
     render() {
         const { classes, theme } = this.props;
         const { activeStep } = this.state;
-
         const maxSteps = this.state.workout.exercises.length;
         const activeStepInfo = this.state.workout.exercises[activeStep];
+
         return (
         <div className={classes.root}>
-            
             <ExerciseInfo activeStepInfo={activeStepInfo} isWorkout={1}/>
             <WorkoutForm activeStepInfo={activeStepInfo}
                          handleNumberChange={this.handleNumberChange}/>
             <MobileStepper
-            steps={maxSteps}
-            position="static"
-            activeStep={activeStep}
-            className={classes.mobileStepper}
-            nextButton={ activeStep != maxSteps - 1 ?
-                <Button size="small" onClick={this.handleNext}>
-                Next
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                </Button>
-                :
-                <Button size="small" onClick={this.handleSaveAndReturn}>
-                    <KeyboardReturn />
-                    Save
-                </Button>
-            }
-            backButton={
-                activeStep != 0 ?
-                <Button size="small" onClick={this.handleBack}>
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                Back
-                </Button>
-                :
-                <Button size="small" onClick={this.handleReturn}>
-                    <KeyboardReturn />
-                    Return
-                </Button>
-            }
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                className={classes.mobileStepper}
+                nextButton={ activeStep != maxSteps - 1 
+                    ? <Button size="small" onClick={this.handleNext}>
+                    Next
+                    {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                    </Button>
+                    : <Button size="small" onClick={this.handleSaveAndReturn}>
+                        <KeyboardReturn />
+                        Save
+                    </Button>
+                }
+                backButton={
+                    activeStep != 0
+                    ? <Button size="small" onClick={this.handleBack}>
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                    Back
+                    </Button>
+                    : <Button size="small" onClick={this.handleReturn}>
+                        <KeyboardReturn />
+                        Return
+                    </Button>
+                }
             />
         </div>
         );
     }
 }
-
-
+Workout.propTypes = {
+    SelectedWorkout: PropTypes.any.isRequired,
+    workout: PropTypes.object.isRequired,
+    routine: PropTypes.object.isRequired,
+    handleReturn: PropTypes.func.isRequired,
+    classes: PropTypes.any.isRequired,
+    theme: PropTypes.any.isRequired
+}
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Workout));

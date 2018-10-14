@@ -7,11 +7,10 @@ import auth from './../auth/auth-helper'
 import WorkoutListItem from './WorkoutListItem';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
-import {selectRoutine, selectWorkout, deleteWorkout, requestRoutines, updateRoutine, createRoutine, updateRoutineName} from '../../redux/actions/routines'
+import {selectRoutine, selectWorkout, updateRoutine, createRoutine, updateRoutineName} from '../../redux/actions/routines'
 import { update ,create } from '../routine/api-routine'
 import TextField from '@material-ui/core/TextField';
 
@@ -23,33 +22,31 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
       },
-      layout: {
+    layout: {
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-      },
-      justify:{
+    },
+    justify:{
         justifyContent: 'center'
-      },
-      buttonContainer:{
-          display:'flex',
-          justifyContent: 'center',
-          marginBottom: '10px',
-      },
-      button:{
+    },
+    buttonContainer:{
+        display:'flex',
+        justifyContent: 'center',
+        marginBottom: '10px',
+    },
+    button:{
         backgroundColor:theme.palette.primary.main, 
         color:'white',
         margin: '0px 5px'
     },
-      routineName:{
-          textAlign: 'center',
-          fontWeight:'bold'
-      },
-      textField:{
-          width:'80%',
-          
-      },
-
+    routineName:{
+        textAlign: 'center',
+        fontWeight:'bold'
+    },
+    textField:{
+        width:'80%',         
+    },
   });
 
 const mapStateToProps = state => {
@@ -74,9 +71,6 @@ class WorkoutList extends React.Component {
         this.setState({run: true});
         this.props.dispatch(selectWorkout(workoutId));
     }
-    handleEditClick = (workout) =>{
-        this.setState({editWorkout: workout, isNew : false});
-    }
     handleAddClick = () =>{
         this.props.dispatch(selectWorkout([]));
     }
@@ -92,15 +86,13 @@ class WorkoutList extends React.Component {
         && this.props.dispatch(updateRoutineName(this.state.name));     
         this.handleSave();
     }
-
     handleChange = name => event => {
         this.setState({[name]: event.target.value})
     };
     
     handleSave = () => {
         const jwt = auth.isAuthenticated();
-        if(this.props.SelectedRoutine.length > 0)
-        {
+        if(this.props.SelectedRoutine.length > 0){
             update({
                 routineId: this.props.routine._id
                 }, {
@@ -114,8 +106,7 @@ class WorkoutList extends React.Component {
                 }
             })
         }
-        else
-        {
+        else{
             create({name:this.state.name, userId: jwt.user._id}).then((data) => {
                 if (data.error) {
                     this.setState({error: data.error})
@@ -182,14 +173,11 @@ class WorkoutList extends React.Component {
                 }
                 {this.state.run && this.props.SelectedWorkout 
                     && <Workout 
-                            handleBackClick={this.handleBackClick}
                             handleReturn = {this.handleReturn}
                         />
                 }
                 {!this.state.run && this.props.SelectedWorkout 
-                    && <ExerciseList 
-                            handleBackClick={this.handleBackClick}
-                        />
+                    && <ExerciseList/>
                 }
             </div>
         );
