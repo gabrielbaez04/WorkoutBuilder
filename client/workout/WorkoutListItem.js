@@ -16,7 +16,8 @@ import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteWorkout from './DeleteWorkout';
 import ExerciseMuscles from '../exercise/ExerciseMuscles';
 import {selectWorkout, deleteWorkout} from '../../redux/actions/routines'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
       card: {
@@ -31,37 +32,37 @@ const styles = theme => ({
         backgroundSize:75,
         width:'25%'
     },
-      cardContent: {
+    cardContent: {
         flexGrow: 1,
         padding: `0px ${theme.spacing.unit}px`
-      },
-      cardHeader:{
+    },
+    cardHeader:{
         padding: `${theme.spacing.unit}px`,
-      },
-      cardActions:{
+    },
+    cardActions:{
         display: 'flex',
         padding: 0,
-      },
-      button:{
-          width: '100%',
-          backgroundColor:'rgb(234, 234, 234)', 
-          color:'rgb(130, 124, 124)',
-          padding: 0,
-          borderRadius: 0,
-          margin:0,
-          boxShadow:'none'
-      },
-      icon:{
+    },
+    button:{
+        width: '100%',
+        backgroundColor:'rgb(234, 234, 234)', 
+        color:'rgb(130, 124, 124)',
+        padding: 0,
+        borderRadius: 0,
+        margin:0,
+        boxShadow:'none'
+    },
+    icon:{
         height: '1.2em',
         width: '1.2em'
-      },
-      gridItem:{
+    },
+    gridItem:{
         width: '100%'
-      },
-      justify:{
+    },
+    justify:{
         justifyContent: 'center'
-      },
-      imageContainer:{
+    },
+    imageContainer:{
         maxWidth: '100%',
         display:'flex',
         justifyContent:'center',
@@ -75,69 +76,70 @@ const styles = theme => ({
         color:'grey'
     }
   });
-class WorkoutListItem extends React.Component {
-    onGoClick = () =>{
-        this.props.handleGoClick(this.props.workout._id);
+const WorkoutListItem = (props) => {
+    const onGoClick = () =>{
+        props.handleGoClick(props.workout._id);
     }
-    onEditClick = () =>{
-        this.props.dispatch(selectWorkout(this.props.workout._id));
+    const onEditClick = () =>{
+        props.dispatch(selectWorkout(props.workout._id));
     }
-    onDeleteClick = () =>{
-        this.props.dispatch(deleteWorkout(this.props.workout._id))
-        this.props.handleSave();   
+    const onDeleteClick = () =>{
+        props.dispatch(deleteWorkout(props.workout._id))
+        props.handleSave();   
     }
-    render() {
-        const {classes} = this.props;
-        return (
-            <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
-                <Card className={classes.card}>
-                    <CardHeader
-                    title={this.props.workout.name}
-                    className={classes.cardHeader}
-                    onClick={this.onEditClick}
-                    />
-                    <div className={classes.imageContainer} onClick={this.onEditClick}>
-                    {
-                        this.props.workout.exercises.map((exercise,index)=>{
-                            if(index==2) return;
-                            return(
-                            <div
-                                key={index}
-                                className={classes.bodyMusclesContainer}>
-                                <ExerciseMuscles
-                                    exercise={exercise}
-                                    title="workout title"
-                                />
-                            </div>
-                            )
-                         })          
-                    }
-                    </div>
-                    <CardContent className={classes.cardContent}
-                        onClick={this.onEditClick}>
-                        <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
-                        {this.props.workout.exercises ? this.props.workout.exercises.length : 0} Exercises
-                        </Typography>
-                    </CardContent>
-                    <CardActions className={classes.cardActions}>
-                        <Button variant="contained" className={classes.button} 
-                                onClick={this.onEditClick}>
-                            <EditOutlinedIcon className={classes.icon}/>
-                        </Button>
-                        <DeleteWorkout workoutId={this.props.workout._id}
-                                        handleWorkoutDelete = {this.onDeleteClick}/>
-                        {this.props.workout.exercises.length > 0 && 
-                            <Button variant="contained" className={classes.button} 
-                                    onClick={this.onGoClick}>
-                                <NavigateNextOutlinedIcon className={classes.icon}/>
-                            </Button>
-                        }
-                        
-                    </CardActions>
-                </Card>
-            </Grid>
-        );
-    }
-}
 
+    const {classes} = props;
+    return (
+        <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
+            <Card className={classes.card}>
+                <CardHeader
+                title={props.workout.name}
+                className={classes.cardHeader}
+                onClick={onEditClick}
+                />
+                <div className={classes.imageContainer} onClick={onEditClick}>
+                {props.workout.exercises.map((exercise,index)=>{
+                    if(index==2) return;
+                        return(
+                        <div
+                            key={index}
+                            className={classes.bodyMusclesContainer}>
+                            <ExerciseMuscles
+                                exercise={exercise}
+                                title="workout title"
+                            />
+                        </div>
+                        )
+                    })          
+                }
+                </div>
+                <CardContent className={classes.cardContent}
+                    onClick={onEditClick}>
+                    <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
+                    {props.workout.exercises ? props.workout.exercises.length : 0} Exercises
+                    </Typography>
+                </CardContent>
+                <CardActions className={classes.cardActions}>
+                    <Button variant="contained" className={classes.button} 
+                            onClick={onEditClick}>
+                        <EditOutlinedIcon className={classes.icon}/>
+                    </Button>
+                    <DeleteWorkout workoutId={props.workout._id}
+                                    handleWorkoutDelete = {onDeleteClick}/>
+                    {props.workout.exercises.length > 0 && 
+                        <Button variant="contained" className={classes.button} 
+                                onClick={onGoClick}>
+                            <NavigateNextOutlinedIcon className={classes.icon}/>
+                        </Button>
+                    }
+                    
+                </CardActions>
+            </Card>
+        </Grid>
+    );
+    
+}
+WorkoutListItem.propTypes = {
+    workout: PropTypes.object.isRequired,
+}
 export default connect()(withStyles(styles)(WorkoutListItem));

@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import Dialog from '@material-ui/core/Dialog'
@@ -8,8 +7,6 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import auth from './../auth/auth-helper'
-import {remove} from '../routine/api-routine'
 import { withStyles } from '@material-ui/core/styles';
 
 const styles= theme => ({
@@ -19,7 +16,7 @@ const styles= theme => ({
     color:'rgb(130, 124, 124)',
     padding: 0,
     boxShadow:'none'
-},
+  },
 });
 
 class DeleteWorkout extends Component {
@@ -34,18 +31,6 @@ class DeleteWorkout extends Component {
     this.setState({open: false})
   }
 
-  deleteWorkout = () => {
-    const jwt = auth.isAuthenticated()
-    remove({
-      workoutId: this.props.workoutId
-    }, {t: jwt.token}).then((data) => {
-      if (data.error) {
-        console.log(data.error)
-      } else {
-        this.props.handleReturn();
-      }
-    })
-  }
   handleRequestClose = () => {
     this.setState({open: false})
   }
