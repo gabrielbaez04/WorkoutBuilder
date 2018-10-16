@@ -16,10 +16,6 @@ const styles = theme => ({
     cardGrid: {
         padding: `${theme.spacing.unit * 3}px 0`,
       },
-    workoutsContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-      },
       layout: {
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
@@ -86,10 +82,8 @@ class RoutineList extends React.Component {
                                 Add Routine
                             </Button>
                         </div>
-                    </div>
-                    
-                }
-                
+                    </div>                   
+                }               
                 {this.props.SelectedRoutine 
                     && <WorkoutList 
                             handleReturn = {this.handleReturnClick}
@@ -98,5 +92,10 @@ class RoutineList extends React.Component {
             </div>
         );
     }
+}
+RoutineList.propTypes = {
+    SelectedRoutine: PropTypes.any,
+    routine: PropTypes.object,
+    classes: PropTypes.any.isRequired,
 }
 export default connect(mapStateToProps)(withStyles(styles)(RoutineList))

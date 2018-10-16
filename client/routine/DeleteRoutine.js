@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import Dialog from '@material-ui/core/Dialog'
@@ -21,7 +20,7 @@ const styles= theme => ({
     color:'rgb(130, 124, 124)',
     padding: 0,
     boxShadow:'none'
-},
+  },
 });
 
 class DeleteRoutine extends Component {

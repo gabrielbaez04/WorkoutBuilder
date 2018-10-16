@@ -183,4 +183,10 @@ class WorkoutList extends React.Component {
         );
     }
 }
+WorkoutList.propTypes = {
+    SelectedWorkout: PropTypes.any,
+    SelectedRoutine: PropTypes.any.isRequired,
+    workout: PropTypes.object,
+    classes: PropTypes.any.isRequired,
+}
 export default connect(mapStateToProps)(withStyles(styles)(WorkoutList));
