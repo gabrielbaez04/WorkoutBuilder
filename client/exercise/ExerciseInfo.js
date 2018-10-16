@@ -1,26 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
-import {muscles} from '../assets/js/muscles-data'
-import front from '../assets/images/muscles/muscular_system_front.svg';
-import back from '../assets/images/muscles/muscular_system_back.svg';
 import ExerciseMuscles from './ExerciseMuscles';
 
 const styles = theme => ({
-    root: {
-        maxWidth: '95%',
-        margin: 'auto',
-        textAlign: 'left',
-        paddingTop: 5,
-        paddingLeft:5,
-        paddingRight:5,
-        marginTop: theme.spacing.unit
-      },
     header: {
       display: 'flex',
       alignItems: 'center',
@@ -29,13 +17,6 @@ const styles = theme => ({
       marginBottom: 20,
       backgroundColor: theme.palette.background.default,
     },
-    img: {
-      height: 255,
-      maxWidth: 400,
-      overflow: 'hidden',
-      width: '100%',
-    },
-
     card: {
         height: '100%',
         display: 'flex',
@@ -54,29 +35,11 @@ const styles = theme => ({
     cardHeader:{
         padding: `${theme.spacing.unit}px`
     },
-    cardActions:{
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: `0px ${theme.spacing.unit}px ${theme.spacing.unit}px`
-    },
     imageContainer:{
         maxWidth: '100%',
         display:'flex',
         justifyContent:'center',
         height: '200px'
-    },
-    bodyMusclesContainer:{
-        maxWidth: '100%',
-        minWidth: '100%',
-        display:'flex',
-        justifyContent:'center',
-        height: '200px'
-    },
-    bodyMusclesImage:{
-        backgroundSize:100,
-        width:'50%',
-        backgroundRepeat: 'no-repeat',
-        backgroundPositionX: '50%'
     },
     [theme.breakpoints.up('md')]: {
         imageContainer:{
@@ -92,14 +55,9 @@ const styles = theme => ({
         },
         cardContent: {
             height: '250px'
-        },
-        root: {
-            textAlign: 'center',
         }
     },
-  
   });
-
 
 const getExerciseImages = (activeStepimages) =>{
     var imagesArr=[];
@@ -154,5 +112,8 @@ const ExerciseInfo = (props) =>{
         </Card>
     )
 }
-
+ExerciseInfo.propTypes = {
+    classes: PropTypes.any.isRequired,
+    activeStepInfo: PropTypes.any.isRequired
+  }
 export default withStyles(styles)(ExerciseInfo)

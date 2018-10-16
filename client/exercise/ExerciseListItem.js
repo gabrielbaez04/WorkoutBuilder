@@ -1,48 +1,38 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
-import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import CardHeader from '@material-ui/core/CardHeader';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteExercise from './DeleteExercise';
 import ExerciseMuscles from './ExerciseMuscles';
 import {selectExercise, deleteExercise} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
-      card: {
+    card: {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         textAlign: 'center'
-        
-      },
-      cardMedia: {
+    },
+    cardMedia: {
         backgroundSize:100,
         width:'50%'
     },
-      cardContent: {
-        flexGrow: 1,
-        padding: `0px ${theme.spacing.unit}px`
-      },
-      cardHeader:{
+    cardHeader:{
         padding: `${theme.spacing.unit}px`
-      },
-      cardActions:{
+    },
+    cardActions:{
         display: 'flex',
         padding: 0
-      },
-      button:{
+    },
+    button:{
         width: '100%',
         backgroundColor:'rgb(234, 234, 234)', 
         color:'rgb(130, 124, 124)',
@@ -51,79 +41,74 @@ const styles = theme => ({
         margin:0,
         boxShadow:'none'
     },
-      icon:{
+    icon:{
         height: '1.2em',
         width: '1.2em'
-      },
-      gridItem:{
+    },
+    gridItem:{
         width: '100%'
-      },
-      justify:{
-        justifyContent: 'center'
-      },
-      imageContainer:{
+    },
+    imageContainer:{
         maxWidth: '100%',
         display:'flex',
         justifyContent:'center',
         height: '200px'
     },
-
   });
-class ExerciseListItem extends React.Component {
-    
-    getexerciseImages = () =>{
+const ExerciseListItem = (props) => {    
+    const getexerciseImages = () =>{
         var imagesArr=[];
-        this.props.exercise.images.forEach((image)=>{
+        props.exercise.images.forEach((image)=>{
             imagesArr.push(image); 
         })
         return imagesArr.length > 3 ? imagesArr.slice(0,3) : imagesArr;
     }   
-    onEditClick = () =>{
-        this.props.dispatch(selectExercise(this.props.exercise._id));
+    const onEditClick = () =>{
+        props.dispatch(selectExercise(props.exercise._id));
     }
-    handleExerciseDelete = () =>{
-        this.props.dispatch(deleteExercise(this.props.exercise._id))
-        this.props.handleSave();
-       
+    const handleExerciseDelete = () =>{
+        props.dispatch(deleteExercise(props.exercise._id))
+        props.handleSave();   
     }
-    render() {
-        const {classes} = this.props;
-        const exerciseImages = this.getexerciseImages();
+    const {classes} = props;
+    const exerciseImages = getexerciseImages();
         
-        return (
-            <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
-                <Card className={classes.card}>
-                    <CardHeader
-                        title={this.props.exercise.name}
-                        className={classes.cardHeader}
-                        onClick={this.onEditClick}
-                    />
-                    <div className={classes.imageContainer} onClick={this.onEditClick}>
-                    {exerciseImages.length > 0 ? 
-                    
-                    exerciseImages.map((image,index)=>{
-                        return(<CardMedia
-                            key={index}
-                            className={classes.cardMedia}
-                            image={image}
-                            title="exercise title"
-                        />)
-                    })
-                    :
-                    <ExerciseMuscles exercise={ this.props.exercise}/>
-                }
-                    </div>
-                    <CardActions className={classes.cardActions}>
-                        <Button variant="contained" className={classes.button} 
-                                onClick={this.onEditClick}>
-                            <EditOutlinedIcon className={classes.icon}/>
-                        </Button>
-                        <DeleteExercise handleExerciseDelete={this.handleExerciseDelete}/>
-                    </CardActions>
-                </Card>
-            </Grid>
-        );
-    }
+    return (
+        <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
+            <Card className={classes.card}>
+                <CardHeader
+                    title={props.exercise.name}
+                    className={classes.cardHeader}
+                    onClick={onEditClick}
+                />
+                <div className={classes.imageContainer} onClick={onEditClick}>
+                {exerciseImages.length > 0 ? 
+                
+                exerciseImages.map((image,index)=>{
+                    return(<CardMedia
+                        key={index}
+                        className={classes.cardMedia}
+                        image={image}
+                        title="exercise title"
+                    />)
+                })
+                :
+                <ExerciseMuscles exercise={ props.exercise}/>
+            }
+                </div>
+                <CardActions className={classes.cardActions}>
+                    <Button variant="contained" className={classes.button} 
+                            onClick={onEditClick}>
+                        <EditOutlinedIcon className={classes.icon}/>
+                    </Button>
+                    <DeleteExercise handleExerciseDelete={handleExerciseDelete}/>
+                </CardActions>
+            </Card>
+        </Grid>
+    );
 }
-
+ExerciseListItem.propTypes = {
+    exercise: PropTypes.object.isRequired,
+    classes: PropTypes.any.isRequired
+}
 export default connect()(withStyles(styles)(ExerciseListItem));

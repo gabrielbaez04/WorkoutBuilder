@@ -116,7 +116,7 @@ class Workout extends React.Component {
 
         return (
         <div className={classes.root}>
-            <ExerciseInfo activeStepInfo={activeStepInfo} isWorkout={1}/>
+            <ExerciseInfo activeStepInfo={activeStepInfo} isWorkout={true}/>
             <WorkoutForm activeStepInfo={activeStepInfo}
                          handleNumberChange={this.handleNumberChange}/>
             <MobileStepper

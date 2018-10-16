@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import {muscles} from '../assets/js/muscles-data'
 import front from '../assets/images/muscles/muscular_system_front.svg';
@@ -40,40 +41,33 @@ const getDefaulImages = (exercise) =>{
     secondaryMuscles.forEach((muscle)=>{
         musclesImages.secondaryMuscles.push(muscle)
     });
-
     return musclesImages;
-
 }
 
 const getMuscles = (musclesImages) =>{
     let frontMuscles = [];
     let backMuscles = [];
     musclesImages.primaryMuscles && musclesImages.primaryMuscles.map((muscle)=>{
-        if(muscles[muscle].isFront){
-            frontMuscles.push('url("/assets/images/muscles/main/muscle-'+muscle+'.svg")');
-        }else{
-            backMuscles.push('url("/assets/images/muscles/main/muscle-'+muscle+'.svg")');
-        }
+        muscles[muscle].isFront
+        ?frontMuscles.push('url("/assets/images/muscles/main/muscle-'+muscle+'.svg")')
+        :backMuscles.push('url("/assets/images/muscles/main/muscle-'+muscle+'.svg")')     
     });
     musclesImages.secondaryMuscles && musclesImages.secondaryMuscles.map((muscle)=>{
-        if(muscles[muscle].isFront){
-            frontMuscles.push('url("/assets/images/muscles/secondary/muscle-'+muscle+'.svg")')
-        }else{
-            backMuscles.push('url("/assets/images/muscles/secondary/muscle-'+muscle+'.svg")')
-        }
+        muscles[muscle].isFront
+        ?frontMuscles.push('url("/assets/images/muscles/secondary/muscle-'+muscle+'.svg")')
+        : backMuscles.push('url("/assets/images/muscles/secondary/muscle-'+muscle+'.svg")')
     });
     frontMuscles.push('url("/assets/images/muscles/muscular_system_front.svg');
     backMuscles.push('url("/assets/images/muscles/muscular_system_back.svg');
     
     let bodyMuscles = {
-        frontMuscles: frontMuscles,
-        backMuscles:backMuscles
+        frontMuscles,
+        backMuscles
     }
-
     return bodyMuscles;
 }
 
-const ExerciseMuscles = withStyles(styles)((props) =>{
+const ExerciseMuscles = (props) =>{
     const { classes } = props;
     const bodyMuscles = getMuscles(getDefaulImages(props.exercise));
     return(
@@ -89,5 +83,8 @@ const ExerciseMuscles = withStyles(styles)((props) =>{
         </div>
     )
 }
-)
-export default ExerciseMuscles;
+ExerciseMuscles.propTypes = {
+    exercise: PropTypes.object.isRequired,
+    classes: PropTypes.any.isRequired
+}
+export default withStyles(styles)(ExerciseMuscles);
