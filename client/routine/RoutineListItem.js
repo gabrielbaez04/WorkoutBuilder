@@ -1,20 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import CardHeader from '@material-ui/core/CardHeader';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import NavigateNextOutlinedIcon from '@material-ui/icons/NavigateNextOutlined';
 import DeleteRoutine from './DeleteRoutine';
-import ExerciseMuscles from '../exercise/ExerciseMuscles';
 import {selectRoutine} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
@@ -27,10 +23,6 @@ const styles = theme => ({
         textAlign: 'center'
         
       },
-      cardMedia: {
-        backgroundSize:75,
-        width:'25%'
-    },
       cardContent: {
         flexGrow: 1,
         padding: `0px ${theme.spacing.unit}px`
@@ -58,74 +50,45 @@ const styles = theme => ({
       gridItem:{
         width: '100%'
       },
-      justify:{
-        justifyContent: 'center'
-      },
-      imageContainer:{
-        maxWidth: '100%',
-        display:'flex',
-        justifyContent:'center',
-        height: '200px'
-    },
-    bodyMusclesContainer:{
-        maxWidth: '50%',
-        minWidth: '50%',
-    },
     subtitle:{
         color:'grey'
     }
   });
-class WorkoutListItem extends React.Component {
+const WorkoutListItem = (props) => {
 
-    onEditClick = () =>{
-        this.props.dispatch(selectRoutine(this.props.routine._id));
+    const onEditClick = () =>{
+        props.dispatch(selectRoutine(props.routine._id));
     }
-    render() {
-        const {classes} = this.props;
-        return (
-            <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
-                <Card className={classes.card}>
-                    <CardHeader
-                    title={this.props.routine.name}
-                    className={classes.cardHeader}
-                    onClick={this.onEditClick}
-                    />
-                    
-                    <div className={classes.imageContainer} onClick={this.onEditClick}>
-                    {/*
-                        this.props.workout.exercises.map((exercise,index)=>{
-                            if(index==2) return;
-                            return(
-                            <div
-                                key={index}
-                                className={classes.bodyMusclesContainer}>
-                                <ExerciseMuscles
-                                    exercise={exercise}
-                                    title="workout title"
-                                />
-                            </div>
-                            )
-                         })    */      
-                    }
-                    </div>
-                    <CardContent 
-                        className={classes.cardContent}
-                        onClick={this.onEditClick}>
-                        <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
-                        {this.props.routine.workouts ? this.props.routine.workouts.length : 0} Workouts
-                        </Typography>
-                    </CardContent>
-                    <CardActions className={classes.cardActions}>
-                        <Button variant="contained" className={classes.button} 
-                                onClick={this.onEditClick}>
-                            <EditOutlinedIcon className={classes.icon}/>
-                        </Button>
-                        <DeleteRoutine RoutineId={this.props.routine._id}/>
-                    </CardActions>
-                </Card>
-            </Grid>
-        );
-    }
+    const {classes} = props;
+    return (
+        <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
+            <Card className={classes.card}>
+                <CardHeader
+                title={props.routine.name}
+                className={classes.cardHeader}
+                onClick={onEditClick}
+                />
+
+                <CardContent 
+                    className={classes.cardContent}
+                    onClick={onEditClick}>
+                    <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
+                    {props.routine.workouts ? props.routine.workouts.length : 0} Workouts
+                    </Typography>
+                </CardContent>
+                <CardActions className={classes.cardActions}>
+                    <Button variant="contained" className={classes.button} 
+                            onClick={onEditClick}>
+                        <EditOutlinedIcon className={classes.icon}/>
+                    </Button>
+                    <DeleteRoutine RoutineId={props.routine._id}/>
+                </CardActions>
+            </Card>
+        </Grid>
+    );
 }
-
+WorkoutListItem.propTypes = {
+    workout: PropTypes.object,
+    classes: PropTypes.any.isRequired,
+}
 export default connect()(withStyles(styles)(WorkoutListItem));

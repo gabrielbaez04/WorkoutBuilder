@@ -9,30 +9,34 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Exercise from './Exercise';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {update} from '../routine/api-routine'
+import {create, update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
-import {selectWorkout, selectExercise, updateWorkout,createWorkout, updateRoutine} from '../../redux/actions/routines'
+import {selectWorkout, selectExercise, requestRoutines, updateWorkout,createWorkout, updateRoutine} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({
     cardGrid: {
         padding: `${theme.spacing.unit * 3}px 0`,
-    },
-    layout: {
+      },
+    ExercisesContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+      },
+      layout: {
         width: 'auto',
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-    },
-    justify:{
+      },
+      justify:{
         justifyContent: 'center'
-    },
-    buttonContainer:{
-        display:'flex',
-        justifyContent: 'center',
-        marginBottom: '10px',
-    },
-    button:{
+      },
+      buttonContainer:{
+          display:'flex',
+          justifyContent: 'center',
+          marginBottom: '10px',
+      },
+      button:{
         backgroundColor:theme.palette.primary.main, 
         color:'white',
         margin: '0px 5px'
@@ -73,9 +77,6 @@ class ExerciseList extends React.Component {
         saved: false,
         name: this.props.workout ? this.props.workout.name : ''
     }
-    handleGoClick = (Exercise) =>{
-        this.setState({editExercise: Exercise});
-    }
     handleAddClick = () =>{
         this.props.dispatch(selectExercise([]));
     }
@@ -103,6 +104,7 @@ class ExerciseList extends React.Component {
             if (data.error) {
                 this.setState({error: data.error})
             } else {
+                console.log(data);
                 this.setState({saved: true})
                 this.props.dispatch(updateRoutine(data));
                 this.props.dispatch(selectExercise(null));
@@ -176,6 +178,7 @@ class ExerciseList extends React.Component {
                 {this.props.SelectedExercise
                     && <Exercise
                             exercise = {this.props.SelectedExercise}
+                            handleReturn = {this.handleReturnClick}
                             handleExerciseSave = {this.handleSave}
                         />
                 }
@@ -184,10 +187,10 @@ class ExerciseList extends React.Component {
     }
 }
 ExerciseList.propTypes = {
-    routine: PropTypes.object.isRequired,
-    workout: PropTypes.object.isRequired,
-    SelectedExercise: PropTypes.any,
     SelectedWorkout: PropTypes.any.isRequired,
+    SelectedExercise: PropTypes.any,
+    workout: PropTypes.object,
+    routine: PropTypes.object.isRequired,
     classes: PropTypes.any.isRequired,
     theme: PropTypes.any.isRequired
 }
