@@ -1,16 +1,13 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
-import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import auth from './../auth/auth-helper'
-import {Redirect, Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 
 const styles= theme => ({
@@ -70,5 +67,7 @@ class DeleteExercise extends Component {
     )
   }
 }
-
+DeleteExercise.propTypes = {
+  handleExerciseDelete: PropTypes.func.isRequired
+}
 export default  withStyles(styles)(DeleteExercise)

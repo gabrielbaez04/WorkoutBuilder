@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import ExerciseInfo from './ExerciseInfo';
 import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
 import ExerciseForm from './ExerciseForm'
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
@@ -72,7 +72,6 @@ class Exercise extends React.Component {
     state = {
         exercise : [],
         loading: false,
-        musclesImages: null
     }
     populateExercise = (suggestion) => {
         //fetching comments
@@ -106,7 +105,6 @@ class Exercise extends React.Component {
         this.props.dispatch(selectExercise(null));
     }
     handleExerciseSave = () =>{
-        //
         this.props.SelectedExercise.length == 0
         ?this.props.dispatch(createExercise(this.state.exercise))
         :this.props.dispatch(updateExercise(this.state.exercise))
@@ -152,5 +150,11 @@ class Exercise extends React.Component {
         );
     }
 }
-
+Exercise.propTypes = {
+    SelectedExercise: PropTypes.any.isRequired,
+    exercise: PropTypes.object,
+    handleExerciseSave: PropTypes.func.isRequired,
+    classes: PropTypes.any.isRequired,
+    theme: PropTypes.any.isRequired
+}
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Exercise));
