@@ -14,10 +14,6 @@ class NotAuthMenu extends React.Component{
     handleMenuClick = () => {
         this.setState({ class: this.state.class == 'topnav' ? 'topnav responsive' : 'topnav'});
     };
-    collapse = () =>{
-        console.log("in")
-        
-    }
     render()
     {
         const css = require('./Menu.css');
