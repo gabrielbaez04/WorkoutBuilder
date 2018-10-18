@@ -103,8 +103,8 @@ const ExerciseInfo = (props) =>{
                 <br/>
                 {props.isWorkout && 
                 <Typography variant="title" className={classes.leftAligned}>
-                   Sets:  {props.activeStepInfo.sets}  &emsp;
-                   Repetitions:{props.activeStepInfo.repetitions}
+                   {props.activeStepInfo.sets && "Sets: "+props.activeStepInfo.sets} &emsp;
+                   {props.activeStepInfo.repetitions && "Repetitions: "+props.activeStepInfo.repetitions}
                 </Typography>
                 }
             </CardContent>
