@@ -22,11 +22,28 @@
   "scripts": {
     "development": "nodemon",
     "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js",
-    "start": "NODE_ENV=production node ./dist/server.generated.js"
+    "start": "NODE_ENV=production node ./dist/server.generated.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "engines": {
     "node": "8.11.1",
     "npm": "5.8.0"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup/setupEnzyme.js",
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/setup/"
+    ],
+    "transform": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+      "^.+\\.js$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
+    }
   },
   "devDependencies": {
     "babel-core": "^6.26.2",
@@ -35,7 +52,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^1.0.0",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
+    "enzyme-to-json": "^3.3.4",
     "file-loader": "^1.1.11",
+    "jest": "^23.6.0",
     "nodemon": "^1.17.3",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15",
