@@ -11,15 +11,14 @@ In order to run the project, do the following steps:
 
 ### Technologies:
 - Material UI.
-
 - User CRUD and auth in a MERN application
-
 - Handling HTTP requests with an Express server
-
 - Using a Mongoose schema for a user model
-
 - APIs for user CRUD and auth
-
 - Auth with JWT for protected routes
-
 - Running backend code and checking APIs
+- Using Service Workers with workbox to avoid re calling the exercise API and using it from cache.
+- Using Redux to manage the state of the app.
+
+### Project Diagram
+![Project Diagram](client/assets/images/ProjectDiagram.png)
