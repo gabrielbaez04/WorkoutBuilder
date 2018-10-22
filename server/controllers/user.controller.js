@@ -2,7 +2,7 @@ import _ from 'lodash';
 import User from '../models/user.model';
 import errorHandler from '../helpers/dbErrorHandler';
 
-const create = (req, res, next) => {
+const create = (req, res) => {
   const user = new User(req.body);
   user.save((err, result) => {
     if (err) {
@@ -16,7 +16,7 @@ const create = (req, res, next) => {
   });
 };
 
-const list = (req, res) => {
+const list = (res) => {
   User.find((err, users) => {
     if (err) {
       return res.status(400).json({
@@ -55,14 +55,15 @@ const update = (req, res, next) => {
         error: errorHandler.getErrorMessage(err),
       });
     }
-    // removing the sensitive data, before sending the user object in the response to the requesting client.
+    // removing the sensitive data, before sending the user object
+    // in the response to the requesting client.
     user.hashed_password = undefined;
     user.salt = undefined;
     res.json(user);
   });
 };
 
-const remove = (req, res, next) => {
+const remove = (req, res) => {
   const user = req.profile;
   user.remove((err, deletedUser) => {
     if (err) {
@@ -70,9 +71,10 @@ const remove = (req, res, next) => {
         error: errorHandler.getErrorMessage(err),
       });
     }
-    deletedUser.hashed_password = undefined;
-    deletedUser.salt = undefined;
-    res.json(deletedUser);
+    newDeletedUser = deletedUser;
+    newDeletedUser.hashed_password = undefined;
+    newDeletedUser.salt = undefined;
+    res.json(newDeletedUser);
   });
 };
 export default {

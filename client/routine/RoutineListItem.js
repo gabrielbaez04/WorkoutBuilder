@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -56,14 +55,14 @@ const styles = theme => ({
 });
 const WorkoutListItem = (props) => {
   const onEditClick = () => {
-    props.dispatch(selectRoutine(props.routine._id));
+    props.dispatch(selectRoutine(routine._id));
   };
-  const { classes } = props;
+  const { classes, routine } = props;
   return (
     <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
       <Card className={classes.card}>
         <CardHeader
-          title={props.routine.name}
+          title={routine.name}
           className={classes.cardHeader}
           onClick={onEditClick}
         />
@@ -73,7 +72,7 @@ const WorkoutListItem = (props) => {
           onClick={onEditClick}
         >
           <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
-            {props.routine.workouts ? props.routine.workouts.length : 0}
+            {routine.workouts ? routine.workouts.length : 0}
             {' '}
 Workouts
           </Typography>
@@ -86,14 +85,14 @@ Workouts
           >
             <EditOutlinedIcon className={classes.icon} />
           </Button>
-          <DeleteRoutine RoutineId={props.routine._id} />
+          <DeleteRoutine RoutineId={routine._id} />
         </CardActions>
       </Card>
     </Grid>
   );
 };
 WorkoutListItem.propTypes = {
-  workout: PropTypes.object,
   classes: PropTypes.any.isRequired,
+  dispatch: PropTypes.func,
 };
 export default connect()(withStyles(styles)(WorkoutListItem));

@@ -76,6 +76,6 @@ const muscles = {
   },
 };
 const musclesData = {
-  muscles
-}
+  muscles,
+};
 export default musclesData;

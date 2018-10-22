@@ -16,7 +16,7 @@ const styles = theme => ({
 });
 
 const WorkoutForm = (props) => {
-  const { classes, activeStepInfo } = props;
+  const { classes, activeStepInfo, handleNumberChange } = props;
   return (
     <Paper>
       <form className={classes.form} noValidate autoComplete="off">
@@ -24,7 +24,8 @@ const WorkoutForm = (props) => {
           <TextField
             id="outlined-read-only-input"
             label="Last Reps"
-            value={activeStepInfo.previousRepetitions && activeStepInfo.previousRepetitions.length > 0
+            value={activeStepInfo.previousRepetitions
+              && activeStepInfo.previousRepetitions.length > 0
               ? activeStepInfo.previousRepetitions[activeStepInfo.previousRepetitions.length - 1]
               : ''
                                 }
@@ -39,7 +40,7 @@ const WorkoutForm = (props) => {
             id="outlined-number"
             label="Repetitions"
             value={activeStepInfo.currentRepetitions || ''}
-            onChange={props.handleNumberChange('currentRepetitions')}
+            onChange={handleNumberChange('currentRepetitions')}
             type="number"
             className={classes.textField}
             inputProps={{
@@ -72,7 +73,7 @@ const WorkoutForm = (props) => {
             id="outlined-number"
             label="Weight"
             value={activeStepInfo.currentWeight || ''}
-            onChange={props.handleNumberChange('currentWeight')}
+            onChange={handleNumberChange('currentWeight')}
             type="number"
             className={classes.textField}
             inputProps={{

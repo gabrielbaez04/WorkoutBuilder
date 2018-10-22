@@ -5,7 +5,7 @@ import musclesData from '../assets/js/muscles-data';
 import front from '../assets/images/muscles/muscular_system_front.svg';
 import back from '../assets/images/muscles/muscular_system_back.svg';
 
-const styles = theme => ({
+const styles = () => ({
   bodyMusclesContainer: {
     maxWidth: '100%',
     minWidth: '100%',
@@ -31,7 +31,7 @@ const getDefaulImages = (exercise) => {
     primaryMuscles: [],
     secondaryMuscles: [],
   };
-  if (primaryMuscles.length == 0 && secondaryMuscles.length == 0) {
+  if (primaryMuscles.length === 0 && secondaryMuscles.length === 0) {
     return defaultImages;
   }
   primaryMuscles.forEach((muscle) => {
@@ -46,16 +46,14 @@ const getDefaulImages = (exercise) => {
 const getMuscles = (musclesImages) => {
   const frontMuscles = [];
   const backMuscles = [];
-  musclesImages.primaryMuscles && musclesImages.primaryMuscles.map((muscle) => {
-    return musclesData.muscles[muscle].isFront
-      ? frontMuscles.push(`url("/assets/images/muscles/main/muscle-${muscle}.svg")`)
-      : backMuscles.push(`url("/assets/images/muscles/main/muscle-${muscle}.svg")`);
-  });
-  musclesImages.secondaryMuscles && musclesImages.secondaryMuscles.map((muscle) => {
-    return musclesData.muscles[muscle].isFront
-      ? frontMuscles.push(`url("/assets/images/muscles/secondary/muscle-${muscle}.svg")`)
-      : backMuscles.push(`url("/assets/images/muscles/secondary/muscle-${muscle}.svg")`);
-  });
+  musclesImages.primaryMuscles
+  && musclesImages.primaryMuscles.map(muscle => (musclesData.muscles[muscle].isFront
+    ? frontMuscles.push(`url("/assets/images/muscles/main/muscle-${muscle}.svg")`)
+    : backMuscles.push(`url("/assets/images/muscles/main/muscle-${muscle}.svg")`)));
+  musclesImages.secondaryMuscles
+  && musclesImages.secondaryMuscles.map(muscle => (musclesData.muscles[muscle].isFront
+    ? frontMuscles.push(`url("/assets/images/muscles/secondary/muscle-${muscle}.svg")`)
+    : backMuscles.push(`url("/assets/images/muscles/secondary/muscle-${muscle}.svg")`)));
   frontMuscles.push('url("/assets/images/muscles/muscular_system_front.svg');
   backMuscles.push('url("/assets/images/muscles/muscular_system_back.svg');
 
@@ -67,7 +65,7 @@ const getMuscles = (musclesImages) => {
 };
 
 const ExerciseMuscles = (props) => {
-  const { classes, exercise} = props;
+  const { classes, exercise } = props;
   const bodyMuscles = getMuscles(getDefaulImages(exercise));
   return (
     <div className={classes.bodyMusclesContainer}>
@@ -85,5 +83,6 @@ const ExerciseMuscles = (props) => {
 ExerciseMuscles.propTypes = {
   exercise: PropTypes.object.isRequired,
   classes: PropTypes.any.isRequired,
+
 };
 export default withStyles(styles)(ExerciseMuscles);

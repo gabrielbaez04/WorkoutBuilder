@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Redirect } from 'react-router-dom';
 import auth from './auth-helper';
-import { signin } from './api-auth.js';
+import { signin } from './api-auth';
 
 const styles = theme => ({
   card: {
@@ -55,9 +55,11 @@ class Signin extends Component {
 
   clickSubmit = (e) => {
     e.preventDefault();
+    const { email, password } = this.state;
+    const { location } = this.props;
     const user = {
-      email: this.state.email || undefined,
-      password: this.state.password || undefined,
+      email: email || undefined,
+      password: password || undefined,
     };
 
     signin(user).then((data) => {
@@ -68,9 +70,7 @@ class Signin extends Component {
           this.setState({ redirectToReferrer: true });
         });
       }
-      if (typeof this.props.location.updateMenu === 'function') {
-        this.props.location.updateMenu();
-      }
+      if (location.updateMenu) location.updateMenu();
     });
   }
 
@@ -79,13 +79,15 @@ class Signin extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { from } = this.props.location.state || {
+    const { classes, location } = this.props;
+    const { from } = location.state || {
       from: {
         pathname: '/',
       },
     };
-    const { redirectToReferrer } = this.state;
+    const {
+      redirectToReferrer, error, email, password,
+    } = this.state;
     if (redirectToReferrer) {
       return (<Redirect to={from} />);
     }
@@ -97,15 +99,15 @@ class Signin extends Component {
             <Typography type="headline" component="h2" className={classes.title}>
               Sign In
             </Typography>
-            <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" />
+            <TextField id="email" type="email" label="Email" className={classes.textField} value={email} onChange={this.handleChange('email')} margin="normal" />
             <br />
-            <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
+            <TextField id="password" type="password" label="Password" className={classes.textField} value={password} onChange={this.handleChange('password')} margin="normal" />
             <br />
             {
-              this.state.error && (
+              error && (
               <Typography component="p" color="error">
                 <Icon color="error" className={classes.error}>error</Icon>
-                {this.state.error}
+                {error}
               </Typography>
               )
             }
@@ -121,6 +123,7 @@ class Signin extends Component {
 
 Signin.propTypes = {
   classes: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Signin);

@@ -1,14 +1,10 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import classNames from 'classnames';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import CardHeader from '@material-ui/core/CardHeader';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -88,18 +84,18 @@ const WorkoutListItem = (props) => {
     props.handleSave();
   };
 
-  const { classes } = props;
+  const { classes, workout } = props;
   return (
     <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
       <Card className={classes.card}>
         <CardHeader
-          title={props.workout.name}
+          title={workout.name}
           className={classes.cardHeader}
           onClick={onEditClick}
         />
         <div className={classes.imageContainer} onClick={onEditClick}>
-          {props.workout.exercises.map((exercise, index) => {
-            if (index == 2) return;
+          {workout.exercises.map((exercise, index) => {
+            if (index === 2) return;
             return (
               <div
                 key={index}
@@ -119,7 +115,7 @@ const WorkoutListItem = (props) => {
           onClick={onEditClick}
         >
           <Typography gutterBottom variant="headline" component="h2" className={classes.subtitle}>
-            {props.workout.exercises ? props.workout.exercises.length : 0}
+            {workout.exercises ? workout.exercises.length : 0}
             {' '}
 Exercises
           </Typography>
@@ -133,10 +129,10 @@ Exercises
             <EditOutlinedIcon className={classes.icon} />
           </Button>
           <DeleteWorkout
-            workoutId={props.workout._id}
+            workoutId={workout._id}
             handleWorkoutDelete={onDeleteClick}
           />
-          {props.workout.exercises.length > 0
+          {workout.exercises.length > 0
                         && (
                         <Button
                           variant="contained"

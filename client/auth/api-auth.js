@@ -7,7 +7,7 @@ const signin = user => fetch('/auth/signin/', {
   credentials: 'include',
   body: JSON.stringify(user),
 })
-  .then(response => response.json())  
+  .then(response => response.json());
 
 const signout = () => fetch('/auth/signout/', {
   method: 'GET',
