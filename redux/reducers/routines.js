@@ -1,6 +1,4 @@
-import { combineReducers } from 'redux';
 import {
-  REQUEST_ROUTINES,
   RECEIVE_ROUTINES,
   SELECT_ROUTINE,
   SELECT_WORKOUT,

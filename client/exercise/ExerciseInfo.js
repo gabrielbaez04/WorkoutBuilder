@@ -67,12 +67,10 @@ const getExerciseImages = (activeStepimages) => {
   return imagesArr.length > 2 ? imagesArr.slice(0, 2) : imagesArr;
 };
 
-const stripHTMLTags = (value) => {
-  if (value) return value.replace(/<[^>]*>/g, '');
-};
+const stripHTMLTags = value => (value ? value.replace(/<[^>]*>/g, '') : '');
 
 const ExerciseInfo = (props) => {
-  const { classes, activeStepInfo } = props;
+  const { classes, activeStepInfo, isWorkout } = props;
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -102,7 +100,7 @@ const ExerciseInfo = (props) => {
           {stripHTMLTags(activeStepInfo.extra)}
         </Typography>
         <br />
-        {props.isWorkout
+        {isWorkout
                 && (
                 <Typography variant="title" className={classes.leftAligned}>
                   {activeStepInfo.sets && `Sets: ${activeStepInfo.sets}`}
@@ -119,5 +117,6 @@ const ExerciseInfo = (props) => {
 ExerciseInfo.propTypes = {
   classes: PropTypes.any.isRequired,
   activeStepInfo: PropTypes.any.isRequired,
+  isWorkout: PropTypes.bool,
 };
 export default withStyles(styles)(ExerciseInfo);

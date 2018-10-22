@@ -52,18 +52,18 @@ class Home extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    const { cards } = this.state;
     return (
       <React.Fragment>
         <CssBaseline />
-        {this.state.cards
+        {cards
         && (
         <div>
           <main>
             <div className={classNames(classes.layout, classes.cardGrid)}>
               <Grid container spacing={40} className={classes.justify}>
-                {this.state.cards.map((card, index) => (
-                  <Grid item key={index} sm={6} md={4} lg={3}>
+                {cards.map(card => (
+                  <Grid item key={card.imageId} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
                       <CardMedia
                         className={classes.cardMedia}

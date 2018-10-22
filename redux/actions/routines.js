@@ -17,6 +17,11 @@ export const DELETE_EXERCISE = 'DELETE_EXERCISE';
 export const UPDATE_EXERCISE = 'UPDATE_EXERCISE';
 export const SELECT_EXERCISE = 'SELECT_EXERCISE';
 
+export const receiveRoutines = routines => ({
+  type: RECEIVE_ROUTINES,
+  routines,
+});
+
 export const requestRoutines = (userId, token) => dispatch => fetch(`/api/routines/${userId}`, {
   method: 'GET',
   headers: {
@@ -28,11 +33,6 @@ export const requestRoutines = (userId, token) => dispatch => fetch(`/api/routin
   .then((data) => {
     dispatch(receiveRoutines(data));
   }).catch(err => console.log(err));
-
-export const receiveRoutines = routines => ({
-  type: RECEIVE_ROUTINES,
-  routines,
-});
 
 export const selectRoutine = routineId => ({
   type: SELECT_ROUTINE,
