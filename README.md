@@ -16,7 +16,7 @@ In order to run the project, do the following steps:
 - Using a Mongoose schema for a user model
 - APIs for user CRUD and auth
 - Auth with JWT for protected routes
-- Running backend code and checking APIs
+- Running backend code and checking APIs.
 - Using Service Workers with workbox to avoid re calling the exercise API and using it from cache.
 - Using Redux to manage the state of the app.
 
