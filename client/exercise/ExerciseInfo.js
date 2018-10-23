@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
+import classNames from 'classnames';
 import ExerciseMuscles from './ExerciseMuscles';
 
 const styles = theme => ({
@@ -84,7 +85,7 @@ const ExerciseInfo = (props) => {
         {activeStepInfo.images && activeStepInfo.images.length > 0
           && getExerciseImages(activeStepInfo.images).map((image, index) => (
             <CardMedia
-              key={index}
+              key={index} /* eslint-disable-line react/no-array-index-key */
               className={classes.cardMedia}
               image={image}
               title={`exercise ${index}`}
@@ -95,7 +96,7 @@ const ExerciseInfo = (props) => {
         <Typography variant="subheading" className={classes.leftAligned}>
           {stripHTMLTags(activeStepInfo.description)}
         </Typography>
-        <Typography className={classes.title} color="textSecondary" className={classes.leftAligned}>
+        <Typography className={classNames(classes.title, classes.leftAligned)} color="textSecondary">
           {activeStepInfo.extra && <br />}
           {stripHTMLTags(activeStepInfo.extra)}
         </Typography>
@@ -118,5 +119,8 @@ ExerciseInfo.propTypes = {
   classes: PropTypes.any.isRequired,
   activeStepInfo: PropTypes.any.isRequired,
   isWorkout: PropTypes.bool,
+};
+ExerciseInfo.defaultProps = {
+  isWorkout: false,
 };
 export default withStyles(styles)(ExerciseInfo);

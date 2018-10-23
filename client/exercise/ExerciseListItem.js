@@ -113,5 +113,6 @@ ExerciseListItem.propTypes = {
   exercise: PropTypes.object.isRequired,
   classes: PropTypes.any.isRequired,
   handleSave: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 export default connect()(withStyles(styles)(ExerciseListItem));
