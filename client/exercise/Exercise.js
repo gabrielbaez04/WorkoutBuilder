@@ -55,7 +55,10 @@ const styles = theme => ({
 });
 
 const mapStateToProps = state => ({
-  exercise: state.routines.data.find(routine => routine._id == state.routines.SelectedRoutine).workouts.find(workout => workout._id == state.routines.SelectedWorkout).exercises.find(exercise => exercise._id == state.routines.SelectedExercise),
+  exercise: state.routines.data
+    .find(routine => routine._id === state.routines.SelectedRoutine).workouts
+    .find(workout => workout._id === state.routines.SelectedWorkout).exercises
+    .find(exercise => exercise._id === state.routines.SelectedExercise),
   SelectedExercise: state.routines.SelectedExercise,
 });
 
@@ -65,10 +68,9 @@ class Exercise extends React.Component {
       loading: false,
     }
 
-    populateExercise = (suggestion) => {
-      // fetching comments
-      this.fetchComments(suggestion);
-      this.setState({ exercise: Object.assign({}, this.state.exercise, { ...suggestion }), loading: true });
+    componentWillMount() {
+      const { exercise } = this.props;
+      this.setState({ exercise: exercise || [] });
     }
 
     fetchComments = (suggestion) => {
@@ -76,13 +78,13 @@ class Exercise extends React.Component {
         .then(response => response.json())
         .then((data) => {
           const comments = data.results.map(comment => comment.comment).join('. ');
-          this.setState({
-            exercise: Object.assign({}, this.state.exercise, {
+          this.setState(prevState => ({
+            exercise: Object.assign({}, prevState.exercise, {
               extra: data.count > 0
                 ? comments
                 : '',
             }),
-          }, () => { this.fetchImages(suggestion); });
+          }), () => { this.fetchImages(suggestion); });
         });
     }
 
@@ -90,46 +92,68 @@ class Exercise extends React.Component {
       fetch(`https://wger.de/api/v2/exerciseimage/?exercise=${suggestion.id}`)
         .then(response => response.json())
         .then((data) => {
-          const arrImg = data.count > 0 ? data.results.map(image => image.image) : [];
-          this.setState({ exercise: Object.assign({}, this.state.exercise, { images: arrImg || [] }), loading: false });
+          const arrImg = data.count > 0
+            ? data.results.map(image => image.image) : [];
+          this.setState(prevState => ({
+            exercise: Object.assign({},
+              prevState.exercise, { images: arrImg || [] }),
+            loading: false,
+          }));
         });
     }
 
     handleReturn = () => {
-      this.props.dispatch(selectExercise(null));
+      const { dispatch } = this.props;
+      dispatch(selectExercise(null));
     }
 
     handleExerciseSave = () => {
-      this.props.SelectedExercise.length == 0
-        ? this.props.dispatch(createExercise(this.state.exercise))
-        : this.props.dispatch(updateExercise(this.state.exercise));
-      this.props.handleExerciseSave(this.state.exercise);
+      const { exercise } = this.state;
+      const { dispatch, handleExerciseSave, SelectedExercise } = this.props;
+      if (SelectedExercise.length === 0) dispatch(createExercise(exercise));
+      else dispatch(updateExercise(exercise));
+      handleExerciseSave(exercise);
     }
 
     handleExerciseDelete = () => {
-      this.props.handleExerciseDelete(this.state.exercise._id);
+      const { exercise } = this.state;
+      const { handleExerciseDelete } = this.props;
+      handleExerciseDelete(exercise._id);
     }
 
     handleNumberChange = name => (event) => {
-      this.setState({
-        exercise: Object.assign({}, this.state.exercise, { [name]: event.target.value > 3 ? event.target.value.slice(0, 3) : event.target.value }),
-      });
+      const { value } = event.target;
+      this.setState(prevState => ({
+        exercise: Object.assign({},
+          prevState.exercise, {
+            [name]: value > 3
+              ? value.slice(0, 3)
+              : value,
+          }),
+      }));
     };
 
-    componentWillMount() {
-      this.setState({ exercise: this.props.exercise ? this.props.exercise : [] });
+    populateExercise = (suggestion) => {
+      // fetching comments
+      this.fetchComments(suggestion);
+      this.setState(prevState => ({
+        exercise: Object.assign({},
+          prevState.exercise, { ...suggestion }),
+        loading: true,
+      }));
     }
 
     render() {
       const { classes } = this.props;
+      const { exercise, loading } = this.state;
       return (
         <div className={classes.root}>
           <SearchBox populateExercise={this.populateExercise} />
           <ExerciseInfo
-            activeStepInfo={this.state.exercise}
+            activeStepInfo={exercise}
           />
           <ExerciseForm
-            activeStepInfo={this.state.exercise}
+            activeStepInfo={exercise}
             handleNumberChange={this.handleNumberChange}
           />
           <div className={classes.buttonContainer}>
@@ -141,7 +165,7 @@ class Exercise extends React.Component {
               variant="contained"
               onClick={this.handleExerciseSave}
               className={classes.button}
-              disabled={this.state.loading || this.state.exercise.length == 0}
+              disabled={loading || exercise.length === 0}
             >
                         Save
             </Button>
@@ -154,7 +178,12 @@ Exercise.propTypes = {
   SelectedExercise: PropTypes.any.isRequired,
   exercise: PropTypes.object,
   handleExerciseSave: PropTypes.func.isRequired,
+  handleExerciseDelete: PropTypes.func,
   classes: PropTypes.any.isRequired,
-  theme: PropTypes.any.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+Exercise.defaultProps = {
+  exercise: {},
+  handleExerciseDelete: () => {},
 };
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Exercise));

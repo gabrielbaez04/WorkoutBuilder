@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Redirect } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = () => ({
   button: {
     width: '100%',
     backgroundColor: 'rgb(234, 234, 234)',
@@ -31,7 +31,8 @@ class DeleteExercise extends Component {
   }
 
   deleteExercise = () => {
-    this.props.handleExerciseDelete();
+    const { handleExerciseDelete } = this.props;
+    handleExerciseDelete();
     this.setState({ open: false });
   }
 
@@ -40,7 +41,7 @@ class DeleteExercise extends Component {
   }
 
   render() {
-    const redirect = this.state.redirect;
+    const { redirect, open } = this.state;
     const { classes } = this.props;
     if (redirect) {
       return <Redirect to="/workout" />;
@@ -54,7 +55,7 @@ class DeleteExercise extends Component {
         >
           <DeleteOutlinedIcon className={classes.icon} />
         </Button>
-        <Dialog open={this.state.open} onClose={this.handleRequestClose}>
+        <Dialog open={open} onClose={this.handleRequestClose}>
           <DialogTitle>Delete Exercise</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -76,5 +77,6 @@ class DeleteExercise extends Component {
 }
 DeleteExercise.propTypes = {
   handleExerciseDelete: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 export default withStyles(styles)(DeleteExercise);

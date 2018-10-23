@@ -9,9 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import { connect } from 'react-redux';
-import { create, update } from '../routine/api-routine';
+import { update } from '../routine/api-routine';
 import {
-  selectWorkout, selectExercise, requestRoutines, updateWorkout, createWorkout, updateRoutine,
+  selectWorkout, selectExercise, updateWorkout, createWorkout, updateRoutine,
 } from '../../redux/actions/routines';
 import Exercise from './Exercise';
 import ExerciseListItem from './ExerciseListItem';
@@ -61,31 +61,36 @@ const styles = theme => ({
 });
 
 const mapStateToProps = state => ({
-  workout: state.routines.data.find(routine => routine._id == state.routines.SelectedRoutine).workouts.find(workout => workout._id == state.routines.SelectedWorkout),
+  workout: state.routines.data
+    .find(routine => routine._id === state.routines.SelectedRoutine).workouts
+    .find(workout => workout._id === state.routines.SelectedWorkout),
   SelectedExercise: state.routines.SelectedExercise,
   SelectedWorkout: state.routines.SelectedWorkout,
-  routine: state.routines.data.find(routine => routine._id == state.routines.SelectedRoutine),
+  routine: state.routines.data.find(routine => routine._id === state.routines.SelectedRoutine),
 });
 
 class ExerciseList extends React.Component {
     state = {
       saved: false,
-      name: this.props.workout ? this.props.workout.name : '',
+      name: this.props.workout ? this.props.workout.name : '', /* eslint-disable-line react/destructuring-assignment */
     }
 
     handleAddClick = () => {
-      this.props.dispatch(selectExercise([]));
+      const { dispatch } = this.props;
+      dispatch(selectExercise([]));
     }
 
     handleSaveClick = () => {
-      this.props.SelectedWorkout.length == 0
-        ? this.props.dispatch(createWorkout(this.state.name))
-        : this.props.dispatch(updateWorkout(this.state.name));
+      const { dispatch, SelectedWorkout } = this.props;
+      const { name } = this.state;
+      if (SelectedWorkout.length == 0) dispatch(createWorkout(name));
+      else dispatch(updateWorkout(name));
       this.handleSave();
     }
 
     handleReturn = () => {
-      this.props.dispatch(selectWorkout(null));
+      const { dispatch } = this.props;
+      dispatch(selectWorkout(null));
     }
 
     handleChange = name => (event) => {
@@ -93,31 +98,36 @@ class ExerciseList extends React.Component {
     };
 
     handleSave = () => {
+      const { dispatch, routine, SelectedWorkout } = this.props;
       const jwt = auth.isAuthenticated();
       update({
-        routineId: this.props.routine._id,
+        routineId: routine._id,
       }, {
         t: jwt.token,
-      }, this.props.routine).then((data) => {
+      }, routine).then((data) => {
         if (data.error) {
           this.setState({ error: data.error });
         } else {
           console.log(data);
           this.setState({ saved: true });
-          this.props.dispatch(updateRoutine(data));
-          this.props.dispatch(selectExercise(null));
-          if (this.props.SelectedWorkout.length == 0) {
-            this.props.dispatch(selectWorkout(data.workouts[data.workouts.length - 1]._id));
+          dispatch(updateRoutine(data));
+          dispatch(selectExercise(null));
+          if (SelectedWorkout.length == 0) {
+            dispatch(selectWorkout(data.workouts[data.workouts.length - 1]._id));
           }
         }
       });
     };
 
     render() {
-      const { classes } = this.props;
+      const {
+        classes, workout, SelectedWorkout, SelectedExercise,
+      } = this.props;
+      const { saved, name } = this.state;
+      const { exercises = [] } = workout || {};
       return (
         <div>
-          {!this.props.SelectedExercise
+          {!SelectedExercise
                     && (
                     <div>
                       <div className={classes.workoutName}>
@@ -125,16 +135,16 @@ class ExerciseList extends React.Component {
                           id="standard-name"
                           label="Workout Name"
                           className={classes.textField}
-                          value={this.state.name}
+                          value={name}
                           onChange={this.handleChange('name')}
                           margin="normal"
                         />
                       </div>
                       <div className={classNames(classes.layout, classes.cardGrid)}>
                         <Grid container spacing={40} className={classes.justify}>
-                          {this.props.workout && this.props.workout.exercises && this.props.workout.exercises.map((exercise, index) => (
+                          {exercises.map(exercise => (
                             <ExerciseListItem
-                              key={index}
+                              key={exercise._id}
                               exercise={exercise}
                               handleGoClick={this.handleGoClick}
                               handleEditClick={this.handleEditClick}
@@ -153,7 +163,7 @@ class ExerciseList extends React.Component {
                           variant="contained"
                           onClick={this.handleAddClick}
                           className={classes.button}
-                          disabled={this.props.SelectedWorkout.length == 0}
+                          disabled={SelectedWorkout.length === 0}
                         >
                                 Add Exercise
                         </Button>
@@ -161,12 +171,12 @@ class ExerciseList extends React.Component {
                           variant="contained"
                           onClick={this.handleSaveClick}
                           className={classes.button}
-                          disabled={this.state.name == ''}
+                          disabled={name === ''}
                         >
                                 Save
                         </Button>
                       </div>
-                      {this.state.saved && (
+                      {saved && (
                       <div className={classes.savedMessage}>
                         <Typography component="p" color="primary">
                           <Icon color="primary" className={classes.saved}>check_circle</Icon>
@@ -198,5 +208,8 @@ ExerciseList.propTypes = {
   routine: PropTypes.object.isRequired,
   classes: PropTypes.any.isRequired,
   theme: PropTypes.any.isRequired,
+};
+ExerciseList.DefaultProps = {
+  workout: {},
 };
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ExerciseList));
