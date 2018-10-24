@@ -83,7 +83,7 @@ class ExerciseList extends React.Component {
     handleSaveClick = () => {
       const { dispatch, SelectedWorkout } = this.props;
       const { name } = this.state;
-      if (SelectedWorkout.length == 0) dispatch(createWorkout(name));
+      if (SelectedWorkout.length === 0) dispatch(createWorkout(name));
       else dispatch(updateWorkout(name));
       this.handleSave();
     }
@@ -112,7 +112,7 @@ class ExerciseList extends React.Component {
           this.setState({ saved: true });
           dispatch(updateRoutine(data));
           dispatch(selectExercise(null));
-          if (SelectedWorkout.length == 0) {
+          if (SelectedWorkout.length === 0) {
             dispatch(selectWorkout(data.workouts[data.workouts.length - 1]._id));
           }
         }
@@ -188,10 +188,10 @@ class ExerciseList extends React.Component {
                     )
 
                 }
-          {this.props.SelectedExercise
+          {SelectedExercise
                     && (
                     <Exercise
-                      exercise={this.props.SelectedExercise}
+                      exercise={SelectedExercise}
                       handleReturn={this.handleReturnClick}
                       handleExerciseSave={this.handleSave}
                     />
@@ -207,9 +207,10 @@ ExerciseList.propTypes = {
   workout: PropTypes.object,
   routine: PropTypes.object.isRequired,
   classes: PropTypes.any.isRequired,
-  theme: PropTypes.any.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
-ExerciseList.DefaultProps = {
+ExerciseList.defaultProps = {
   workout: {},
+  SelectedExercise: {},
 };
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ExerciseList));

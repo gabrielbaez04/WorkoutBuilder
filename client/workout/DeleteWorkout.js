@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = () => ({
   button: {
     width: '100%',
     backgroundColor: 'rgb(234, 234, 234)',
@@ -29,7 +29,8 @@ class DeleteWorkout extends Component {
   }
 
   handleWorkoutDelete = () => {
-    this.props.handleWorkoutDelete();
+    const { handleWorkoutDelete } = this.props;
+    handleWorkoutDelete();
     this.setState({ open: false });
   }
 
@@ -39,6 +40,7 @@ class DeleteWorkout extends Component {
 
   render() {
     const { classes } = this.props;
+    const { open } = this.state;
     return (
       <div className={classes.button}>
         <Button
@@ -49,7 +51,7 @@ class DeleteWorkout extends Component {
           <DeleteOutlinedIcon className={classes.icon} />
 
         </Button>
-        <Dialog open={this.state.open} onClose={this.handleRequestClose}>
+        <Dialog open={open} onClose={this.handleRequestClose}>
           <DialogTitle>Delete Workout</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -70,6 +72,7 @@ class DeleteWorkout extends Component {
   }
 }
 DeleteWorkout.propTypes = {
-  workoutId: PropTypes.any.isRequired,
+  classes: PropTypes.object.isRequired,
+  handleWorkoutDelete: PropTypes.func.isRequired,
 };
 export default withStyles(styles, { withTheme: true })(DeleteWorkout);

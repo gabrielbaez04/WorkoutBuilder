@@ -86,7 +86,7 @@ const ExerciseListItem = (props) => {
 
             ? exerciseImages.map((image, index) => (
               <CardMedia
-                key={index}
+                key={index} /* eslint-disable-line react/no-array-index-key */
                 className={classes.cardMedia}
                 image={image}
                 title="exercise title"

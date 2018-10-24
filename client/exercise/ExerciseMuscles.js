@@ -46,12 +46,11 @@ const getDefaulImages = (exercise) => {
 const getMuscles = (musclesImages) => {
   const frontMuscles = [];
   const backMuscles = [];
-  musclesImages.primaryMuscles
-  && musclesImages.primaryMuscles.map(muscle => (musclesData.muscles[muscle].isFront
+  const { primaryMuscles = [], secondaryMuscles = [] } = musclesImages || {};
+  primaryMuscles.map(muscle => (musclesData.muscles[muscle].isFront
     ? frontMuscles.push(`url("/assets/images/muscles/main/muscle-${muscle}.svg")`)
     : backMuscles.push(`url("/assets/images/muscles/main/muscle-${muscle}.svg")`)));
-  musclesImages.secondaryMuscles
-  && musclesImages.secondaryMuscles.map(muscle => (musclesData.muscles[muscle].isFront
+  secondaryMuscles.map(muscle => (musclesData.muscles[muscle].isFront
     ? frontMuscles.push(`url("/assets/images/muscles/secondary/muscle-${muscle}.svg")`)
     : backMuscles.push(`url("/assets/images/muscles/secondary/muscle-${muscle}.svg")`)));
   frontMuscles.push('url("/assets/images/muscles/muscular_system_front.svg');

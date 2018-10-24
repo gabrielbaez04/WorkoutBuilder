@@ -73,18 +73,18 @@ const styles = theme => ({
   },
 });
 const WorkoutListItem = (props) => {
+  const { workout, classes } = props;
+  
   const onGoClick = () => {
-    props.handleGoClick(props.workout._id);
+    props.handleGoClick(workout._id);
   };
   const onEditClick = () => {
-    props.dispatch(selectWorkout(props.workout._id));
+    props.dispatch(selectWorkout(workout._id));
   };
   const onDeleteClick = () => {
-    props.dispatch(deleteWorkout(props.workout._id));
+    props.dispatch(deleteWorkout(workout._id));
     props.handleSave();
   };
-
-  const { classes, workout } = props;
   return (
     <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
       <Card className={classes.card}>
@@ -98,7 +98,7 @@ const WorkoutListItem = (props) => {
             if (index === 2) return;
             return (
               <div
-                key={index}
+                key={exercise._id}
                 className={classes.bodyMusclesContainer}
               >
                 <ExerciseMuscles
@@ -151,5 +151,9 @@ Exercises
 };
 WorkoutListItem.propTypes = {
   workout: PropTypes.object.isRequired,
+  handleGoClick: PropTypes.func.isRequired,
+  dispatch: PropTypes.object.isRequired,
+  handleSave: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 export default connect()(withStyles(styles)(WorkoutListItem));

@@ -95,6 +95,7 @@ const WorkoutForm = (props) => {
 WorkoutForm.propTypes = {
   classes: PropTypes.any.isRequired,
   activeStepInfo: PropTypes.object.isRequired,
+  handleNumberChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkoutForm);

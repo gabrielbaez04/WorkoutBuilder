@@ -1,4 +1,6 @@
+import { combineReducers } from 'redux';
 import {
+  REQUEST_ROUTINES,
   RECEIVE_ROUTINES,
   SELECT_ROUTINE,
   SELECT_WORKOUT,
@@ -11,9 +13,6 @@ import {
   DELETE_WORKOUT,
   UPDATE_ROUTINE,
   CREATE_ROUTINE,
-  UPDATE_ROUTINE_NAME,
-  DELETE_ROUTINE,
-  UPDATE_WORKOUT_DATA,
 
 } from '../actions/routines';
 
@@ -24,8 +23,10 @@ const initialState = {
   SelectedExercise: null,
 
 };
-const getWorkout = newData => newData.data.find(routine => routine._id == newData.SelectedRoutine).workouts.find(workout => workout._id == newData.SelectedWorkout);
-const getRoutine = newData => newData.data.find(routine => routine._id == newData.SelectedRoutine);
+const getWorkout = newData => newData.data
+  .find(routine => routine._id === newData.SelectedRoutine).workouts
+  .find(workout => workout._id === newData.SelectedWorkout);
+const getRoutine = newData => newData.data.find(routine => routine._id === newData.SelectedRoutine);
 
 const routines = (state = initialState, action) => {
   let newData; let workout; let routine;
@@ -58,13 +59,13 @@ const routines = (state = initialState, action) => {
     case UPDATE_EXERCISE:
       newData = Object.assign({}, state);
       workout = getWorkout(newData);
-      workout.exercises = workout.exercises.map(exercise => (exercise._id == newData.SelectedExercise ? action.exercise : exercise));
+      workout.exercises = workout.exercises.map(exercise => (exercise._id === newData.SelectedExercise ? action.exercise : exercise));
       return Object.assign({}, state, { data: newData.data });
 
     case DELETE_EXERCISE:
       newData = Object.assign({}, state);
       workout = getWorkout(newData);
-      workout.exercises = workout.exercises.filter(exercise => exercise._id != action.exerciseId);
+      workout.exercises = workout.exercises.filter(exercise => exercise._id !== action.exerciseId);
       return Object.assign({}, state, { data: newData.data });
 
     case UPDATE_WORKOUT:
@@ -81,33 +82,17 @@ const routines = (state = initialState, action) => {
     case DELETE_WORKOUT:
       newData = Object.assign({}, state);
       routine = getRoutine(newData);
-      routine.workouts = routine.workouts.filter(workout => workout._id != action.workoutId);
+      routine.workouts = routine.workouts.filter(workout => workout._id !== action.workoutId);
       return Object.assign({}, state, { data: newData.data });
 
     case UPDATE_ROUTINE:
       newData = Object.assign({}, state);
-      newData.data = newData.data.map(routine => (routine._id == newData.SelectedRoutine ? Object.assign({}, routine, { ...action.routine }) : routine));
+      newData.data = newData.data.map(routine => (routine._id === newData.SelectedRoutine ? Object.assign({}, routine, { ...action.routine }) : routine));
       return Object.assign({}, state, { data: newData.data });
 
     case CREATE_ROUTINE:
       newData = Object.assign({}, state);
       newData.data.push({ ...action.routine });
-      return Object.assign({}, state, { data: newData.data });
-
-    case UPDATE_ROUTINE_NAME:
-      newData = Object.assign({}, state);
-      routine = getRoutine(newData);
-      routine.name = action.routineName;
-      return Object.assign({}, state, { data: newData.data });
-
-    case DELETE_ROUTINE:
-      newData = Object.assign({}, state);
-      newData.data = newData.data.filter(routine => routine._id != action.routineId);
-      return Object.assign({}, state, { data: newData.data });
-
-    case UPDATE_WORKOUT_DATA:
-      newData = Object.assign({}, state);
-      workout = Object.assign({}, getWorkout(newData), { ...action.workout });
       return Object.assign({}, state, { data: newData.data });
 
     default:

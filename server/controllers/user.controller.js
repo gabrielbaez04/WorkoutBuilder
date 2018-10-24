@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import User from '../models/user.model';
 import errorHandler from '../helpers/dbErrorHandler';
-
+/* eslint consistent-return: 0 */
 const create = (req, res) => {
   const user = new User(req.body);
-  user.save((err, result) => {
+  user.save((err) => {
     if (err) {
       return res.status(400).json({
         error: errorHandler.getErrorMessage(err),
@@ -45,7 +45,7 @@ const read = (req, res) => {
   return res.json(req.profile);
 };
 
-const update = (req, res, next) => {
+const update = (req, res) => {
   let user = req.profile;
   user = _.extend(user, req.body);
   user.updated = Date.now();
@@ -71,12 +71,13 @@ const remove = (req, res) => {
         error: errorHandler.getErrorMessage(err),
       });
     }
-    newDeletedUser = deletedUser;
+    const newDeletedUser = deletedUser;
     newDeletedUser.hashed_password = undefined;
     newDeletedUser.salt = undefined;
     res.json(newDeletedUser);
   });
 };
+/* eslint consistent-return: 1 */
 export default {
   create, userByID, read, list, remove, update,
 };

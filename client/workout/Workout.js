@@ -31,14 +31,15 @@ const styles = theme => ({
 });
 
 const mapStateToProps = state => ({
-  workout: state.routines.data.find(routine => routine._id == state.routines.SelectedRoutine).workouts.find(workout => workout._id == state.routines.SelectedWorkout),
-  SelectedWorkout: state.routines.SelectedWorkout,
-  routine: state.routines.data.find(routine => routine._id == state.routines.SelectedRoutine),
+  workout: state.routines.data
+    .find(routine => routine._id === state.routines.SelectedRoutine).workouts
+    .find(workout => workout._id === state.routines.SelectedWorkout),
+  routine: state.routines.data.find(routine => routine._id === state.routines.SelectedRoutine),
 });
 class Workout extends React.Component {
     state = {
       activeStep: 0,
-      workout: this.props.workout,
+      workout: this.props.workout, /* eslint-disable-line react/destructuring-assignment */
       error: '',
     };
 
@@ -55,32 +56,38 @@ class Workout extends React.Component {
     };
 
     handleReturn = () => {
-      this.props.handleReturn();
+      const { handleReturn } = this.props;
+      handleReturn();
     }
 
     handleSaveAndReturn = () => {
+      const { dispatch, routine } = this.props;
+      const { workout } = this.state;
       this.saveRepsAndWeights();
-      this.props.dispatch(updateWorkoutData(this.state.workout));
+      dispatch(updateWorkoutData(workout));
       const jwt = auth.isAuthenticated();
       update({
-        routineId: this.props.routine._id,
+        routineId: routine._id,
       }, {
         t: jwt.token,
-      }, this.props.routine).then((data) => {
+      }, routine).then((data) => {
         if (data.error) {
           this.setState({ error: data.error });
         } else {
-          this.props.dispatch(updateRoutine(data));
+          dispatch(updateRoutine(data));
           this.handleReturn();
         }
       });
     }
 
     handleNumberChange = name => (event) => {
-      const newWorkout = Object.assign({}, this.state.workout);
-      newWorkout.exercises = newWorkout.exercises.map((exercise, index) => {
-        if (exercise._id == this.state.workout.exercises[this.state.activeStep]._id) {
-          return Object.assign({}, exercise, { [name]: event.target.value > 3 ? event.target.value.slice(0, 3) : event.target.value });
+      const { workout, activeStep } = this.state;
+      const { value } = event.target;
+      const newWorkout = Object.assign({}, workout);
+
+      newWorkout.exercises = newWorkout.exercises.map((exercise) => {
+        if (exercise._id === workout.exercises[activeStep]._id) {
+          return Object.assign({}, exercise, { [name]: value > 3 ? value.slice(0, 3) : value });
         }
         return exercise;
       });
@@ -88,10 +95,14 @@ class Workout extends React.Component {
     };
 
     saveRepsAndWeights = () => {
-      const newWorkout = Object.assign({}, this.state.workout);
-      newWorkout.exercises = newWorkout.exercises.map((exercise, index) => {
-        exercise.currentWeight > 0 && exercise.previousWeights.push(exercise.currentWeight);
-        exercise.currentRepetitions > 0 && exercise.previousRepetitions.push(exercise.currentRepetitions);
+      const { workout } = this.state;
+      const newWorkout = Object.assign({}, workout);
+      newWorkout.exercises = newWorkout.exercises.map((exercise) => {
+        if (exercise.currentWeight > 0) exercise.previousWeights.push(exercise.currentWeight);
+        if (exercise.currentRepetitions > 0) {
+          exercise.previousRepetitions
+            .push(exercise.currentRepetitions);
+        }
         exercise.currentWeight = '';
         exercise.currentRepetitions = '';
         return exercise;
@@ -102,9 +113,9 @@ class Workout extends React.Component {
 
     render() {
       const { classes, theme } = this.props;
-      const { activeStep } = this.state;
-      const maxSteps = this.state.workout.exercises.length;
-      const activeStepInfo = this.state.workout.exercises[activeStep];
+      const { activeStep, workout } = this.state;
+      const maxSteps = workout.exercises.length;
+      const activeStepInfo = workout.exercises[activeStep];
 
       return (
         <div className={classes.root}>
@@ -118,7 +129,7 @@ class Workout extends React.Component {
             position="static"
             activeStep={activeStep}
             className={classes.mobileStepper}
-            nextButton={activeStep != maxSteps - 1
+            nextButton={activeStep !== maxSteps - 1
               ? (
                 <Button size="small" onClick={this.handleNext}>
                     Next
@@ -133,7 +144,7 @@ class Workout extends React.Component {
               )
                 }
             backButton={
-                    activeStep != 0
+                    activeStep !== 0
                       ? (
                         <Button size="small" onClick={this.handleBack}>
                           {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
@@ -153,11 +164,11 @@ class Workout extends React.Component {
     }
 }
 Workout.propTypes = {
-  SelectedWorkout: PropTypes.any.isRequired,
   workout: PropTypes.object.isRequired,
   routine: PropTypes.object.isRequired,
   handleReturn: PropTypes.func.isRequired,
   classes: PropTypes.any.isRequired,
   theme: PropTypes.any.isRequired,
+  dispatch: PropTypes.object.isRequired,
 };
 export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Workout));

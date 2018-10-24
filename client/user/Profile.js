@@ -9,7 +9,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Edit from '@material-ui/icons/Edit';
 import Person from '@material-ui/icons/Person';
@@ -17,7 +16,7 @@ import Divider from '@material-ui/core/Divider';
 import { Redirect, Link } from 'react-router-dom';
 import DeleteUser from './DeleteUser';
 import auth from '../auth/auth-helper';
-import { read } from './api-user.js';
+import { read } from './api-user';
 
 const styles = theme => ({
   root: theme.mixins.gutters({
@@ -61,7 +60,8 @@ class Profile extends Component {
   }
 
   componentWillReceiveProps = (props) => {
-    this.init(props.match.params.userId);
+    const { match } = props;
+    this.init(match.params.userId);
   }
 
   componentDidMount = () => {
@@ -69,10 +69,10 @@ class Profile extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const redirectToSignin = this.state.redirectToSignin;
+    const { classes, location } = this.props;
+    const { redirectToSignin, user } = this.state;
     if (redirectToSignin) {
-      return <Redirect to={{ pathname: '/signin', updateMenu: this.props.location.updateMenu }} />;
+      return <Redirect to={{ pathname: '/signin', updateMenu: location.updateMenu }} />;
     }
     return (
       <Paper className={classes.root} elevation={4}>
@@ -86,18 +86,18 @@ class Profile extends Component {
                 <Person />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary={this.state.user.name} secondary={this.state.user.email} />
+            <ListItemText primary={user.name} secondary={user.email} />
             {' '}
             {
-             auth.isAuthenticated().user && auth.isAuthenticated().user._id == this.state.user._id
+             auth.isAuthenticated().user && auth.isAuthenticated().user._id === user._id
               && (
               <ListItemSecondaryAction>
-                <Link to={`/user/edit/${this.state.user._id}`}>
+                <Link to={`/user/edit/${user._id}`}>
                   <IconButton aria-label="Edit" color="primary">
                     <Edit />
                   </IconButton>
                 </Link>
-                <DeleteUser userId={this.state.user._id} updateMenu={this.props.location.updateMenu} />
+                <DeleteUser userId={user._id} updateMenu={location.updateMenu} />
               </ListItemSecondaryAction>
               )
             }
@@ -105,7 +105,7 @@ class Profile extends Component {
           <Divider />
           <ListItem>
             <ListItemText primary={`Joined: ${(
-              new Date(this.state.user.created)).toDateString()}`}
+              new Date(user.created)).toDateString()}`}
             />
           </ListItem>
         </List>
@@ -115,6 +115,8 @@ class Profile extends Component {
 }
 Profile.propTypes = {
   classes: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Profile);

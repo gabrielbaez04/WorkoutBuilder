@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 
 class SearchBox extends React.Component {
@@ -8,7 +9,7 @@ class SearchBox extends React.Component {
       suggestions: [],
     }
 
-  onChange = (event, { newValue, method }) => {
+  onChange = (event, { newValue }) => {
     this.setState({
       value: newValue,
     });
@@ -29,6 +30,7 @@ class SearchBox extends React.Component {
   escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
   getSuggestions = (value) => {
+    const { exercises } = this.state;
     const escapedValue = this.escapeRegexCharacters(value.trim());
 
     if (escapedValue === '') {
@@ -37,11 +39,12 @@ class SearchBox extends React.Component {
 
     const regex = new RegExp(escapedValue, 'i');
 
-    return this.state.exercises.filter(exercise => regex.test(exercise.name));
+    return exercises.filter(exercise => regex.test(exercise.name));
   }
 
   getSuggestionValue = (suggestion) => {
-    this.props.populateExercise(suggestion);
+    const { populateExercise } = this.props;
+    populateExercise(suggestion);
     return suggestion.name;
   }
 
@@ -56,7 +59,7 @@ class SearchBox extends React.Component {
   }
 
   render() {
-    const css = require('./SearchBox.css');
+    import('./SearchBox.css');
     const { value, suggestions } = this.state;
     const inputProps = {
       placeholder: 'Search Exercise...',
@@ -76,5 +79,7 @@ class SearchBox extends React.Component {
     );
   }
 }
-
+SearchBox.propTypes = {
+  populateExercise: PropTypes.func.isRequired,
+};
 export default SearchBox;

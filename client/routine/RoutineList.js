@@ -4,10 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux';
 import RoutineListItem from './RoutineListItem';
-import { list } from './api-routine';
 import WorkoutList from '../workout/WorkoutList';
 import auth from '../auth/auth-helper';
 import { requestRoutines, selectRoutine } from '../../redux/actions/routines';
@@ -47,7 +45,8 @@ class RoutineList extends React.Component {
     }
 
     handleAddClick = () => {
-      this.props.dispatch(selectRoutine([]));
+      const { dispatch } = this.props;
+      dispatch(selectRoutine([]));
     }
 
     handleReturnClick = () => {
@@ -55,8 +54,9 @@ class RoutineList extends React.Component {
     }
 
     fetchRoutines = () => {
+      const { dispatch } = this.props;
       const jwt = auth.isAuthenticated();
-      this.props.dispatch(requestRoutines(jwt.user._id, jwt.token));
+      dispatch(requestRoutines(jwt.user._id, jwt.token));
     }
 
     componentDidMount = () => {
@@ -64,15 +64,15 @@ class RoutineList extends React.Component {
     }
 
     render() {
-      const { classes, routines } = this.props;
+      const { classes, routines, SelectedRoutine } = this.props;
       return (
         <div>
-          {!this.props.SelectedRoutine
+          {!SelectedRoutine
                     && (
                     <div>
                       <div className={classNames(classes.layout, classes.cardGrid)}>
                         <Grid container spacing={40} className={classes.justify}>
-                          {this.props.routines.map(routine => (
+                          {routines.map(routine => (
                             <RoutineListItem
                               key={routine._id}
                               routine={routine}
@@ -92,7 +92,7 @@ class RoutineList extends React.Component {
                     </div>
                     )
                 }
-          {this.props.SelectedRoutine
+          {SelectedRoutine
                     && (
                     <WorkoutList
                       handleReturn={this.handleReturnClick}
@@ -105,7 +105,12 @@ class RoutineList extends React.Component {
 }
 RoutineList.propTypes = {
   SelectedRoutine: PropTypes.any,
-  routine: PropTypes.object,
+  routines: PropTypes.object,
   classes: PropTypes.any.isRequired,
+  dispatch: PropTypes.object.isRequired,
+};
+RoutineList.defaultProps = {
+  SelectedRoutine: null,
+  routines: {},
 };
 export default connect(mapStateToProps)(withStyles(styles)(RoutineList));
