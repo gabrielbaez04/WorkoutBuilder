@@ -62,61 +62,69 @@ class WorkoutList extends React.Component {
       error: '',
       saved: false,
       run: false,
-      name: this.props.routine ? this.props.routine.name : '',
+      name: this.props.routine ? this.props.routine.name : '', /* eslint-disable-line react/destructuring-assignment */
     }
 
     handleGoClick = (workoutId) => {
+      const { dispatch } = this.props;
       this.setState({ run: true });
-      this.props.dispatch(selectWorkout(workoutId));
+      dispatch(selectWorkout(workoutId));
     }
 
     handleAddClick = () => {
-      this.props.dispatch(selectWorkout([]));
+      const { dispatch } = this.props;
+      dispatch(selectWorkout([]));
     }
 
     handleReturn = () => {
-      this.props.dispatch(selectWorkout(null));
+      const { dispatch } = this.props;
+      dispatch(selectWorkout(null));
       this.setState({ run: false });
     }
 
     handleBack = () => {
-      this.props.dispatch(selectRoutine(null));
+      const { dispatch } = this.props;
+      dispatch(selectRoutine(null));
     }
 
     handleSaveClick = () => {
-      this.props.SelectedRoutine.length > 0
-        && this.props.dispatch(updateRoutineName(this.state.name));
-      this.handleSave();
+      const { dispatch, SelectedRoutine } = this.props;
+      const { name } = this.state;
+      if (SelectedRoutine.length > 0) dispatch(updateRoutineName(name));
+      else this.handleSave();
     }
 
     handleChange = name => (event) => {
-      this.setState({ [name]: event.target.value });
+      const { value } = event.target;
+      this.setState({ [name]: value });
     };
 
     handleSave = () => {
+      const { dispatch, SelectedRoutine, routine } = this.props;
+      const { name } = this.state;
       const jwt = auth.isAuthenticated();
-      if (this.props.SelectedRoutine.length > 0) {
+      if (SelectedRoutine.length > 0) {
         update({
-          routineId: this.props.routine._id,
+          routineId: routine._id,
         }, {
           t: jwt.token,
-        }, this.props.routine).then((data) => {
+        }, routine).then((data) => {
           if (data.error) {
             this.setState({ error: data.error });
           } else {
             this.setState({ saved: true });
-            this.props.dispatch(updateRoutine(data));
+            dispatch(updateRoutine(data));
           }
         });
       } else {
-        create({ name: this.state.name, userId: jwt.user._id }).then((data) => {
+        create({ name, userId: jwt.user._id }).then((data) => {
           if (data.error) {
             this.setState({ error: data.error });
           } else {
             this.setState({ saved: true });
-            this.props.dispatch(createRoutine(data));
-            if (this.props.SelectedRoutine.length == 0) {
-              this.props.dispatch(selectRoutine(data._id));
+            dispatch(createRoutine(data));
+            if (SelectedRoutine.length === 0) {
+              dispatch(selectRoutine(data._id));
             }
           }
         });
@@ -124,10 +132,14 @@ class WorkoutList extends React.Component {
     };
 
     render() {
-      const { classes, routine } = this.props;
+      const {
+        classes, routine, SelectedWorkout, SelectedRoutine,
+      } = this.props;
+      const { name, run } = this.state;
+      const { workouts = [] } = routine || {};
       return (
         <div>
-          {!this.props.SelectedWorkout
+          {!SelectedWorkout
                     && (
                     <div>
                       <div className={classes.routineName}>
@@ -135,14 +147,14 @@ class WorkoutList extends React.Component {
                           id="standard-name"
                           label="Routine Name"
                           className={classes.textField}
-                          value={this.state.name}
+                          value={name}
                           onChange={this.handleChange('name')}
                           margin="normal"
                         />
                       </div>
                       <div className={classNames(classes.layout, classes.cardGrid)}>
                         <Grid container spacing={40} className={classes.justify}>
-                          {routine && routine.workouts && routine.workouts.map(workout => (
+                          {workouts.map(workout => (
                             <WorkoutListItem
                               key={workout._id}
                               workout={workout}
@@ -161,7 +173,7 @@ class WorkoutList extends React.Component {
                           variant="contained"
                           onClick={this.handleAddClick}
                           className={classes.button}
-                          disabled={this.props.SelectedRoutine.length == 0}
+                          disabled={SelectedRoutine.length === 0}
                         >
                                 Add Workout
                         </Button>
@@ -169,7 +181,7 @@ class WorkoutList extends React.Component {
                           variant="contained"
                           onClick={this.handleSaveClick}
                           className={classes.button}
-                          disabled={this.state.name == ''}
+                          disabled={name === ''}
                         >
                                 Save
                         </Button>
@@ -178,14 +190,14 @@ class WorkoutList extends React.Component {
                     )
 
                 }
-          {this.state.run && this.props.SelectedWorkout
+          {run && SelectedWorkout
                     && (
                     <Workout
                       handleReturn={this.handleReturn}
                     />
                     )
                 }
-          {!this.state.run && this.props.SelectedWorkout
+          {!run && SelectedWorkout
                     && <ExerciseList />
                 }
         </div>
@@ -195,7 +207,12 @@ class WorkoutList extends React.Component {
 WorkoutList.propTypes = {
   SelectedWorkout: PropTypes.any,
   SelectedRoutine: PropTypes.any.isRequired,
-  workout: PropTypes.object,
   classes: PropTypes.any.isRequired,
+  dispatch: PropTypes.object.isRequired,
+  routine: PropTypes.object,
+};
+WorkoutList.defaultProps = {
+  routine: null,
+  SelectedWorkout: null,
 };
 export default connect(mapStateToProps)(withStyles(styles)(WorkoutList));

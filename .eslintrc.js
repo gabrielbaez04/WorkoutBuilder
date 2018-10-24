@@ -10,7 +10,8 @@ module.exports = {
         "jsx-a11y/anchor-is-valid":0,
         "jsx-a11y/no-static-element-interactions":0,
         "global-require":0,
-        "import/no-dynamic-require":0
+        "import/no-dynamic-require":0,
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
     },
     "globals": { "fetch": false },
     "env": {

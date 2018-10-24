@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Redirect } from 'react-router-dom';
 import auth from '../auth/auth-helper';
-import { read, update } from './api-user.js';
+import { read, update } from './api-user';
 
 const styles = theme => ({
   card: {
@@ -73,12 +73,13 @@ class EditProfile extends Component {
   }
 
   clickSubmit = (e) => {
+    const { name, email, password } = this.state;
     e.preventDefault();
     const jwt = auth.isAuthenticated();
     const user = {
-      name: this.state.name || undefined,
-      email: this.state.email || undefined,
-      password: this.state.password || undefined,
+      name: name || undefined,
+      email: email || undefined,
+      password: password || undefined,
     };
     update({
       userId: this.match.params.userId,
@@ -94,13 +95,17 @@ class EditProfile extends Component {
   }
 
   handleChange = name => (event) => {
-    this.setState({ [name]: event.target.value });
+    const { value } = event.target;
+    this.setState({ [name]: value });
   }
 
   render() {
     const { classes } = this.props;
+    const {
+      userId, name, email, password, error,
+    } = this.state;
     if (this.state.redirectToProfile) {
-      return (<Redirect to={`/user/${this.state.userId}`} />);
+      return (<Redirect to={`/user/${userId}`} />);
     }
     return (
       <form onSubmit={this.clickSubmit}>
@@ -109,18 +114,18 @@ class EditProfile extends Component {
             <Typography type="headline" component="h2" className={classes.title}>
               Edit Profile
             </Typography>
-            <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal" />
+            <TextField id="name" label="Name" className={classes.textField} value={name} onChange={this.handleChange('name')} margin="normal" />
             <br />
-            <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" />
+            <TextField id="email" type="email" label="Email" className={classes.textField} value={email} onChange={this.handleChange('email')} margin="normal" />
             <br />
-            <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
+            <TextField id="password" type="password" label="Password" className={classes.textField} value={password} onChange={this.handleChange('password')} margin="normal" />
             <br />
             {' '}
             {
-              this.state.error && (
+              error && (
               <Typography component="p" color="error">
                 <Icon color="error" className={classes.error}>error</Icon>
-                {this.state.error}
+                {error}
               </Typography>
               )
             }

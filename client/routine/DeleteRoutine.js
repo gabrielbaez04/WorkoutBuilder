@@ -13,7 +13,7 @@ import auth from '../auth/auth-helper';
 import { remove } from './api-routine';
 import { deleteRoutine } from '../../redux/actions/routines';
 
-const styles = theme => ({
+const styles = () => ({
   button: {
     width: '100%',
     backgroundColor: 'rgb(234, 234, 234)',
@@ -34,14 +34,15 @@ class DeleteRoutine extends Component {
 
   handleDelete = () => {
     const jwt = auth.isAuthenticated();
+    const { RoutineId, dispatch } = this.props;
     remove({
-      routineId: this.props.RoutineId,
+      routineId: RoutineId,
     }, { t: jwt.token }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         this.handleRequestClose();
-        this.props.dispatch(deleteRoutine(this.props.RoutineId));
+        dispatch(deleteRoutine(RoutineId));
       }
     });
   }
@@ -52,6 +53,7 @@ class DeleteRoutine extends Component {
 
   render() {
     const { classes } = this.props;
+    const { open } = this.state;
     return (
       <div className={classes.button}>
         <Button
@@ -62,7 +64,7 @@ class DeleteRoutine extends Component {
           <DeleteOutlinedIcon className={classes.icon} />
 
         </Button>
-        <Dialog open={this.state.open} onClose={this.handleRequestClose}>
+        <Dialog open={open} onClose={this.handleRequestClose}>
           <DialogTitle>Delete Routine</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -84,5 +86,7 @@ class DeleteRoutine extends Component {
 }
 DeleteRoutine.propTypes = {
   RoutineId: PropTypes.any.isRequired,
+  classes: PropTypes.any.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 export default connect()(withStyles(styles, { withTheme: true })(DeleteRoutine));

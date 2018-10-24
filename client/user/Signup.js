@@ -14,7 +14,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Link } from 'react-router-dom';
-import { create } from './api-user.js';
+import { create } from './api-user';
 
 const styles = theme => ({
   card: {
@@ -59,15 +59,17 @@ class Signup extends Component {
   }
 
   handleChange = name => (event) => {
-    this.setState({ [name]: event.target.value });
+    const { value } = event.target;
+    this.setState({ [name]: value });
   }
 
   clickSubmit = (e) => {
+    const { name, email, password } = this.state;
     e.preventDefault();
     const user = {
-      name: this.state.name || undefined,
-      email: this.state.email || undefined,
-      password: this.state.password || undefined,
+      name: name || undefined,
+      email: email || undefined,
+      password: password || undefined,
     };
     create(user).then((data) => {
       if (data.error) {
@@ -79,7 +81,10 @@ class Signup extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const {
+      name, email, password, error, open,
+    } = this.state;
+    const { classes, location } = this.props;
     return (
       <div>
         <form onSubmit={this.clickSubmit}>
@@ -88,18 +93,18 @@ class Signup extends Component {
               <Typography type="headline" component="h2" className={classes.title}>
                 Sign Up
               </Typography>
-              <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal" />
+              <TextField id="name" label="Name" className={classes.textField} value={name} onChange={this.handleChange('name')} margin="normal" />
               <br />
-              <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" />
+              <TextField id="email" type="email" label="Email" className={classes.textField} value={email} onChange={this.handleChange('email')} margin="normal" />
               <br />
-              <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
+              <TextField id="password" type="password" label="Password" className={classes.textField} value={password} onChange={this.handleChange('password')} margin="normal" />
               <br />
               {' '}
               {
-                this.state.error && (
+                error && (
                 <Typography component="p" color="error">
                   <Icon color="error" className={classes.error}>error</Icon>
-                  {this.state.error}
+                  {error}
                 </Typography>
                 )
               }
@@ -109,7 +114,7 @@ class Signup extends Component {
             </CardActions>
           </Card>
         </form>
-        <Dialog open={this.state.open} disableBackdropClick>
+        <Dialog open={open} disableBackdropClick>
           <DialogTitle>New Account</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -117,7 +122,7 @@ class Signup extends Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Link to={{ pathname: '/signin', updateMenu: this.props.location.updateMenu }}>
+            <Link to={{ pathname: '/signin', updateMenu: location.updateMenu }}>
               <Button color="primary" autoFocus="autoFocus" variant="raised">
                 Sign In
               </Button>
@@ -130,6 +135,7 @@ class Signup extends Component {
 
 Signup.propTypes = {
   classes: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Signup);

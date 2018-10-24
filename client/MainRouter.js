@@ -5,7 +5,6 @@ import Signup from './user/Signup';
 import Signin from './auth/Signin';
 import EditProfile from './user/EditProfile';
 import Profile from './user/Profile';
-import PrivateRoute from './auth/PrivateRoute';
 import Menu from './core/Menu';
 import RoutineList from './routine/RoutineList';
 

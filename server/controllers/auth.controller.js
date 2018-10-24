@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import User from '../models/user.model';
 import config from '../../config/config';
-
+/* eslint consistent-return: 0 */
 const signin = (req, res) => {
   User.findOne({
     email: req.body.email,
@@ -49,7 +49,7 @@ const requireSignin = expressJwt({
 const hasAuthorization = (req, res, next) => {
   // checks if the authenticated user is the same as the user being updated or deleted
   const authorized = req.profile && req.auth && req.profile._id
-    == req.auth._id;
+    === req.auth._id;
   if (!(authorized)) {
     return res.status('403').json({
       error: 'User is not authorized',
@@ -57,6 +57,7 @@ const hasAuthorization = (req, res, next) => {
   }
   next();
 };
+/* eslint consistent-return: 1 */
 export default {
   signin, signout, requireSignin, hasAuthorization,
 };

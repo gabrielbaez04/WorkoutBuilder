@@ -54,10 +54,10 @@ const styles = theme => ({
   },
 });
 const WorkoutListItem = (props) => {
+  const { classes, routine } = props;
   const onEditClick = () => {
     props.dispatch(selectRoutine(routine._id));
   };
-  const { classes, routine } = props;
   return (
     <Grid item sm={6} md={4} lg={3} className={classes.gridItem}>
       <Card className={classes.card}>
@@ -93,6 +93,10 @@ Workouts
 };
 WorkoutListItem.propTypes = {
   classes: PropTypes.any.isRequired,
-  dispatch: PropTypes.func,
+  dispatch: PropTypes.func.isRequired,
+  routine: PropTypes.object,
+};
+WorkoutListItem.defaultProps = {
+  routine: {},
 };
 export default connect()(withStyles(styles)(WorkoutListItem));

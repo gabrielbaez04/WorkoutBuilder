@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  mount, it, expect, beforeEach, describe,
-} from 'enzyme';
+import { mount } from 'enzyme';
 import Home from '../client/core/Home';
 
 describe('Home', () => {

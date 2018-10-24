@@ -8,9 +8,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import auth from '../auth/auth-helper';
-import { remove } from './api-user.js';
+import { remove } from './api-user';
 
 class DeleteUser extends Component {
   state = {
@@ -23,15 +23,16 @@ class DeleteUser extends Component {
   }
 
   deleteAccount = () => {
+    const { userId, updateMenu } = this.props;
     const jwt = auth.isAuthenticated();
     remove({
-      userId: this.props.userId,
+      userId,
     }, { t: jwt.token }).then((data) => {
       if (data.error) {
         console.log(data.error);
       } else {
         auth.signout(() => console.log('deleted'));
-        this.props.updateMenu();
+        updateMenu();
         this.setState({ redirect: true });
       }
     });
@@ -42,7 +43,7 @@ class DeleteUser extends Component {
   }
 
   render() {
-    const redirect = this.state.redirect;
+    const { redirect, open } = this.state;
     if (redirect) {
       return <Redirect to="/" />;
     }
@@ -52,7 +53,7 @@ class DeleteUser extends Component {
           <DeleteIcon />
         </IconButton>
 
-        <Dialog open={this.state.open} onClose={this.handleRequestClose}>
+        <Dialog open={open} onClose={this.handleRequestClose}>
           <DialogTitle>Delete Account</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -74,5 +75,6 @@ class DeleteUser extends Component {
 }
 DeleteUser.propTypes = {
   userId: PropTypes.string.isRequired,
+  updateMenu: PropTypes.func.isRequired,
 };
 export default DeleteUser;
