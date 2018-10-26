@@ -1,4 +1,5 @@
-export default ({ markup, css }) => `<!doctype html>
+export default ({markup, css}) => {
+  return `<!doctype html>
     <html lang="en">
       <head>
         <meta charset="utf-8">
@@ -25,4 +26,5 @@ export default ({ markup, css }) => `<!doctype html>
           }
         </script>
       </body>
-    </html>`;
+    </html>`
+}
