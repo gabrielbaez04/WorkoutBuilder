@@ -1,20 +1,20 @@
 module.exports = {
-  globDirectory: 'client/',
-  globPatterns: [
-    '**/*.{js,jpg,css}',
+  "globDirectory": "client/",
+  "globPatterns": [
+    "**/*.{js,jpg,css}"
   ],
-  swDest: 'sw\\sw.js',
-  runtimeCaching: [{
-    urlPattern: new RegExp('^https://wger.de/api/v2/exercise/'),
-    handler: 'cacheFirst',
-    options: {
-      cacheableResponse: {
-        statuses: [0, 200],
+  "swDest": "sw\\sw.js",
+  "runtimeCaching": [{
+    "urlPattern" : new RegExp('^https://wger\.de/api/v2/exercise/'),
+    "handler": 'cacheFirst',
+      "options": {
+        "cacheableResponse": {
+          "statuses": [0, 200]
+        },
+        cacheName: 'exercises',
+        expiration: {
+          maxAgeSeconds: 600000,
+        },
       },
-      cacheName: 'exercises',
-      expiration: {
-        maxAgeSeconds: 600000,
-      },
-    },
-  }],
+    }]
 };

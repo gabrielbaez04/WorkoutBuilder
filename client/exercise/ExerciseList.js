@@ -2,215 +2,196 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import ExerciseListItem from './ExerciseListItem';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import Exercise from './Exercise';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Icon from '@material-ui/core/Icon';
-import { connect } from 'react-redux';
-import { update } from '../routine/api-routine';
-import {
-  selectWorkout, selectExercise, updateWorkout, createWorkout, updateRoutine,
-} from '../../redux/actions/routines';
-import Exercise from './Exercise';
-import ExerciseListItem from './ExerciseListItem';
-import auth from '../auth/auth-helper';
+import {create, update} from '../routine/api-routine'
+import auth from './../auth/auth-helper'
+import Icon from '@material-ui/core/Icon'
+import {selectWorkout, selectExercise, requestRoutines, updateWorkout,createWorkout, updateRoutine} from '../../redux/actions/routines'
+import { connect } from 'react-redux'
 
 const styles = theme => ({
-  cardGrid: {
-    padding: `${theme.spacing.unit * 3}px 0`,
-  },
-  ExercisesContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-  },
-  justify: {
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: '10px',
-  },
-  button: {
-    backgroundColor: theme.palette.primary.main,
-    color: 'white',
-    margin: '0px 5px',
-  },
-  workoutName: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  textField: {
-    width: '80%',
+    cardGrid: {
+        padding: `${theme.spacing.unit * 3}px 0`,
+      },
+    ExercisesContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+      },
+      layout: {
+        width: 'auto',
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+      },
+      justify:{
+        justifyContent: 'center'
+      },
+      buttonContainer:{
+          display:'flex',
+          justifyContent: 'center',
+          marginBottom: '10px',
+      },
+      button:{
+        backgroundColor:theme.palette.primary.main, 
+        color:'white',
+        margin: '0px 5px'
+    },
+    workoutName:{
+        textAlign: 'center',
+        fontWeight:'bold'
+    },
+    textField:{
+        width:'80%',
+        
+    },
+    saved: {
+        verticalAlign: 'middle',
+        color:'green'
+    },
+    savedMessage:{
+        textAlign:'center'
+    }
+  });
 
-  },
-  saved: {
-    verticalAlign: 'middle',
-    color: 'green',
-  },
-  savedMessage: {
-    textAlign: 'center',
-  },
-});
-
-const mapStateToProps = state => ({
-  workout: state.routines.data
-    .find(routine => routine._id === state.routines.SelectedRoutine).workouts
-    .find(workout => workout._id === state.routines.SelectedWorkout),
-  SelectedExercise: state.routines.SelectedExercise,
-  SelectedWorkout: state.routines.SelectedWorkout,
-  routine: state.routines.data.find(routine => routine._id === state.routines.SelectedRoutine),
-});
+const mapStateToProps = state => {
+    return {
+        workout: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ).workouts.find(workout=>
+            workout._id == state.routines.SelectedWorkout),
+        SelectedExercise : state.routines.SelectedExercise,
+        SelectedWorkout : state.routines.SelectedWorkout,
+        routine: state.routines.data.find(routine=>
+            routine._id == state.routines.SelectedRoutine
+        ),
+    }
+}
 
 class ExerciseList extends React.Component {
     state = {
-      saved: false,
-      name: this.props.workout ? this.props.workout.name : '', /* eslint-disable-line react/destructuring-assignment */
+        saved: false,
+        name: this.props.workout ? this.props.workout.name : ''
     }
-
-    handleAddClick = () => {
-      const { dispatch } = this.props;
-      dispatch(selectExercise([]));
+    handleAddClick = () =>{
+        this.props.dispatch(selectExercise([]));
     }
-
-    handleSaveClick = () => {
-      const { dispatch, SelectedWorkout } = this.props;
-      const { name } = this.state;
-      if (SelectedWorkout.length === 0) dispatch(createWorkout(name));
-      else dispatch(updateWorkout(name));
-      this.handleSave();
+    handleSaveClick = () =>{
+        this.props.SelectedWorkout.length == 0
+        ?this.props.dispatch(createWorkout(this.state.name))
+        :this.props.dispatch(updateWorkout(this.state.name));     
+        this.handleSave();
+        
     }
-
-    handleReturn = () => {
-      const { dispatch } = this.props;
-      dispatch(selectWorkout(null));
+    handleReturn = () =>{
+        this.props.dispatch(selectWorkout(null));
     }
-
-    handleChange = name => (event) => {
-      this.setState({ [name]: event.target.value });
+    handleChange = name => event => {
+        this.setState({[name]: event.target.value})
     };
-
+    
     handleSave = () => {
-      const { dispatch, routine, SelectedWorkout } = this.props;
-      const jwt = auth.isAuthenticated();
-      update({
-        routineId: routine._id,
-      }, {
-        t: jwt.token,
-      }, routine).then((data) => {
-        if (data.error) {
-          this.setState({ error: data.error });
-        } else {
-          console.log(data);
-          this.setState({ saved: true });
-          dispatch(updateRoutine(data));
-          dispatch(selectExercise(null));
-          if (SelectedWorkout.length === 0) {
-            dispatch(selectWorkout(data.workouts[data.workouts.length - 1]._id));
-          }
-        }
-      });
+        const jwt = auth.isAuthenticated();
+        update({
+            routineId: this.props.routine._id
+            }, {
+            t: jwt.token
+            }, this.props.routine).then((data) => {
+            if (data.error) {
+                this.setState({error: data.error})
+            } else {
+                console.log(data);
+                this.setState({saved: true})
+                this.props.dispatch(updateRoutine(data));
+                this.props.dispatch(selectExercise(null));
+                if(this.props.SelectedWorkout.length == 0){
+                    this.props.dispatch(selectWorkout(data.workouts[data.workouts.length-1]._id));
+                }
+            }
+        })
     };
 
     render() {
-      const {
-        classes, workout, SelectedWorkout, SelectedExercise,
-      } = this.props;
-      const { saved, name } = this.state;
-      const { exercises = [] } = workout || {};
-      return (
-        <div>
-          {!SelectedExercise
-                    && (
+        const {classes} = this.props
+        return (
+            <div>
+                {!this.props.SelectedExercise && 
                     <div>
-                      <div className={classes.workoutName}>
-                        <TextField
-                          id="standard-name"
-                          label="Workout Name"
-                          className={classes.textField}
-                          value={name}
-                          onChange={this.handleChange('name')}
-                          margin="normal"
-                        />
-                      </div>
-                      <div className={classNames(classes.layout, classes.cardGrid)}>
-                        <Grid container spacing={40} className={classes.justify}>
-                          {exercises.map(exercise => (
-                            <ExerciseListItem
-                              key={exercise._id}
-                              exercise={exercise}
-                              handleGoClick={this.handleGoClick}
-                              handleEditClick={this.handleEditClick}
-                              handleExerciseDelete={this.handleExerciseDelete}
-                              handleSave={this.handleSave}
+                        <div className={classes.workoutName}>
+                            <TextField
+                                id="standard-name"
+                                label="Workout Name"
+                                className={classes.textField}
+                                value={this.state.name}
+                                onChange={this.handleChange('name')}
+                                margin="normal"
                             />
-                          ))}
-                        </Grid>
-                      </div>
-                      <div className={classes.buttonContainer}>
-                        <Button size="small" onClick={this.handleReturn}>
-                          <KeyboardReturn />
+                        </div>
+                        <div className={classNames(classes.layout, classes.cardGrid)}>
+                            <Grid container spacing={40} className={classes.justify}>
+                                {this.props.workout && this.props.workout.exercises && this.props.workout.exercises.map((exercise,index) => (
+                                    <ExerciseListItem
+                                        key={index} 
+                                        exercise={exercise}
+                                        handleGoClick={this.handleGoClick}
+                                        handleEditClick={this.handleEditClick}
+                                        handleExerciseDelete = {this.handleExerciseDelete}
+                                        handleSave = {this.handleSave}
+                                        />
+                                ))}
+                            </Grid>
+                        </div>
+                        <div className={classes.buttonContainer}>
+                            <Button size="small" onClick={this.handleReturn}>
+                                <KeyboardReturn />
                                 Return
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={this.handleAddClick}
-                          className={classes.button}
-                          disabled={SelectedWorkout.length === 0}
-                        >
+                            </Button>
+                            <Button variant="contained" 
+                                    onClick={this.handleAddClick}
+                                    className={classes.button}
+                                    disabled={this.props.SelectedWorkout.length == 0}
+                                    >
                                 Add Exercise
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={this.handleSaveClick}
-                          className={classes.button}
-                          disabled={name === ''}
-                        >
+                            </Button>
+                            <Button variant="contained" 
+                                onClick={this.handleSaveClick}
+                                className={classes.button}
+                                disabled={this.state.name == ""}>
                                 Save
-                        </Button>
-                      </div>
-                      {saved && (
-                      <div className={classes.savedMessage}>
-                        <Typography component="p" color="primary">
-                          <Icon color="primary" className={classes.saved}>check_circle</Icon>
+                            </Button>
+                        </div>
+                        {this.state.saved && (
+                            <div className={classes.savedMessage}>
+                            <Typography component="p" color="primary">
+                                <Icon color="primary" className={classes.saved}>check_circle</Icon>
                                     Workout Saved!
-                        </Typography>
-                      </div>)
+                                </Typography>
+                            </div>)
                         }
                     </div>
-                    )
-
+                    
                 }
-          {SelectedExercise
-                    && (
-                    <Exercise
-                      exercise={SelectedExercise}
-                      handleReturn={this.handleReturnClick}
-                      handleExerciseSave={this.handleSave}
-                    />
-                    )
+                {this.props.SelectedExercise
+                    && <Exercise
+                            exercise = {this.props.SelectedExercise}
+                            handleReturn = {this.handleReturnClick}
+                            handleExerciseSave = {this.handleSave}
+                        />
                 }
-        </div>
-      );
+            </div>
+        );
     }
 }
 ExerciseList.propTypes = {
-  SelectedWorkout: PropTypes.any.isRequired,
-  SelectedExercise: PropTypes.any,
-  workout: PropTypes.object,
-  routine: PropTypes.object.isRequired,
-  classes: PropTypes.any.isRequired,
-  dispatch: PropTypes.func.isRequired,
-};
-ExerciseList.defaultProps = {
-  workout: {},
-  SelectedExercise: {},
-};
-export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ExerciseList));
+    SelectedWorkout: PropTypes.any.isRequired,
+    SelectedExercise: PropTypes.any,
+    workout: PropTypes.object,
+    routine: PropTypes.object.isRequired,
+    classes: PropTypes.any.isRequired,
+    theme: PropTypes.any.isRequired
+}
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(ExerciseList))

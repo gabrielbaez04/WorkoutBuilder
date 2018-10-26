@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import Card from '@material-ui/core/Card';
+import React, {Component} from 'react'
+import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Icon from '@material-ui/core/Icon';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Redirect } from 'react-router-dom';
-import auth from './auth-helper';
-import { signin } from './api-auth';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Icon from '@material-ui/core/Icon'
+import PropTypes from 'prop-types'
+import {withStyles} from '@material-ui/core/styles'
+import auth from './../auth/auth-helper'
+import {Redirect} from 'react-router-dom'
+import {signin} from './api-auth.js'
 
 const styles = theme => ({
   card: {
@@ -18,78 +18,78 @@ const styles = theme => ({
     margin: 'auto',
     textAlign: 'center',
     paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    marginTop: '24px',
+    paddingLeft:5,
+    paddingRight:5,
+    marginTop: '24px'
   },
   [theme.breakpoints.up('sm')]: {
     card: {
       maxWidth: '60%',
-    },
+    }
   },
   error: {
-    verticalAlign: 'middle',
+    verticalAlign: 'middle'
   },
   title: {
     marginTop: theme.spacing.unit,
-    color: theme.palette.openTitle,
+    color: theme.palette.openTitle
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 300,
+    width: 300
   },
   submit: {
     margin: 'auto',
-    marginBottom: theme.spacing.unit * 2,
-  },
-});
+    marginBottom: theme.spacing.unit * 2
+  }
+})
 
 class Signin extends Component {
   state = {
-    email: '',
-    password: '',
-    error: '',
-    redirectToReferrer: false,
+      email: '',
+      password: '',
+      error: '',
+      redirectToReferrer: false
   }
 
   clickSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = this.state;
-    const { location } = this.props;
     const user = {
-      email: email || undefined,
-      password: password || undefined,
-    };
+      email: this.state.email || undefined,
+      password: this.state.password || undefined
+    }
 
     signin(user).then((data) => {
       if (data.error) {
-        this.setState({ error: data.error });
+        this.setState({error: data.error})
       } else {
         auth.authenticate(data, () => {
-          this.setState({ redirectToReferrer: true });
-        });
+          this.setState({redirectToReferrer: true})
+        })
       }
-      if (location.updateMenu) location.updateMenu();
-    });
+      if(typeof this.props.location.updateMenu === 'function') 
+       {
+          this.props.location.updateMenu();
+       }
+    })
+    
   }
 
-  handleChange = name => (event) => {
-    this.setState({ [name]: event.target.value });
+  handleChange = name => event => {
+    this.setState({[name]: event.target.value})
   }
 
   render() {
-    const { classes, location } = this.props;
-    const { from } = location.state || {
+    const {classes} = this.props
+    const {from} = this.props.location.state || {
       from: {
-        pathname: '/',
-      },
-    };
-    const {
-      redirectToReferrer, error, email, password,
-    } = this.state;
+        pathname: '/'
+      }
+    }
+    const {redirectToReferrer} = this.state
     if (redirectToReferrer) {
-      return (<Redirect to={from} />);
+      return (<Redirect to={from}/>)
     }
 
     return (
@@ -99,31 +99,27 @@ class Signin extends Component {
             <Typography type="headline" component="h2" className={classes.title}>
               Sign In
             </Typography>
-            <TextField id="email" type="email" label="Email" className={classes.textField} value={email} onChange={this.handleChange('email')} margin="normal" />
-            <br />
-            <TextField id="password" type="password" label="Password" className={classes.textField} value={password} onChange={this.handleChange('password')} margin="normal" />
-            <br />
+            <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal"/><br/>
+            <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal"/>
+            <br/> 
             {
-              error && (
-              <Typography component="p" color="error">
+              this.state.error && (<Typography component="p" color="error">
                 <Icon color="error" className={classes.error}>error</Icon>
-                {error}
-              </Typography>
-              )
+                {this.state.error}
+              </Typography>)
             }
           </CardContent>
           <CardActions>
-            <Button color="primary" variant="raised" type="submit" className={classes.submit}>Submit</Button>
+            <Button color="primary" variant="raised"  type="submit" className={classes.submit}>Submit</Button>
           </CardActions>
         </Card>
       </form>
-    );
+    )
   }
 }
 
 Signin.propTypes = {
-  classes: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-};
+  classes: PropTypes.object.isRequired
+}
 
-export default withStyles(styles)(Signin);
+export default withStyles(styles)(Signin)

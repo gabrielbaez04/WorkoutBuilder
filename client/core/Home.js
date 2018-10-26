@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import advicesData from '../assets/js/advices-data';
+import {getAdvices} from '../assets/js/advices-data'
 
 const styles = theme => ({
   layout: {
@@ -23,8 +27,8 @@ const styles = theme => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-
+    justifyContent: 'center'
+    
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
@@ -36,38 +40,36 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 4,
   },
-  justify: {
-    justifyContent: 'center',
-  },
+  justify:{
+    justifyContent: 'center'
+  }
 });
 
 class Home extends React.Component {
   state = {
-    cards: null,
+    cards : null
   }
-
-  componentDidMount() {
-    this.setState({ cards: advicesData.getAdvices(3) });
+  componentDidMount(){
+    this.setState({cards: getAdvices(3)})
   }
-
-  render() {
+  render()
+  {
     const { classes } = this.props;
-    const { cards } = this.state;
+
     return (
-      <React.Fragment>
-        <CssBaseline />
-        {cards
-        && (
+    <React.Fragment>
+      <CssBaseline />
+      {this.state.cards &&
         <div>
           <main>
             <div className={classNames(classes.layout, classes.cardGrid)}>
               <Grid container spacing={40} className={classes.justify}>
-                {cards.map(card => (
-                  <Grid item key={card.imageId} sm={6} md={4} lg={3}>
+                {this.state.cards.map((card, index) => (
+                  <Grid item key={index} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
                       <CardMedia
                         className={classes.cardMedia}
-                        image={require(`../assets/images/advices/advice${card.imageId}.jpg`)}
+                        image={require('../assets/images/advices/advice'+card.imageId+'.jpg')}
                         title="Image title"
                       />
                       <CardContent className={classes.cardContent}>
@@ -87,14 +89,11 @@ class Home extends React.Component {
           {/* Footer */}
           <footer className={classes.footer}>
             <Typography variant="subheading" align="center" color="textSecondary" component="p">
-              Developed and designed by
-              {' '}
-              <a href="https://github.com/gabrielbaez04" target="_blank" rel="noopener noreferrer">Gabriel Baez</a>
+              Developed and designed by <a href="https://github.com/gabrielbaez04" target="_blank" rel="noopener noreferrer">Gabriel Baez</a>
             </Typography>
           </footer>
           {/* End footer */}
         </div>
-        )
       }
       </React.Fragment>
     );
