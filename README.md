@@ -1,10 +1,11 @@
 # WorkoutBuilder
 Personal project using MERN stack. 
-The idea is to build a workout and go through it
+The idea is to build a routine, add its workouts(daily exercises) and add its exercises, then you will go through it and add your weights and repetitions so it will tell you the last exercise information.
 
 In order to run the project, do the following steps:
 - clone or download the project.
 - If not installed, install Node.js.
+- Install Mongodb.
 - In the console, navigate to the project folder.
 - Execute "npm install" to install all project dependencies.
 - Execute "npm run development" to run the app.
@@ -19,6 +20,7 @@ In order to run the project, do the following steps:
 - Running backend code and checking APIs
 - Using Service Workers with workbox to avoid re calling the exercise API and using it from cache.
 - Using Redux to manage the state of the app.
+-Testing with Jest and Enzyme.
 
 ### Project Diagram
 ![Project Diagram](client/assets/images/ProjectDiagram.png)
