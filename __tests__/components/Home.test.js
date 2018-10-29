@@ -1,7 +1,6 @@
-import Home from '../client/core/Home'
+import Home from '../../client/core/Home'
 import React from 'react';
-import {shallow, mount} from 'enzyme';
-import { withStyles } from '@material-ui/core/styles';
+import { mount } from 'enzyme';
 
 describe("Home", () => {
   let props;
@@ -22,7 +21,7 @@ describe("Home", () => {
   });
   
   // All tests will go here
-  it("always renders 3 Advices", () => {
+  it("Always renders 3 Advices", () => {
     const advices = home().find("Card");
     expect(advices.length).toBe(3);
   });
