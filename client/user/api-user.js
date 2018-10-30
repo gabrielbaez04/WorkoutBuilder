@@ -1,5 +1,7 @@
+import config from '../../config/config';
+
 const create = (user) => {
-    return fetch('/api/users/', {
+    return fetch(`${config.server}/api/users/`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

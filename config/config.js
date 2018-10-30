@@ -7,7 +7,8 @@ const config = {
       process.env.MONGO_HOST ||
       'mongodb://' + (process.env.IP || 'localhost') + ':' +
       (process.env.MONGO_PORT || '27017') +
-      '/WorkoutBuilder'
+      '/WorkoutBuilder',
+      server : process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://your_deployment.server.com'
   }
   
   export default config
