@@ -82,7 +82,7 @@ class Signup extends Component {
     const {classes} = this.props
     return (
       <div>
-        <form onSubmit={this.clickSubmit}>
+        <form onSubmit={this.clickSubmit} className="form">
           <Card className={classes.card}>
             <CardContent>
               <Typography type="headline" component="h2" className={classes.title}>
@@ -94,7 +94,7 @@ class Signup extends Component {
               <br/> {
                 this.state.error && (<Typography component="p" color="error">
                   <Icon color="error" className={classes.error}>error</Icon>
-                  {this.state.error}</Typography>)
+                  <span className="spanError">{this.state.error}</span></Typography>)
               }
             </CardContent>
             <CardActions>

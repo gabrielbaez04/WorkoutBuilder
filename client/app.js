@@ -6,6 +6,7 @@ import {indigo, pink} from '@material-ui/core/colors'
 import { hot } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 import configureStore from '../redux/configureStore'
+import 'babel-polyfill';
 
 const store = configureStore()
 
