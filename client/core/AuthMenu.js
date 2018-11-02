@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import {Link, withRouter} from 'react-router-dom'
 import auth from './../auth/auth-helper'
-import IconButton from '@material-ui/core/IconButton';
 import {withStyles} from '@material-ui/core/styles'
 import OutsideClickHandler from 'react-outside-click-handler';
 import 'airbnb-browser-shims';
