@@ -3,12 +3,10 @@ import WorkoutList from '../workout/WorkoutList';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import {list} from './api-routine'
 import auth from './../auth/auth-helper'
 import RoutineListItem from './RoutineListItem';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
-import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
 import { connect } from 'react-redux'
 import {requestRoutines, selectRoutine} from '../../redux/actions/routines'
 

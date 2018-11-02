@@ -9,10 +9,10 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import Exercise from './Exercise';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {create, update} from '../routine/api-routine'
+import {update} from '../routine/api-routine'
 import auth from './../auth/auth-helper'
 import Icon from '@material-ui/core/Icon'
-import {selectWorkout, selectExercise, requestRoutines, updateWorkout,createWorkout, updateRoutine} from '../../redux/actions/routines'
+import {selectWorkout, selectExercise, updateWorkout,createWorkout, updateRoutine} from '../../redux/actions/routines'
 import { connect } from 'react-redux'
 
 const styles = theme => ({

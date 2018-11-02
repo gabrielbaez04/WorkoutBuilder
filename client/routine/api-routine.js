@@ -1,5 +1,3 @@
-import auth from './../auth/auth-helper'
-
 const create = (routine) => {
     return fetch('/api/routine', {
         method: 'POST',
