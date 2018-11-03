@@ -13,6 +13,8 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import {selectRoutine, selectWorkout, updateRoutine, createRoutine, updateRoutineName} from '../../redux/actions/routines'
 import { update ,create } from '../routine/api-routine'
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Icon from '@material-ui/core/Icon'
 
 const styles = theme => ({
     cardGrid: {
@@ -47,6 +49,13 @@ const styles = theme => ({
     textField:{
         width:'80%',         
     },
+    saved: {
+        verticalAlign: 'middle',
+        color:'green'
+    },
+    savedMessage:{
+        textAlign:'center'
+    }
   });
 
 const mapStateToProps = state => {
@@ -73,6 +82,7 @@ class WorkoutList extends React.Component {
     }
     handleAddClick = () =>{
         this.props.dispatch(selectWorkout([]));
+        this.setState({saved: false}); 
     }
     handleReturn = () =>{
         this.props.dispatch(selectWorkout(null));   
@@ -168,9 +178,17 @@ class WorkoutList extends React.Component {
                                 Save
                             </Button>
                         </div>
+                        {this.state.saved && (
+                            <div className={classes.savedMessage}>
+                            <Typography component="p" color="primary">
+                                <Icon color="primary" className={classes.saved}>check_circle</Icon>
+                                    Routine Saved!
+                                </Typography>
+                            </div>)
+                        }
                     </div>
-                    
                 }
+                 
                 {this.state.run && this.props.SelectedWorkout 
                     && <Workout 
                             handleReturn = {this.handleReturn}
