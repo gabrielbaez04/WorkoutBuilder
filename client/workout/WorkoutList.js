@@ -53,6 +53,9 @@ const styles = theme => ({
         verticalAlign: 'middle',
         color:'green'
     },
+    vAlingMiddle:{
+        verticalAlign: 'middle',
+    },
     savedMessage:{
         textAlign:'center'
     }
@@ -82,7 +85,7 @@ class WorkoutList extends React.Component {
     }
     handleAddClick = () =>{
         this.props.dispatch(selectWorkout([]));
-        this.setState({saved: false}); 
+        this.setState({saved: false, error: ''}); 
     }
     handleReturn = () =>{
         this.props.dispatch(selectWorkout(null));   
@@ -109,9 +112,9 @@ class WorkoutList extends React.Component {
                 t: jwt.token
                 }, this.props.routine).then((data) => {
                 if (data.error) {
-                    this.setState({error: data.error})
+                    this.setState({error: data.error, saved:false})
                 } else {
-                    this.setState({saved: true})
+                    this.setState({saved: true, error: ''})
                     this.props.dispatch(updateRoutine(data)); 
                 }
             })
@@ -178,11 +181,19 @@ class WorkoutList extends React.Component {
                                 Save
                             </Button>
                         </div>
-                        {this.state.saved && (
+                        {this.state.saved && !this.state.error && (
                             <div className={classes.savedMessage}>
                             <Typography component="p" color="primary">
                                 <Icon color="primary" className={classes.saved}>check_circle</Icon>
                                     Routine Saved!
+                                </Typography>
+                            </div>)
+                        }
+                        {this.state.error && !this.state.saved && (
+                            <div className={classes.savedMessage}>
+                            <Typography component="p" color="error">
+                                <Icon color="error" className={classNames(classes.error,classes.vAlingMiddle)}>error</Icon>
+                                    Something wrong happened, please Try Again!
                                 </Typography>
                             </div>)
                         }

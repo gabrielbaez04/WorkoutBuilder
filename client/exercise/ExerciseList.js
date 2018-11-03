@@ -55,7 +55,10 @@ const styles = theme => ({
     },
     savedMessage:{
         textAlign:'center'
-    }
+    },
+    vAlingMiddle:{
+        verticalAlign: 'middle',
+    },
   });
 
 const mapStateToProps = state => {
@@ -102,10 +105,10 @@ class ExerciseList extends React.Component {
             t: jwt.token
             }, this.props.routine).then((data) => {
             if (data.error) {
-                this.setState({error: data.error})
+                this.setState({error: data.error, saved:false})
             } else {
                 console.log(data);
-                this.setState({saved: true})
+                this.setState({saved: true, error:''})
                 this.props.dispatch(updateRoutine(data));
                 this.props.dispatch(selectExercise(null));
                 if(this.props.SelectedWorkout.length == 0){
@@ -164,11 +167,19 @@ class ExerciseList extends React.Component {
                                 Save
                             </Button>
                         </div>
-                        {this.state.saved && (
+                        {this.state.saved && !this.state.error && (
                             <div className={classes.savedMessage}>
                             <Typography component="p" color="primary">
                                 <Icon color="primary" className={classes.saved}>check_circle</Icon>
                                     Workout Saved!
+                                </Typography>
+                            </div>)
+                        }
+                        {this.state.error && !this.state.saved && (
+                            <div className={classes.savedMessage}>
+                            <Typography component="p" color="error">
+                                <Icon color="error" className={classNames(classes.error,classes.vAlingMiddle)}>error</Icon>
+                                    Something wrong happened, please Try Again!
                                 </Typography>
                             </div>)
                         }
