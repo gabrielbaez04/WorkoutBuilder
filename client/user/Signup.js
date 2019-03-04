@@ -49,7 +49,7 @@ const styles = theme => ({
   }
 })
 
-class Signup extends Component {
+export class Signup extends Component {
   state = {
       name: '',
       password: '',

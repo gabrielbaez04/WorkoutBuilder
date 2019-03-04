@@ -1,28 +1,15 @@
-import Home from '../../client/core/Home'
+import { Home } from '../../client/core/Home'
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
+import advices from '../fixtures/advices';
 
-describe("Home", () => {
-  let props;
-  let mountedHome;
-  const home = () => {
-    if (!mountedHome) {
-      mountedHome = mount(
-        <Home {...props} />
-      );
-    }
-    return mountedHome;
-  }
+test('should render Home correctly with 3 advices',()=>{
+  const wrapper = shallow(<Home classes={{}}/>);
+  wrapper.setState({cards: advices})
+  expect(wrapper).toMatchSnapshot();
+});
 
-  beforeEach(() => {
-    props = {
-    };
-    mountedHome = undefined;
-  });
-  
-  // All tests will go here
-  it("Always renders 3 Advices", () => {
-    const advices = home().find("Card");
-    expect(advices.length).toBe(3);
-  });
+test('should render Home correctly with 3 advices',()=>{
+  const wrapper = shallow(<Home classes={{}}/>);
+  expect(wrapper.find('WithStyles(Card)').length).toBe(3);
 });

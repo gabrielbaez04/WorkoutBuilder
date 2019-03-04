@@ -34,7 +34,8 @@
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>__tests__/setup/setupEnzyme.js",
     "testPathIgnorePatterns": [
-      "<rootDir>/__tests__/setup/"
+      "<rootDir>/__tests__/setup/",
+      "<rootDir>/__tests__/fixtures/"
     ],
     "transform": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
@@ -44,7 +45,10 @@
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
-    }
+    },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+  ]
   },
   "devDependencies": {
     "babel-core": "^6.26.2",
@@ -55,7 +59,7 @@
     "css-loader": "^1.0.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
-    "enzyme-to-json": "^3.3.4",
+    "enzyme-to-json": "^3.3.5",
     "file-loader": "^1.1.11",
     "jest": "^23.6.0",
     "nodemon": "^1.17.3",
