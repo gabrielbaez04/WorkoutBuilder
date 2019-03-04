@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Signup correctly 1`] = `
+<div>
+  <form
+    className="form"
+    onSubmit={[Function]}
+  >
+    <WithStyles(Card)>
+      <WithStyles(CardContent)>
+        <WithStyles(Typography)
+          component="h2"
+          type="headline"
+        >
+          Sign Up
+        </WithStyles(Typography)>
+        <TextField
+          id="name"
+          label="Name"
+          margin="normal"
+          onChange={[Function]}
+          required={false}
+          select={false}
+          value=""
+          variant="standard"
+        />
+        <br />
+        <TextField
+          id="email"
+          label="Email"
+          margin="normal"
+          onChange={[Function]}
+          required={false}
+          select={false}
+          type="email"
+          value=""
+          variant="standard"
+        />
+        <br />
+        <TextField
+          id="password"
+          label="Password"
+          margin="normal"
+          onChange={[Function]}
+          required={false}
+          select={false}
+          type="password"
+          value=""
+          variant="standard"
+        />
+        <br />
+         
+      </WithStyles(CardContent)>
+      <WithStyles(CardActions)>
+        <WithStyles(Button)
+          color="primary"
+          type="submit"
+          variant="raised"
+        >
+          Submit
+        </WithStyles(Button)>
+      </WithStyles(CardActions)>
+    </WithStyles(Card)>
+  </form>
+  <WithStyles(Dialog)
+    disableBackdropClick={true}
+    open={false}
+  >
+    <WithStyles(DialogTitle)>
+      New Account
+    </WithStyles(DialogTitle)>
+    <WithStyles(DialogContent)>
+      <WithStyles(DialogContentText)>
+        New account successfully created.
+      </WithStyles(DialogContentText)>
+    </WithStyles(DialogContent)>
+    <WithStyles(DialogActions)>
+      <Link
+        replace={false}
+        to={
+          Object {
+            "pathname": "/signin",
+            "updateMenu": [MockFunction],
+          }
+        }
+      >
+        <WithStyles(Button)
+          autoFocus="autoFocus"
+          color="primary"
+          variant="raised"
+        >
+          Sign In
+        </WithStyles(Button)>
+      </Link>
+    </WithStyles(DialogActions)>
+  </WithStyles(Dialog)>
+</div>
+`;

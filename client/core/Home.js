@@ -41,7 +41,7 @@ const styles = theme => ({
   }
 });
 
-class Home extends React.Component {
+export class Home extends React.Component {
   state = {
     cards : null
   }

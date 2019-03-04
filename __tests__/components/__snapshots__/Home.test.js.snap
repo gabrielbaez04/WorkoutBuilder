@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render Home correctly with 3 advices 1`] = `
+<Fragment>
+  <WithStyles(CssBaseline) />
+  <div>
+    <main>
+      <div
+        className=""
+      >
+        <WithStyles(Grid)
+          container={true}
+          spacing={40}
+        >
+          <WithStyles(Grid)
+            item={true}
+            key="0"
+            lg={3}
+            md={4}
+            sm={6}
+          >
+            <WithStyles(Card)>
+              <WithStyles(CardMedia)
+                image="test-file-stub"
+                title="Image title"
+              />
+              <WithStyles(CardContent)>
+                <WithStyles(Typography)
+                  component="h2"
+                  gutterBottom={true}
+                  variant="headline"
+                >
+                  Make sure you're eating healthy.
+                </WithStyles(Typography)>
+                <WithStyles(Typography)
+                  variant="subheading"
+                >
+                  Ask almost any personal trainer and they’ll tell you that regardless of your training goals, healthy eating is the backbone. Food is what fuels your body to reach your goals, and without proper nutrition through quality foods, you’re likely to stall. Maintain a balanced diet consisting of fruits, vegetables, complex carbohydrates, complete proteins, and healthy fats like fish oils and flaxseeds.
+                </WithStyles(Typography)>
+              </WithStyles(CardContent)>
+            </WithStyles(Card)>
+          </WithStyles(Grid)>
+          <WithStyles(Grid)
+            item={true}
+            key="1"
+            lg={3}
+            md={4}
+            sm={6}
+          >
+            <WithStyles(Card)>
+              <WithStyles(CardMedia)
+                image="test-file-stub"
+                title="Image title"
+              />
+              <WithStyles(CardContent)>
+                <WithStyles(Typography)
+                  component="h2"
+                  gutterBottom={true}
+                  variant="headline"
+                >
+                  Prepare ahead.
+                </WithStyles(Typography)>
+                <WithStyles(Typography)
+                  variant="subheading"
+                >
+                  Preparing meals in advance gives you the best chance to accomplish your nutrition goals, says Micah LaCerte, a personal trainer and fitness competition world champion. That way, he says, you won’t feel pressured to eat unhealthy foods or skip meals.
+                </WithStyles(Typography)>
+              </WithStyles(CardContent)>
+            </WithStyles(Card)>
+          </WithStyles(Grid)>
+          <WithStyles(Grid)
+            item={true}
+            key="2"
+            lg={3}
+            md={4}
+            sm={6}
+          >
+            <WithStyles(Card)>
+              <WithStyles(CardMedia)
+                image="test-file-stub"
+                title="Image title"
+              />
+              <WithStyles(CardContent)>
+                <WithStyles(Typography)
+                  component="h2"
+                  gutterBottom={true}
+                  variant="headline"
+                >
+                  Eat more clean food.
+                </WithStyles(Typography)>
+                <WithStyles(Typography)
+                  variant="subheading"
+                >
+                  Eating only three daily meals? Not a great idea. “Half the people I deal with aren’t losing weight because they don’t eat enough,” says veteran personal trainer Mike Duffy. Duffy advises his clients “to eat five times a day, about every three hours, to stimulate their metabolism” including two mini-meals between three basic meals. With activity levels decreasing throughout the day, he advises to “eat less as the day goes on.”
+                </WithStyles(Typography)>
+              </WithStyles(CardContent)>
+            </WithStyles(Card)>
+          </WithStyles(Grid)>
+        </WithStyles(Grid)>
+      </div>
+    </main>
+    <footer>
+      <WithStyles(Typography)
+        align="center"
+        color="textSecondary"
+        component="p"
+        variant="subheading"
+      >
+        Developed and designed by 
+        <a
+          href="https://github.com/gabrielbaez04"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Gabriel Baez
+        </a>
+      </WithStyles(Typography)>
+    </footer>
+  </div>
+</Fragment>
+`;
