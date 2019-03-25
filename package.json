@@ -25,10 +25,12 @@
     "start": "NODE_ENV=production node ./dist/server.generated.js",
     "test": "jest --verbose",
     "test:watch": "jest --watch --verbose false",
-    "test:coverage": "jest --coverage --verbose"
+    "test:coverage": "jest --coverage --verbose",
+    "heroku-postbuild": "npm run build"
   },
+  "proxy": "http://localhost:8000",
   "engines": {
-    "node": "8.11.1",
+    "node": "8.12.0",
     "npm": "5.8.0"
   },
   "jest": {
@@ -80,7 +82,7 @@
     "compression": "^1.7.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "event-stream": ">=4.0.0",
+    "event-stream": "^4.0.1",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
     "helmet": "^3.12.0",
