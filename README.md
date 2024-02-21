@@ -1,4 +1,4 @@
-# WorkoutBuilder
+# WorkoutBuilder 
 Personal project using MERN stack. 
 The idea is to build a routine, add its workouts(daily exercises) and add its exercises, then you will go through it and add your weights and repetitions so it will tell you the last exercise information.
 
